@@ -9,7 +9,7 @@ on:
       - '.github/workflows/playground-docs.yml'
       - 'vx/handbooks/ci.md'
       # - 'packages/**'
-      - 'apps_internals/playground-docs/**'
+      - 'apps-internals/playground-docs/**'
 
 jobs:
   run_if:
@@ -28,7 +28,7 @@ jobs:
               - '.github/workflows/playground-docs.yml'
               - 'vx/handbooks/ci.md'
             deploy:
-              - 'apps_internals/playground-docs/**'
+              - 'apps-internals/playground-docs/**'
               - 'packages/**'
 
   deploy:

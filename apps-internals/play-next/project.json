@@ -1,0 +1,27 @@
+{
+  "name": "play-next",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps-internals/play-next/src",
+  "targets": {
+    "build": {
+      "dependsOn": [
+        "metadata:generate",
+        "deploy:generate",
+        "^build",
+        "^typecheck"
+      ]
+    },
+    "dev": {
+      "dependsOn": ["metadata:watch"]
+    },
+    "hosts:setup": {},
+    "deploy:generate": {},
+    "metadata:generate": {},
+    "metadata:watch": {},
+    "test": {},
+    "serve:next": {},
+    "preview:next": {}
+  },
+  "tags": ["category:internal"]
+}
