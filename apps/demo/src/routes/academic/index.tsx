@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 import { getNavigationChildren } from '@generated/navigation'
-import { getDefaultDestination } from '@pages/navigation-demo/navigation'
+import { getDefaultDestination } from '@pages/classes/navigation'
 
 export const Route = createFileRoute('/academic/')({
   beforeLoad: () => {

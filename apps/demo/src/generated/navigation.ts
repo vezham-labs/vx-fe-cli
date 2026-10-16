@@ -291,6 +291,8 @@ export const navigationItems = [
             "href": "/academic/classes/allclasses",
             "icon": "vx:list",
             "toolbar": {
+              "filter": false,
+              "sort": false,
               "primaryAction": {
                 "key": "create",
                 "label": "Add Class",

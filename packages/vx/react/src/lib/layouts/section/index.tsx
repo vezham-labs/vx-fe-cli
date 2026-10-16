@@ -12,6 +12,7 @@ import {
 import { Drawer, Surface, Tabs, useMediaQuery } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
+import { useMobileControls } from '../../components/mobile-controls'
 import { ShortcutButton } from '../../components/shortcut-key'
 import {
   useSidebarShortcut,
@@ -31,6 +32,10 @@ import {
   type SectionViewAction,
   type SectionViewMode
 } from './toolbar'
+import {
+  SectionToolbarContentProvider,
+  useRegisteredSectionToolbarContent
+} from './toolbar-content'
 
 export type SectionLayoutProps = {
   title: string
@@ -105,7 +110,10 @@ const SectionPanels = ({
   <>
     {displayTabs.length === 0 && children}
     {displayTabs.map(tab => (
-      <Tabs.Panel key={tab.key} id={tab.key} className="m-0 p-0">
+      <Tabs.Panel
+        key={tab.key}
+        id={tab.key}
+        className="m-0 flex min-h-0 flex-1 flex-col p-0">
         {tab.key === selectedTab?.key && children}
       </Tabs.Panel>
     ))}
@@ -153,7 +161,7 @@ const SectionBody = ({
           onSelectedFiltersChange={setSelectedFilters}
         />
       )}
-      <Surface className="relative min-h-0 flex-1 rounded-lg p-4 sm:p-5">
+      <Surface className="relative flex min-h-0 flex-1 flex-col rounded-lg p-4 sm:p-5">
         <SectionPanels displayTabs={displayTabs} selectedTab={selectedTab}>
           {children}
         </SectionPanels>
@@ -162,7 +170,7 @@ const SectionBody = ({
   </div>
 )
 
-const SectionLayout = ({
+const SectionLayoutContent = ({
   title,
   sectionKey,
   navigationLabel = `${title} sections`,
@@ -180,12 +188,15 @@ const SectionLayout = ({
   primaryAction,
   children
 }: SectionLayoutProps) => {
+  const registeredToolbarContent = useRegisteredSectionToolbarContent()
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const router = useRouter()
   const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
     useWorkspaceNavigation()
+  const { isFooterHidden } = useMobileControls()
   const isCompactToolbar = useMediaQuery('(max-width: 767px)')
+  const shouldHideCompactControls = isCompactToolbar && isFooterHidden
   const {
     expandedKeys: expandedSidebarKeys,
     setExpandedKeys: setExpandedSidebarKeys
@@ -282,8 +293,14 @@ const SectionLayout = ({
             : undefined
         }
         menuActions={menuActions}
-        primaryAction={primaryAction}
-        toolbar={toolbar}
+        primaryAction={shouldHideCompactControls ? undefined : primaryAction}
+        toolbar={
+          <>
+            {toolbar}
+            {registeredToolbarContent.desktop}
+          </>
+        }
+        mobileToolbar={registeredToolbarContent.mobile}
         onSync={handleSync}
         navigationControls={
           <>
@@ -318,7 +335,7 @@ const SectionLayout = ({
           </>
         }
       />
-      {isCompactToolbar && (
+      {isCompactToolbar && !shouldHideCompactControls && (
         <CompactTabs
           title={title}
           displayTabs={displayTabs}
@@ -370,6 +387,12 @@ const SectionLayout = ({
   )
 }
 
+const SectionLayout = (props: SectionLayoutProps) => (
+  <SectionToolbarContentProvider>
+    <SectionLayoutContent {...props} />
+  </SectionToolbarContentProvider>
+)
+
 export type {
   SectionAction,
   SectionFilterKey,
@@ -378,5 +401,7 @@ export type {
   SectionViewMode
 } from './toolbar'
 export { SectionLayout }
+export { useSectionToolbarContent } from './toolbar-content'
+export { useMobileToolbarNavigation } from './toolbar-more-sheet'
 
 export type { SectionSort } from './sort-menu'

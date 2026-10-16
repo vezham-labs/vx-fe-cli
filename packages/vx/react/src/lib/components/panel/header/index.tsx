@@ -89,7 +89,10 @@ const Header = ({
             type="button"
             aria-label="Application"
             className="flex h-full items-center bg-transparent p-0"
-            onClick={() => onAvatarClick?.(users)}>
+            onClick={() => {
+              onAvatarClick?.(users)
+              setOpen(true)
+            }}>
             <HeaderAvatar user={users} />
           </button>
 

@@ -85,6 +85,16 @@ describe('Shared compact navigation header', () => {
     expect(actions.openCommand).toHaveBeenCalledOnce()
   })
 
+  it('opens the application menu from the compact app icon', async () => {
+    render(<Header compact users={{ id: '1', name: 'School' }} />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Application' }))
+
+    expect(
+      await screen.findByRole('menu', { name: /application menu/i })
+    ).toBeTruthy()
+  })
+
   it('can explicitly hide dock and search menu actions', async () => {
     render(
       <Header

@@ -1,5 +1,15 @@
 #!/usr/bin/env sh
 
+# Git GUI clients do not load the user's shell profile, so they can otherwise
+# invoke an older Homebrew Node/pnpm even when a compatible NVM version exists.
+vx_nvm_dir="${NVM_DIR:-$HOME/.nvm}"
+if [ -s "$vx_nvm_dir/nvm.sh" ]; then
+  NVM_DIR="$vx_nvm_dir"
+  export NVM_DIR
+  . "$NVM_DIR/nvm.sh" --no-use
+  nvm use --silent default >/dev/null 2>&1 || :
+fi
+
 path_add() {
   if [ -n "$1" ] && [ -d "$1" ]; then
     PATH="$1:$PATH"

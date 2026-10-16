@@ -1,3 +1,64 @@
 @import '../../../../packages/vx/styles';
 
 /* You can add global styles to this file, and also import other style files */
+
+.demo-classes-grid {
+  height: auto;
+  max-height: calc(100% - 4rem);
+  min-height: 0;
+}
+
+/* Keep the pinned selection and class columns flush with the grid edges. */
+.demo-classes-grid.table-root--secondary {
+  border-radius: 0;
+}
+
+.demo-classes-grid .table__header,
+.demo-classes-grid .table__header > tr,
+.demo-classes-grid .table__header > tr > .table__column:first-child,
+.demo-classes-grid .table__header > tr > .table__column:last-child {
+  border-radius: 0;
+}
+
+.demo-classes-grid .table__body tr:first-child td:first-child,
+.demo-classes-grid .table__body tr:first-child td:last-child,
+.demo-classes-grid .table__body tr:last-child td:first-child,
+.demo-classes-grid .table__body tr:last-child td:last-child {
+  border-radius: 0;
+}
+
+.demo-classes-grid .table__scroll-container {
+  min-height: 0;
+  overflow: auto;
+}
+
+.demo-classes-grid .table__cell {
+  padding-block: 0.25rem;
+  padding-inline: 0.5rem;
+}
+
+.demo-classes-grid .table__column {
+  padding-block: 0.625rem;
+  padding-inline: 0.5rem;
+}
+
+.demo-classes-grid .checkbox__control {
+  background-color: var(--surface);
+  border-color: var(--border);
+  border-width: var(--border-width);
+}
+
+.demo-classes-content > [data-slot='action-bar'] {
+  bottom: 1.5rem;
+  position: absolute;
+}
+
+@media (width < 40rem) {
+  .demo-classes-grid {
+    max-height: calc(100% - 8rem);
+  }
+
+  .demo-classes-content > [data-slot='action-bar'] {
+    bottom: 1rem;
+  }
+}

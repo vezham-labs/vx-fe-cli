@@ -1,10 +1,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-import NavigationDemoContent from '@pages/navigation-demo/content'
+import ClassesPageContent from '@pages/classes/content'
 import {
   getDefaultDestination,
   getNavigationPage
-} from '@pages/navigation-demo/navigation'
+} from '@pages/classes/navigation'
 
 export const Route = createFileRoute('/academic/$')({
   beforeLoad: ({ location }) => {
@@ -12,5 +12,5 @@ export const Route = createFileRoute('/academic/$')({
     if (page.children?.length)
       throw redirect({ to: getDefaultDestination(page), replace: true })
   },
-  component: NavigationDemoContent
+  component: ClassesPageContent
 })

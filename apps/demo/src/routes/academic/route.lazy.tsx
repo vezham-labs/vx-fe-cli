@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-import NavigationDemoLayout from '@pages/navigation-demo'
+import ClassesLayout from '@pages/classes'
 
 export const Route = createLazyFileRoute('/academic')({
-  component: () => <NavigationDemoLayout menuKey="academic" />
+  component: () => <ClassesLayout menuKey="academic" />
 })

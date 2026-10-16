@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 
-import NavigationDemoContent from '@pages/navigation-demo/content'
+import ClassesPageContent from '@pages/classes/content'
 
 export const Route = createLazyFileRoute('/workspace/$')({
-  component: NavigationDemoContent
+  component: ClassesPageContent
 })

@@ -14,7 +14,7 @@ import { type MenuKey, getNavigationPage } from './navigation'
 
 type Props = { menuKey: MenuKey }
 
-const NavigationDemoLayout = ({ menuKey }: Props) => {
+const ClassesLayout = ({ menuKey }: Props) => {
   // vx-bot/NOTE: Read the mounted child route, not a destination URL from a navigation in progress.
   const pathname = useChildMatches({
     select: matches =>
@@ -23,11 +23,11 @@ const NavigationDemoLayout = ({ menuKey }: Props) => {
         .find(match => match.pathname.startsWith(`/${menuKey}/`))?.pathname
   })
   return pathname ? (
-    <NavigationDemoSection menuKey={menuKey} pathname={pathname} />
+    <ClassesSection menuKey={menuKey} pathname={pathname} />
   ) : null
 }
 
-const NavigationDemoSection = ({
+const ClassesSection = ({
   menuKey,
   pathname
 }: Props & { pathname: string }) => {
@@ -54,7 +54,7 @@ const NavigationDemoSection = ({
   )
   useToolbarAction('print', () => window.print())
   useToolbarAction('create', () => {
-    toast.info('Create is not implemented in this navigation demo.')
+    toast.info('Create is not implemented on this page.')
   })
 
   return (
@@ -87,4 +87,4 @@ const NavigationDemoSection = ({
   )
 }
 
-export default NavigationDemoLayout
+export default ClassesLayout

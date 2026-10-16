@@ -1,4 +1,10 @@
-import { type ReactNode, useState } from 'react'
+import {
+  type ReactNode,
+  createContext,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
 
 import {
   AltArrowLeft,
@@ -27,6 +33,7 @@ type Props = {
     options: readonly { key: SectionFilterKey; label: string; icon: string }[]
   }[]
   menuActions: SectionAction[]
+  mobileToolbar?: ReactNode
   onSync: () => void
   onToggleFilter: (filter: SectionFilterKey) => void
   onViewModeChange: (view: SectionViewMode) => void
@@ -36,6 +43,29 @@ type Props = {
   sortValue: SectionSort
   onSortChange?: (value: SectionSort) => void
   viewModeActions: SectionViewAction[]
+}
+
+type MobileToolbarPage = {
+  key: string
+  title: string
+}
+
+type MobileToolbarNavigation = {
+  closeSheet: () => void
+  page: MobileToolbarPage | null
+  openPage: (page: MobileToolbarPage) => void
+}
+
+const MobileToolbarNavigationContext =
+  createContext<MobileToolbarNavigation | null>(null)
+
+export const useMobileToolbarNavigation = () => {
+  const context = useContext(MobileToolbarNavigationContext)
+
+  if (!context)
+    throw new Error('Mobile toolbar navigation requires ToolbarMoreSheet')
+
+  return context
 }
 
 const actionClass =
@@ -115,6 +145,7 @@ const SheetHome = ({
   viewModeActions,
   onViewModeChange,
   menuActions,
+  mobileToolbar,
   setPage,
   renderActions
 }: Pick<
@@ -127,11 +158,19 @@ const SheetHome = ({
   | 'viewModeActions'
   | 'onViewModeChange'
   | 'menuActions'
+  | 'mobileToolbar'
 > & {
   setPage: (page: 'home' | 'filter' | 'sort') => void
   renderActions: (actions: SectionAction[]) => ReactNode
 }) => (
   <>
+    {mobileToolbar}
+    {mobileToolbar &&
+      (sync ||
+        filterAction ||
+        sort ||
+        viewModeActions.length > 0 ||
+        menuActions.length > 0) && <Separator className="my-1" />}
     {sync &&
       renderActions([
         {
@@ -186,6 +225,7 @@ export const ToolbarMoreSheet = ({
   filterAction,
   filterGroups,
   menuActions,
+  mobileToolbar,
   onSync,
   onToggleFilter,
   onViewModeChange,
@@ -199,11 +239,13 @@ export const ToolbarMoreSheet = ({
   const [open, setOpen] = useState(false)
   const [page, setPage] = useState<'home' | 'filter' | 'sort'>('home')
   const [path, setPath] = useState<SectionAction[]>([])
+  const [mobilePage, setMobilePage] = useState<MobileToolbarPage | null>(null)
   const changeOpen = (value: boolean) => {
     setOpen(value)
     if (!value) {
       setPage('home')
       setPath([])
+      setMobilePage(null)
     }
   }
   const run = (action?: () => void) => {
@@ -212,11 +254,24 @@ export const ToolbarMoreSheet = ({
   }
   const current = path[path.length - 1]
   const title =
-    page === 'filter'
+    mobilePage?.title ??
+    (page === 'filter'
       ? 'Filter'
       : page === 'sort'
         ? 'Sort'
-        : (current?.label ?? 'More')
+        : (current?.label ?? 'More'))
+  const mobileToolbarNavigation = useMemo(
+    () => ({
+      closeSheet: () => changeOpen(false),
+      page: mobilePage,
+      openPage: (nextPage: MobileToolbarPage) => {
+        setMobilePage(nextPage)
+        setPage('home')
+        setPath([])
+      }
+    }),
+    [mobilePage]
+  )
   const renderActions = (actions: SectionAction[]) =>
     actions.map(action => (
       <Button
@@ -236,61 +291,69 @@ export const ToolbarMoreSheet = ({
       </Button>
     ))
   return (
-    <MenuSheet
-      title="Toolbar actions"
-      hideTitle
-      isOpen={open}
-      onOpenChange={changeOpen}
-      trigger={
-        <Button
-          isIconOnly
-          variant="ghost"
-          aria-label="More"
-          className="h-9 w-9 min-w-9 rounded-full p-0">
-          <MenuDots className="rotate-90" size={18} aria-hidden="true" />
-        </Button>
-      }>
-      <div
-        key={`${page}:${path.map(action => action.key).join(':')}`}
-        className="flex flex-col gap-1">
-        {(page !== 'home' || current) && (
+    <MobileToolbarNavigationContext.Provider value={mobileToolbarNavigation}>
+      <MenuSheet
+        title="Toolbar actions"
+        hideTitle
+        isOpen={open}
+        onOpenChange={changeOpen}
+        trigger={
           <Button
+            isIconOnly
             variant="ghost"
-            className={actionClass}
-            aria-label="Back to toolbar actions"
-            onPress={() => {
-              if (current) setPath(path.slice(0, -1))
-              else setPage('home')
-            }}>
-            <AltArrowLeft size={18} aria-hidden="true" />
-            {title}
+            aria-label="More"
+            className="h-9 w-9 min-w-9 rounded-full p-0">
+            <MenuDots className="rotate-90" size={18} aria-hidden="true" />
           </Button>
-        )}
-        {page === 'filter' ? (
-          <SheetFilters
-            filterGroups={filterGroups}
-            selectedFilters={selectedFilters}
-            onToggleFilter={onToggleFilter}
-          />
-        ) : page === 'sort' ? (
-          <SheetSort sortValue={sortValue} onSortChange={onSortChange} />
-        ) : current ? (
-          renderActions(current.children ?? [])
-        ) : (
-          <SheetHome
-            sync={sync}
-            onSync={onSync}
-            filterAction={filterAction}
-            sort={sort}
-            sortValue={sortValue}
-            viewModeActions={viewModeActions}
-            onViewModeChange={onViewModeChange}
-            menuActions={menuActions}
-            setPage={setPage}
-            renderActions={renderActions}
-          />
-        )}
-      </div>
-    </MenuSheet>
+        }>
+        <div
+          key={`${page}:${mobilePage?.key ?? ''}:${path
+            .map(action => action.key)
+            .join(':')}`}
+          className="flex flex-col gap-1">
+          {(page !== 'home' || current || mobilePage) && (
+            <Button
+              variant="ghost"
+              className={actionClass}
+              aria-label="Back to toolbar actions"
+              onPress={() => {
+                if (mobilePage) setMobilePage(null)
+                else if (current) setPath(path.slice(0, -1))
+                else setPage('home')
+              }}>
+              <AltArrowLeft size={18} aria-hidden="true" />
+              {title}
+            </Button>
+          )}
+          {mobilePage ? (
+            mobileToolbar
+          ) : page === 'filter' ? (
+            <SheetFilters
+              filterGroups={filterGroups}
+              selectedFilters={selectedFilters}
+              onToggleFilter={onToggleFilter}
+            />
+          ) : page === 'sort' ? (
+            <SheetSort sortValue={sortValue} onSortChange={onSortChange} />
+          ) : current ? (
+            renderActions(current.children ?? [])
+          ) : (
+            <SheetHome
+              sync={sync}
+              onSync={onSync}
+              filterAction={filterAction}
+              sort={sort}
+              sortValue={sortValue}
+              viewModeActions={viewModeActions}
+              onViewModeChange={onViewModeChange}
+              menuActions={menuActions}
+              mobileToolbar={mobileToolbar}
+              setPage={setPage}
+              renderActions={renderActions}
+            />
+          )}
+        </div>
+      </MenuSheet>
+    </MobileToolbarNavigationContext.Provider>
   )
 }
