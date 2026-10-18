@@ -44,8 +44,10 @@ import {
   getClassFilterSearch,
   getClassFiltersFromSearch,
   getClassLabel,
-  isSortField
+  isSortField,
+  matchesClassSearch
 } from './classes-content/utils'
+import { useClassesSearch } from './search-context'
 
 type ClassFilterKey = keyof ClassFilters
 
@@ -58,6 +60,7 @@ const filterLabels: Record<ClassFilterKey, string> = {
 const ClassesContent = () => {
   const navigate = useNavigate()
   const search = useSearch({ strict: false })
+  const { query: searchQuery } = useClassesSearch()
   const filtersFromSearch = useMemo(
     () => getClassFiltersFromSearch(search),
     [search]
@@ -128,15 +131,17 @@ const ClassesContent = () => {
     return classRecords.filter(classRecord => {
       if (hiddenClassIds.has(classRecord.id)) return false
 
+      const matchesSearch = matchesClassSearch(classRecord, searchQuery)
+
       const matchesName =
         !filters.name || getClassLabel(classRecord) === filters.name
       const matchesCode = !filters.code || classRecord.id === filters.code
       const matchesStatus =
         !filters.status || classRecord.status === filters.status
 
-      return matchesName && matchesCode && matchesStatus
+      return matchesSearch && matchesName && matchesCode && matchesStatus
     })
-  }, [classRecords, filters, hiddenClassIds])
+  }, [classRecords, filters, hiddenClassIds, searchQuery])
 
   const sortedClasses = useMemo(() => {
     const field = isSortField(sortDescriptor.column)
@@ -159,7 +164,7 @@ const ClassesContent = () => {
   }, [filteredClasses, sortDescriptor])
 
   const totalPages = Math.max(1, Math.ceil(sortedClasses.length / pageSize))
-  const activePage = Math.min(currentPage, totalPages)
+  const activePage = searchQuery ? 1 : Math.min(currentPage, totalPages)
   const pageClasses = sortedClasses.slice(
     (activePage - 1) * pageSize,
     activePage * pageSize

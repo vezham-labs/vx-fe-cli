@@ -8,7 +8,7 @@ import {
   Sun,
   UserRounded
 } from '@vezham/icons-react'
-import { Avatar, Button, Drawer, Input, TextField } from '@vezham/react-v3'
+import { Avatar, Button, Drawer, SearchField } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
 import { TileContent } from '../../components/panel/footer/control-center'
@@ -17,7 +17,10 @@ import { resolveTiles } from '../../components/panel/footer/control-center/confi
 import { useTileEditor } from '../../components/panel/footer/control-center/editor'
 import { PreviewProvider } from '../../components/panel/footer/control-center/preview'
 import type { ControlCenterConfig } from '../../components/panel/footer/control-center/types'
-import { useWidgetTiles } from '../../components/panel/footer/notification-center/widget-tiles'
+import {
+  useWidgetTiles,
+  WidgetPreview
+} from '../../components/panel/footer/notification-center/widget-tiles'
 import { ShortcutButton } from '../../components/shortcut-key'
 import {
   useSidebarShortcut,
@@ -121,7 +124,8 @@ const SettingsGallery = ({
         tiles={widgets.orderedTiles.map(tile => ({
           ...tile,
           shape: tile.size,
-          category: `${tile.size[0].toUpperCase()}${tile.size.slice(1)}`
+          category: tile.category,
+          preview: <WidgetPreview tile={tile} />
         }))}
         onDone={onDone}
       />
@@ -214,17 +218,18 @@ export const SettingsPage = ({
         </Button>
       )}
       <h1 className="mb-4 px-3 text-lg font-semibold">Settings</h1>
-      <TextField
+      <SearchField
         aria-label="Search settings"
         value={query}
         onChange={setQuery}
+        variant="secondary"
         className="mx-3 mb-4">
-        <Input
-          placeholder="Search settings"
-          type="search"
-          variant="secondary"
-        />
-      </TextField>
+        <SearchField.Group>
+          <SearchField.SearchIcon />
+          <SearchField.Input placeholder="Search settings" />
+          <SearchField.ClearButton aria-label="Clear settings search" />
+        </SearchField.Group>
+      </SearchField>
       <Button
         variant="ghost"
         className="mb-4 h-auto w-full justify-start gap-3 rounded-lg px-3 py-2 text-left"

@@ -13,12 +13,11 @@ import {
   Chip,
   CloseButton,
   Dropdown,
-  InputGroup,
   Label,
   Popover,
+  SearchField,
   Separator,
   Tabs,
-  TextField,
   Tooltip,
   useMediaQuery
 } from '@vezham/react-v3'
@@ -384,30 +383,24 @@ const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
   const label = search.label ?? 'Search content'
 
   const input = (isDesktop: boolean) => (
-    <TextField
+    <SearchField
       aria-label={label}
+      value={search.value}
+      onChange={search.onChange}
       className={isDesktop ? 'hidden w-56 lg:block' : 'w-56'}>
-      <InputGroup>
-        <InputGroup.Prefix>
-          <AppIcon
-            icon="vx:search"
-            size={16}
-            className="text-muted-foreground"
-            aria-hidden="true"
-          />
-        </InputGroup.Prefix>
-        <InputGroup.Input
+      <SearchField.Group>
+        <SearchField.SearchIcon />
+        <SearchField.Input
           ref={isDesktop ? search.inputRef : undefined}
-          type="search"
           placeholder={search.placeholder ?? 'Search'}
-          value={search.value}
-          onChange={event => search.onChange(event.target.value)}
           onKeyDown={event => {
             if (event.key === 'Enter') search.onSearch?.()
+            if (event.key === 'Escape') search.onOpenChange?.(false)
           }}
         />
-      </InputGroup>
-    </TextField>
+        <SearchField.ClearButton aria-label={`Clear ${label.toLowerCase()}`} />
+      </SearchField.Group>
+    </SearchField>
   )
 
   if (search.onSearch) {

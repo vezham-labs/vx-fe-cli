@@ -1124,14 +1124,19 @@ export const controlCenter = {
   "editControls": true,
   "tiles": [
     {
-      "id": "appearance",
-      "type": "appearance",
-      "span": "wide"
+      "id": "appearance-toggle",
+      "type": "appearance-toggle",
+      "span": "compact"
     },
     {
       "id": "theme",
       "type": "theme",
       "span": "wide"
+    },
+    {
+      "id": "direction-toggle",
+      "type": "direction-toggle",
+      "span": "compact"
     },
     {
       "id": "language",

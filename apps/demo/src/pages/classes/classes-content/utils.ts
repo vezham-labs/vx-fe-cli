@@ -59,6 +59,20 @@ export const getClassFilterSearch = (filters: ClassFilters) => ({
 export const getClassLabel = ({ className, section }: ClassRecord) =>
   `Class ${className} — Section ${section}`
 
+export const matchesClassSearch = (
+  { className, id, section, status }: ClassRecord,
+  searchQuery: string
+) => {
+  const query = searchQuery.trim().toLowerCase()
+
+  return (
+    !query ||
+    [id, className, section, status].some(value =>
+      value.toLowerCase().includes(query)
+    )
+  )
+}
+
 export const formatDate = (date: string) => dateFormatter.format(new Date(date))
 
 export const compareClassNames = (first: string, second: string) =>

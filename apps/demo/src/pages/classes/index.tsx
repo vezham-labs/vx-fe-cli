@@ -1,5 +1,5 @@
 import { Outlet, useChildMatches } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { toast } from '@vezham/react-v3'
 
@@ -11,6 +11,7 @@ import { navigationItems } from '@generated/navigation'
 
 import { getToolbarActions } from './actions'
 import { type MenuKey, getNavigationPage } from './navigation'
+import { ClassesSearchContext } from './search-context'
 
 type Props = { menuKey: MenuKey }
 
@@ -45,45 +46,42 @@ const ClassesSection = ({
     // vx-bot/TODO: Replace this notice with server synchronization.
     toast.info('Server sync is not implemented yet.')
   })
-  useToolbarAction(
-    'search',
-    () => {
-      toast.info('Search is not implemented yet.')
-    },
-    { pageKey: page.key, pathname }
-  )
   useToolbarAction('print', () => window.print())
   useToolbarAction('create', () => {
     toast.info('Create is not implemented on this page.')
   })
 
+  const searchContext = useMemo(
+    () => ({ query: search, setQuery: setSearch }),
+    [search, setSearch]
+  )
+
   return (
-    <SectionLayout
-      sectionKey={menuKey === 'tabs' ? menuKey : section.key}
-      title={menuKey === 'tabs' ? 'Demo' : section.title}
-      navigationLabel={
-        menuKey === 'academic' ? 'Academic sections' : 'Workspace sections'
-      }
-      sidebarItems={menuKey !== 'tabs' ? items : undefined}
-      tabs={tabs}
-      {...actions}
-      onSync={() => {
-        emit({ actionKey: 'sync', pageKey: page.key, pathname })
-      }}
-      search={
-        toolbar.search
-          ? {
-              ...toolbar.search,
-              value: search,
-              onChange: setSearch,
-              onSearch: () => {
-                emit({ actionKey: 'search', pageKey: page.key, pathname })
+    <ClassesSearchContext.Provider value={searchContext}>
+      <SectionLayout
+        sectionKey={menuKey === 'tabs' ? menuKey : section.key}
+        title={menuKey === 'tabs' ? 'Demo' : section.title}
+        navigationLabel={
+          menuKey === 'academic' ? 'Academic sections' : 'Workspace sections'
+        }
+        sidebarItems={menuKey !== 'tabs' ? items : undefined}
+        tabs={tabs}
+        {...actions}
+        onSync={() => {
+          emit({ actionKey: 'sync', pageKey: page.key, pathname })
+        }}
+        search={
+          toolbar.search
+            ? {
+                ...toolbar.search,
+                value: search,
+                onChange: setSearch
               }
-            }
-          : undefined
-      }>
-      <Outlet />
-    </SectionLayout>
+            : undefined
+        }>
+        <Outlet />
+      </SectionLayout>
+    </ClassesSearchContext.Provider>
   )
 }
 

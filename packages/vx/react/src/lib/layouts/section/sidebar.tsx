@@ -21,6 +21,10 @@ const SidebarEntry = ({
   setExpandedKeys: Dispatch<SetStateAction<Set<string>>>
 }) => {
   const active = Boolean(getSelectedMenuKey(pathname, [item]))
+  const hasActiveChild = Boolean(
+    item.children?.length && getSelectedMenuKey(pathname, item.children)
+  )
+  const isParentOfActiveItem = active && hasActiveChild
   const expandable =
     item.childrenDisplay === 'sidebar' && Boolean(item.children?.length)
   const expanded = expandedKeys.has(item.key)
@@ -46,7 +50,7 @@ const SidebarEntry = ({
           aria-label={item.title}
           aria-expanded={expanded}
           aria-controls={childrenId}
-          className={`hover:bg-surface-secondary flex w-full cursor-pointer items-center gap-3 rounded-full px-3 py-2 text-start text-sm ${active ? 'text-foreground font-bold' : 'text-muted'}`}
+          className={`hover:bg-surface-secondary flex w-full cursor-pointer items-center gap-3 rounded-full px-3 py-2 text-start text-sm ${active ? `text-foreground ${isParentOfActiveItem ? 'font-medium' : 'font-bold'}` : 'text-muted'}`}
           onClick={() =>
             setExpandedKeys(current => {
               const next = new Set(current)

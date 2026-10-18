@@ -7,11 +7,14 @@ const tva = tv({
     container: 'flex flex-col',
     align: 'flex flex-col items-center',
     item: 'cursor-pointer',
-    icon_wrapper: 'flex h-[28px] w-[28px] items-center justify-center',
+    icon_wrapper:
+      'flex h-[28px] w-[28px] cursor-pointer items-center justify-center',
     icon: 'text-muted transition-colors',
-    tooltip_trigger: 'flex h-[28px] w-[28px] items-center justify-center',
+    tooltip_trigger:
+      'flex h-[28px] w-[28px] cursor-pointer items-center justify-center',
     tooltip_content: '',
-    label: 'text-muted w-full truncate text-center text-sm transition-colors'
+    label:
+      'text-muted w-full cursor-pointer truncate text-center text-sm transition-colors'
   },
   variants: {
     variant: {
