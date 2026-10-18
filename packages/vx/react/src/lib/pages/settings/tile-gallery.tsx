@@ -1,6 +1,13 @@
 import { type DragEvent, type ReactNode, useId, useState } from 'react'
 
-import { AltArrowLeft, Minus, Settings } from '@vezham/icons-react'
+import {
+  AltArrowLeft,
+  Minus,
+  MusicNote,
+  Settings,
+  Sun,
+  WiFi
+} from '@vezham/icons-react'
 import { Button, Input, Surface, TextField, Tooltip } from '@vezham/react-v3'
 
 import type { EditorState } from '../../components/panel/footer/control-center/editor'
@@ -19,6 +26,18 @@ type Props = {
   tiles: readonly GalleryTile[]
   editor: EditorState
   onDone: () => void
+}
+
+const GalleryTileIcon = ({ category }: Pick<GalleryTile, 'category'>) => {
+  const Icon =
+    category === 'Appearance' || category === 'Display & Brightness'
+      ? Sun
+      : category === 'Sound & Media'
+        ? MusicNote
+        : category === 'Connectivity'
+          ? WiFi
+          : Settings
+  return <Icon aria-hidden="true" size={24} />
 }
 
 const useGallery = ({ kind, tiles, editor }: Props) => {
@@ -102,7 +121,7 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
       variant="ghost"
       aria-pressed={category === value}
       onPress={() => setCategory(value)}
-      className={`shrink-0 justify-start rounded-lg text-sm lg:w-full ${category === value ? 'bg-surface-secondary font-semibold' : 'text-muted'}`}>
+      className={`shrink-0 rounded-full px-3 text-sm ${category === value ? 'bg-surface-secondary font-semibold' : 'text-muted'}`}>
       <Settings size={16} />
       {value === 'All' ? `All ${kind}` : value}
     </Button>
@@ -178,7 +197,7 @@ const GalleryPreview = ({
 }: GalleryContext) => (
   <aside
     aria-label={`Current ${kind}`}
-    className={`${showPreview ? 'flex' : 'hidden xl:flex'} border-border min-h-0 min-w-0 flex-1 flex-col p-5 xl:w-96 xl:flex-none xl:border-l`}
+    className={`${showPreview ? 'flex' : 'hidden xl:flex'} bg-surface-secondary/40 border-border min-h-0 min-w-0 flex-1 flex-col rounded-3xl border p-5 xl:w-[22rem] xl:flex-none`}
     onDragOver={event => {
       if (!event.dataTransfer.types.includes('application/x-vx-settings-tile'))
         return
@@ -191,13 +210,20 @@ const GalleryPreview = ({
         setDropTarget(null)
     }}
     onDrop={event => dropTile(event)}>
-    <div className="mb-4 flex items-center justify-between gap-3">
-      <h2 className="text-sm font-semibold">
-        {kind === 'widgets' ? 'Notification Center' : 'Control Center'}
-      </h2>
-      <span className="text-muted text-xs">{visible.length} added</span>
+    <div className="mb-5 flex items-start justify-between gap-3">
+      <div>
+        <h2 className="text-base font-semibold">
+          {kind === 'widgets' ? 'Notification Center' : 'Control Center'}
+        </h2>
+        <p className="text-muted mt-1 text-xs">
+          Drag controls to arrange your preview.
+        </p>
+      </div>
+      <span className="bg-surface text-muted rounded-full px-2 py-1 text-xs">
+        {visible.length} added
+      </span>
     </div>
-    <div className="@container mx-auto min-h-0 w-full max-w-[352px] flex-1 overflow-y-auto px-2 pt-3 pb-4">
+    <div className="@container mx-auto min-h-0 w-full max-w-[352px] flex-1 overflow-y-auto px-2 py-3">
       {visible.length === 0 && (
         <p className="text-muted py-8 text-center text-sm">
           No {kind} added. Choose a tile from the gallery.
@@ -253,12 +279,14 @@ const GalleryPreview = ({
                 {kind === 'widgets' ? blankWidget(tile) : tile.preview}
               </div>
               {editable && (
-                <button
-                  type="button"
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="ghost"
                   aria-label={`Reorder ${tile.label}`}
                   aria-roledescription="reorderable tile"
                   aria-describedby={dragInstructionsId}
-                  className="focus-visible:outline-focus absolute inset-0 cursor-grab rounded-[inherit] focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing"
+                  className="focus-visible:outline-focus absolute inset-0 h-auto w-auto min-w-0 cursor-grab rounded-[inherit] p-0 focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing"
                   onKeyDown={event => {
                     if (
                       [
@@ -276,8 +304,9 @@ const GalleryPreview = ({
                           : 1
                       )
                     }
-                  }}
-                />
+                  }}>
+                  <span className="sr-only">Reorder {tile.label}</span>
+                </Button>
               )}
               {editable && (
                 <Tooltip>
@@ -308,7 +337,11 @@ const GalleryPreview = ({
         )}
       </div>
     </div>
-    <Button size="sm" variant="ghost" onPress={editor.onReset}>
+    <Button
+      size="sm"
+      variant="ghost"
+      className="mt-3 self-end"
+      onPress={editor.onReset}>
       Reset {kind}
     </Button>
   </aside>
@@ -318,39 +351,28 @@ const GalleryAvailable = ({
   kind,
   editor,
   showPreview,
-  search,
-  categoryButtons,
   category,
   available,
   itemFor,
   startDrag,
-  finishDrag,
-  blankWidget
+  finishDrag
 }: GalleryContext) => (
   <section
     aria-label={`Available ${kind}`}
-    className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col p-4 md:p-6`}>
-    <div className="mb-5 space-y-3 lg:hidden">
-      {search}
-      <nav
-        aria-label={`${kind} categories`}
-        className="flex gap-1 overflow-x-auto">
-        {categoryButtons}
-      </nav>
-    </div>
-    <h2 className="mb-1 text-sm font-semibold">
+    className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col`}>
+    <h2 className="mb-1 text-base font-semibold">
       {category === 'All' ? 'Suggestions' : category}
     </h2>
-    <p className="text-muted mb-5 text-xs">
+    <p className="text-muted mb-6 text-sm">
       Add or drag a tile into your preview. Changes save automatically.
     </p>
-    <div className="min-h-0 flex-1 overflow-y-auto p-1">
+    <div className="min-h-0 flex-1 overflow-y-auto pr-1">
       {available.length === 0 && (
         <p role="status" className="text-muted py-8 text-sm">
           No {kind} found.
         </p>
       )}
-      <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid items-start gap-4 sm:grid-cols-2 2xl:grid-cols-3">
         {available.map(tile => {
           const item = itemFor(tile.id)
           return (
@@ -360,19 +382,26 @@ const GalleryAvailable = ({
               draggable={item?.editable}
               onDragStart={event => startDrag(event, tile.id)}
               onDragEnd={finishDrag}
-              className={`min-w-0 ${tile.shape === 'medium' || tile.shape === 'large' || tile.shape === 'full' || tile.shape === 'wide' ? 'col-span-2' : ''}`}>
-              <div
-                inert
-                className="pointer-events-none flex min-h-24 items-center justify-center [&>button]:w-full">
-                {kind === 'widgets' ? blankWidget(tile) : tile.preview}
-              </div>
-              <div className="mt-2 flex items-center justify-between gap-2">
-                <p className="min-w-0 truncate text-xs">{tile.label}</p>
+              className="bg-surface-secondary hover:bg-surface-secondary/80 min-w-0 rounded-3xl p-3 transition-colors">
+              <div className="flex min-w-0 items-center gap-3">
+                <div
+                  aria-hidden="true"
+                  className="bg-surface text-muted flex size-14 shrink-0 items-center justify-center rounded-2xl shadow-sm">
+                  <GalleryTileIcon category={tile.category} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{tile.label}</p>
+                  <p className="text-muted mt-0.5 truncate text-xs">
+                    {tile.category}
+                  </p>
+                </div>
                 <Button
                   size="sm"
-                  variant="secondary"
+                  variant={item?.visible ? 'ghost' : 'secondary'}
                   isDisabled={item?.visible || !item?.editable}
-                  aria-label={`Add ${tile.label}`}
+                  aria-label={
+                    item?.visible ? `${tile.label} added` : `Add ${tile.label}`
+                  }
                   onPress={() => editor.onVisibilityChange(tile.id, true)}>
                   {item?.visible ? 'Added' : 'Add'}
                 </Button>
@@ -406,7 +435,7 @@ export const TileGallery = (props: Props) => {
       <span role="status" className="sr-only">
         {announcement}
       </span>
-      <header className="border-border flex shrink-0 items-center justify-between gap-3 border-b p-4">
+      <header className="border-border flex shrink-0 items-center justify-between gap-3 border-b px-5 py-4 md:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <Button
             isIconOnly
@@ -416,7 +445,7 @@ export const TileGallery = (props: Props) => {
             onPress={onDone}>
             <AltArrowLeft size={18} />
           </Button>
-          <h1 className="truncate text-lg font-semibold">{title}</h1>
+          <h1 className="truncate text-xl font-semibold">{title}</h1>
         </div>
         <div className="flex gap-2">
           <Button
@@ -432,15 +461,21 @@ export const TileGallery = (props: Props) => {
           </Button>
         </div>
       </header>
-      <div className="flex min-h-0 flex-1">
-        <aside className="border-border bg-surface-secondary/40 hidden w-56 shrink-0 overflow-y-auto border-r p-4 lg:block">
-          {search}
-          <nav aria-label={`${kind} categories`} className="mt-4 space-y-1">
-            {categoryButtons}
-          </nav>
-        </aside>
-        <GalleryAvailable {...context} />
-        <GalleryPreview {...context} />
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="border-border shrink-0 border-b px-5 py-5 md:px-8">
+          <div className="mx-auto w-full max-w-6xl space-y-4">
+            {search}
+            <nav
+              aria-label={`${kind} categories`}
+              className="flex gap-2 overflow-x-auto pb-1">
+              {categoryButtons}
+            </nav>
+          </div>
+        </div>
+        <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 gap-6 overflow-hidden p-5 md:p-8">
+          <GalleryAvailable {...context} />
+          <GalleryPreview {...context} />
+        </div>
       </div>
     </div>
   )

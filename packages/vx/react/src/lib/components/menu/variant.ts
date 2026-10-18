@@ -25,16 +25,15 @@ export const getNavbarMenuContainerClasses = ({
   return (
     cn(
       'pointer-events-auto flex inline-flex items-center gap-4 rounded-full p-2 px-4 shadow-xl',
-      isDarkMode
-        ? 'bg-white/5 dark:backdrop-blur-md'
-        : 'bg-white backdrop-blur-md'
+      'bg-surface backdrop-blur-md',
+      isDarkMode ? 'dark' : ''
     ) ?? ''
   )
 }
 
 export const getNavbarButtonClasses = ({
   isSelected = false,
-  textColorClass = 'text-gray-500',
+  textColorClass = 'text-muted',
   isDarkMode = false
 }: {
   isSelected?: boolean
@@ -44,12 +43,9 @@ export const getNavbarButtonClasses = ({
   return (
     cn(
       'flex flex-col items-center gap-2 text-xs font-medium transition-colors duration-200 focus:outline-none',
-      isSelected
-        ? isDarkMode
-          ? 'text-foreground font-medium'
-          : 'text-foreground font-medium'
-        : textColorClass,
-      'hover:text-foreground'
+      isSelected ? 'text-foreground font-medium' : textColorClass,
+      'hover:text-foreground',
+      isDarkMode ? 'dark' : ''
     ) ?? ''
   )
 }
@@ -63,14 +59,9 @@ export const getNavbarIconClasses = ({
 }): string => {
   return (
     cn(
-      isSelected
-        ? isDarkMode
-          ? 'text-foreground'
-          : 'text-foreground'
-        : isDarkMode
-          ? 'text-muted'
-          : 'text-muted',
-      'group-hover:text-foreground'
+      isSelected ? 'text-foreground' : 'text-muted',
+      'group-hover:text-foreground',
+      isDarkMode ? 'dark' : ''
     ) ?? ''
   )
 }
@@ -88,9 +79,8 @@ export const getSearchButtonClasses = ({
       hasPrimaryAction
         ? 'bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+4.25rem)]'
         : 'bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+0.5rem)]',
-      isDarkMode
-        ? 'bg-white/5 text-gray-300 hover:bg-white/20 dark:backdrop-blur-md'
-        : 'hover:bg-default/20 bg-white text-gray-500 backdrop-blur-md'
+      'bg-surface text-muted hover:bg-surface-secondary backdrop-blur-md',
+      isDarkMode ? 'dark' : ''
     ) ?? ''
   )
 }
@@ -105,11 +95,8 @@ export const getDrawerButtonClasses = ({
   return (
     cn(
       'h-auto min-h-11 w-full min-w-0 justify-start rounded-lg px-3 py-3 text-start text-sm transition-none',
-      isSelected
-        ? 'bg-accent/10 text-accent font-semibold'
-        : isDarkMode
-          ? 'text-gray-400'
-          : 'text-gray-500'
+      isSelected ? 'bg-accent/10 text-accent font-semibold' : 'text-muted',
+      isDarkMode ? 'dark' : ''
     ) ?? ''
   )
 }

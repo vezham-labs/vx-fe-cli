@@ -25,6 +25,8 @@ type Props = {
 }
 
 const sectionOptions = ['A', 'B', 'C', 'D'] as const
+const formControlClassName =
+  'border-border bg-surface-secondary focus-within:border-accent dark:border-foreground/20'
 
 export const ClassFormSheet = ({
   classRecord,
@@ -89,7 +91,7 @@ export const ClassFormSheet = ({
               }`}>
               <TextField aria-label="Class name">
                 <Label>Class Name</Label>
-                <InputGroup>
+                <InputGroup className={formControlClassName}>
                   <InputGroup.Input
                     placeholder="Enter class name"
                     value={draftClass.className}
@@ -115,7 +117,7 @@ export const ClassFormSheet = ({
                   }))
                 }>
                 <Label>Section</Label>
-                <Select.Trigger>
+                <Select.Trigger className={formControlClassName}>
                   <Select.Value />
                   <Select.Indicator />
                 </Select.Trigger>
@@ -136,7 +138,7 @@ export const ClassFormSheet = ({
 
               <TextField aria-label="Number of students">
                 <Label>No of Students</Label>
-                <InputGroup>
+                <InputGroup className={formControlClassName}>
                   <InputGroup.Input
                     min="0"
                     placeholder="Enter students"
@@ -149,7 +151,7 @@ export const ClassFormSheet = ({
 
               <TextField aria-label="Number of subjects">
                 <Label>No of Subjects</Label>
-                <InputGroup>
+                <InputGroup className={formControlClassName}>
                   <InputGroup.Input
                     min="0"
                     placeholder="Enter subjects"

@@ -97,3 +97,47 @@ it('drops a hidden gallery tile into empty preview space without requiring an ex
   )
   expect(onPlace).toHaveBeenCalledWith('second', undefined)
 })
+
+it('filters control suggestions and adds a hidden control from the gallery', () => {
+  const onVisibilityChange = vi.fn()
+  const tiles = [
+    {
+      id: 'appearance',
+      label: 'Appearance',
+      category: 'Appearance',
+      shape: 'standard' as const
+    },
+    {
+      id: 'language',
+      label: 'Language',
+      category: 'General',
+      shape: 'standard' as const
+    }
+  ]
+  render(
+    <TileGallery
+      title="Edit Controls"
+      kind="controls"
+      tiles={tiles}
+      onDone={vi.fn()}
+      editor={{
+        items: tiles.map(tile => ({
+          id: tile.id,
+          label: tile.label,
+          visible: tile.id === 'appearance',
+          editable: true
+        })),
+        onVisibilityChange,
+        onMove: vi.fn(),
+        onReset: vi.fn()
+      }}
+    />
+  )
+
+  fireEvent.click(screen.getByRole('button', { name: 'Appearance' }))
+  expect(screen.queryByText('Language')).toBeNull()
+
+  fireEvent.click(screen.getByRole('button', { name: 'All controls' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Add Language' }))
+  expect(onVisibilityChange).toHaveBeenCalledWith('language', true)
+})

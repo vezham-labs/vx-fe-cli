@@ -3,14 +3,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 .demo-classes-grid {
-  height: auto;
-  max-height: calc(100% - 4rem);
+  flex: 1;
+  max-height: none;
   min-height: 0;
-}
-
-/* Keep the pinned selection and class columns flush with the grid edges. */
-.demo-classes-grid.table-root--secondary {
-  border-radius: 0;
 }
 
 .demo-classes-grid .table__header,

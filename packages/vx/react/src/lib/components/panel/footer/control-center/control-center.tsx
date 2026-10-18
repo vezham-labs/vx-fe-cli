@@ -14,6 +14,8 @@ import type { ControlCenterProps, TileDefinition } from './types'
 import { controlCenterVariants } from './variant'
 
 const styles = controlCenterVariants()
+const footerTriggerClassName =
+  'text-muted hover:text-foreground h-5 w-5 min-w-0 p-0 [&_svg]:size-5'
 
 const GlassHighlights = () => (
   <>
@@ -54,9 +56,7 @@ export const ControlCenter = <Context extends object>({
       isIconOnly
       size="sm"
       variant="ghost"
-      className={
-        isFooterTrigger ? 'text-muted hover:text-foreground h-5 w-5' : undefined
-      }>
+      className={isFooterTrigger ? footerTriggerClassName : undefined}>
       <Settings
         size={isFooterTrigger ? 20 : 16}
         className={styles.triggerIcon()}

@@ -27,6 +27,8 @@ import type { ClassColumnKey, ClassFilters, ClassStatus } from './types'
 const headerActionClassName = 'h-9 w-9 min-w-9 shrink-0 rounded-full p-0'
 const mobileActionClassName =
   'flex h-auto min-h-11 w-full items-center justify-start gap-3 rounded-lg px-3 py-2 text-start'
+const filterControlClassName =
+  'border-border bg-surface-secondary focus-within:border-accent dark:border-foreground/20'
 
 type ClassFilterDropdownProps = {
   classCodeOptions: readonly string[]
@@ -70,7 +72,7 @@ const ClassFilterFields = ({
         })
       }>
       <Label>Name</Label>
-      <Select.Trigger>
+      <Select.Trigger className={filterControlClassName}>
         <Select.Value />
         <Select.Indicator />
       </Select.Trigger>
@@ -97,7 +99,7 @@ const ClassFilterFields = ({
         })
       }>
       <Label>Code</Label>
-      <Select.Trigger>
+      <Select.Trigger className={filterControlClassName}>
         <Select.Value />
         <Select.Indicator />
       </Select.Trigger>
@@ -124,7 +126,7 @@ const ClassFilterFields = ({
         })
       }>
       <Label>Status</Label>
-      <Select.Trigger>
+      <Select.Trigger className={filterControlClassName}>
         <Select.Value />
         <Select.Indicator />
       </Select.Trigger>

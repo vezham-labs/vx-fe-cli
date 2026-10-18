@@ -1,6 +1,15 @@
 import type { Selection } from 'react-aria-components'
 
-import { Close, Hashtag, Link, Pen, TrashBinTrash } from '@vezham/icons-react'
+import {
+  AltArrowDown,
+  AltArrowUp,
+  Close,
+  Hashtag,
+  Link,
+  Pen,
+  SortVertical,
+  TrashBinTrash
+} from '@vezham/icons-react'
 import { ActionBar, EmptyState } from '@vezham/react-pro-v3'
 import {
   Button,
@@ -102,7 +111,7 @@ export const ClassesTable = ({
     )
 
   return (
-    <Table variant="secondary" className="demo-classes-grid min-h-0 min-w-0">
+    <Table className="demo-classes-grid min-h-0 min-w-0">
       <Table.ScrollContainer className="h-full min-h-0 overflow-auto">
         <Table.ResizableContainer>
           <Table.Content
@@ -140,11 +149,16 @@ export const ClassesTable = ({
                   minWidth={column.minWidth}>
                   {({ sortDirection }) => (
                     <>
-                      <Table.SortableColumnHeader
-                        sortDirection={sortDirection}
-                        showIndicator>
+                      <span className="flex items-center gap-2">
                         {column.label}
-                      </Table.SortableColumnHeader>
+                        {sortDirection === 'ascending' ? (
+                          <AltArrowUp size={14} aria-hidden="true" />
+                        ) : sortDirection === 'descending' ? (
+                          <AltArrowDown size={14} aria-hidden="true" />
+                        ) : (
+                          <SortVertical size={14} aria-hidden="true" />
+                        )}
+                      </span>
                       <Table.ColumnResizer
                         aria-label={`Resize ${column.label.toLowerCase()} column`}
                       />
