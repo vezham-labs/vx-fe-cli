@@ -28,6 +28,53 @@ const FIELDS = new Set([
 const object = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
+const validateTileFields = (
+  tile: Record<string, unknown>,
+  location: string
+) => {
+  for (const [field, entry] of Object.entries(tile)) {
+    if (!FIELDS.has(field))
+      throw new Error(`Unknown field: ${location}.${field}`)
+    if (field === 'editable') {
+      if (typeof entry !== 'boolean')
+        throw new Error(`${location}.editable must be a boolean`)
+    } else if (typeof entry !== 'string' || !entry.trim()) {
+      throw new Error(`${location}.${field} must be a non-empty string`)
+    }
+  }
+}
+
+const validateTileAction = (
+  tile: Record<string, unknown>,
+  location: string
+) => {
+  if (tile.type === 'custom') {
+    if (typeof tile.action !== 'string' || !tile.action.trim())
+      throw new Error(`${location}.${tile.id}.action is required`)
+  } else if (tile.action !== undefined) {
+    throw new Error(
+      `${location}.${tile.id}.action is only supported for custom tiles`
+    )
+  }
+}
+
+const validateTile = (tile: unknown, location: string, ids: Set<string>) => {
+  if (!object(tile)) throw new Error(`${location}.tiles must contain objects`)
+  validateTileFields(tile, location)
+  if (typeof tile.id !== 'string' || !tile.id.trim())
+    throw new Error(`${location}.id is required`)
+  if (tile.id === 'edit-controls')
+    throw new Error(`${location}.edit-controls is a reserved built-in action`)
+  if (ids.has(tile.id))
+    throw new Error(`Duplicate control center tile id: ${tile.id}`)
+  ids.add(tile.id)
+  if (typeof tile.type !== 'string' || !TYPES.has(tile.type))
+    throw new Error(`Unknown control center tile type: ${tile.type}`)
+  if (!['compact', 'standard', 'wide', 'full'].includes(String(tile.span)))
+    throw new Error(`${location}.${tile.id}.span is invalid`)
+  validateTileAction(tile, location)
+}
+
 export const validateControlCenter = (value: unknown, location: string) => {
   if (
     !object(value) ||
@@ -41,35 +88,5 @@ export const validateControlCenter = (value: unknown, location: string) => {
   )
     throw new Error(`${location}.editControls must be a boolean`)
   const ids = new Set<string>()
-  for (const tile of value.tiles) {
-    if (!object(tile)) throw new Error(`${location}.tiles must contain objects`)
-    for (const [field, entry] of Object.entries(tile)) {
-      if (!FIELDS.has(field))
-        throw new Error(`Unknown field: ${location}.${field}`)
-      if (field === 'editable') {
-        if (typeof entry !== 'boolean')
-          throw new Error(`${location}.editable must be a boolean`)
-      } else if (typeof entry !== 'string' || !entry.trim()) {
-        throw new Error(`${location}.${field} must be a non-empty string`)
-      }
-    }
-    if (typeof tile.id !== 'string' || !tile.id.trim())
-      throw new Error(`${location}.id is required`)
-    if (tile.id === 'edit-controls')
-      throw new Error(`${location}.edit-controls is a reserved built-in action`)
-    if (ids.has(tile.id))
-      throw new Error(`Duplicate control center tile id: ${tile.id}`)
-    ids.add(tile.id)
-    if (typeof tile.type !== 'string' || !TYPES.has(tile.type))
-      throw new Error(`Unknown control center tile type: ${tile.type}`)
-    if (!['compact', 'standard', 'wide', 'full'].includes(String(tile.span)))
-      throw new Error(`${location}.${tile.id}.span is invalid`)
-    if (tile.type === 'custom') {
-      if (typeof tile.action !== 'string' || !tile.action.trim())
-        throw new Error(`${location}.${tile.id}.action is required`)
-    } else if (tile.action !== undefined)
-      throw new Error(
-        `${location}.${tile.id}.action is only supported for custom tiles`
-      )
-  }
+  for (const tile of value.tiles) validateTile(tile, location, ids)
 }

@@ -13,11 +13,18 @@ also penalizes long functions and Git-history hotspots.
 
 The shared `summary-audit` action also publishes counts by category in the job
 summary and separate Fallow and React Doctor commit comments on every QA run.
-Existing tool comments are updated on reruns. Fallow includes its local average
+Each tool keeps a separate comment per commit and workflow. Reruns update the
+managed comment; older runs and attempts cannot replace a newer recorded result.
+Historical comments from the previous implementation remain unchanged. Fallow includes its local average
 maintainability score; React Doctor requests its score from its external scoring
 API using diagnostic data. Unavailable scores are shown explicitly. These counts do not depend on the
 artifact remaining available. Missing or failed audits are shown explicitly.
 Commit comments require `contents: write`; commenting failures do not block QA.
+Scores below the recorded `minimumScore` show Failed; missing or invalid scores
+show Unavailable and cannot pass the gate. Overall health remains informational.
+Each summary includes its timestamp, attempt and workflow run link.
+QA checkouts use `github.sha` to keep the audited code and commented commit aligned.
+The audit job serializes writes for the same workflow and SHA.
 
 `.fallowrc.jsonc` and `doctor.config.json` exclude generated output, caches,
 vendored files, and declarations. Intentional app-template and mock duplication
@@ -74,9 +81,12 @@ Fallow sets `health.maxCrap` to `0` to disable coverage-based risk findings and
 enabled. Fallow may still display estimated coverage and risk metrics; disabling
 enforcement does not change the overall health score's fixed calibration.
 
-The audit target depends on `test:eslint`, which runs the lint-rule tests and
-generates a c8 coverage report before auditing. A test failure blocks the audit.
-Run the tests separately with `pnpm nx run @vx:test:eslint`. Fallow does not
+The audit target depends on `test:eslint` and `test:audit`. The first runs the
+lint-rule tests and generates a c8 coverage report; the second runs the audit
+gate and runner regression tests. A test failure blocks the audit. Run them
+separately with `pnpm nx run @vx:test:eslint` or `pnpm nx run @vx:test:audit`.
+Fallow registers these Node test files as entry points because the CLI discovers
+them outside the application import graph. Fallow does not
 consume the coverage report while coverage enforcement is disabled. When
 reintroducing enforcement, restore the report path and an appropriate risk
 threshold.

@@ -1,7 +1,13 @@
 import { type DragEvent, type ReactNode, useId, useState } from 'react'
 
-import { AltArrowLeft, Minus, Settings } from '@vezham/icons-react'
-import { Button, Input, Surface, TextField, Tooltip } from '@vezham/react-v3'
+import {
+  Add,
+  AltArrowLeft,
+  Minus,
+  Settings,
+  Sidebar
+} from '@vezham/icons-react'
+import { Button, Drawer, SearchField, Surface, Tooltip } from '@vezham/react-v3'
 
 import type { EditorState } from '../../components/panel/footer/control-center/editor'
 
@@ -29,14 +35,23 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
   const [announcement, setAnnouncement] = useState('')
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All')
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const normalizedQuery = query.trim().toLowerCase()
+  const isSearching = normalizedQuery.length > 0
   const categories = ['All', ...new Set(tiles.map(tile => tile.category))]
+  const matchingTiles = tiles.filter(tile =>
+    `${tile.label} ${tile.category}`.toLowerCase().includes(normalizedQuery)
+  )
+  const matchingCategories = [
+    ...new Set(matchingTiles.map(tile => tile.category))
+  ]
   const available = tiles.filter(
     tile =>
-      (category === 'All' || tile.category === category) &&
       `${tile.label} ${tile.category}`
         .toLowerCase()
-        .includes(query.toLowerCase().trim())
+        .includes(normalizedQuery) &&
+      (category === 'All' || tile.category === category)
   )
   const visible = editor.items
     .filter(item => item.visible)
@@ -92,17 +107,32 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
     }
   }
   const search = (
-    <TextField aria-label={`Search ${kind}`} value={query} onChange={setQuery}>
-      <Input type="search" placeholder={`Search ${kind}`} variant="secondary" />
-    </TextField>
+    <SearchField
+      aria-label={`Search ${kind}`}
+      value={query}
+      onChange={value => {
+        setQuery(value)
+        setCategory('All')
+      }}
+      variant="secondary">
+      <SearchField.Group>
+        <SearchField.SearchIcon />
+        <SearchField.Input placeholder={`Search ${kind}`} />
+        <SearchField.ClearButton aria-label={`Clear ${kind} search`} />
+      </SearchField.Group>
+    </SearchField>
   )
-  const categoryButtons = categories.map(value => (
+  const navigationCategories = isSearching ? matchingCategories : categories
+  const categoryButtons = navigationCategories.map(value => (
     <Button
       key={value}
       variant="ghost"
       aria-pressed={category === value}
-      onPress={() => setCategory(value)}
-      className={`shrink-0 justify-start rounded-lg text-sm lg:w-full ${category === value ? 'bg-surface-secondary font-semibold' : 'text-muted'}`}>
+      onPress={() => {
+        setCategory(value)
+        setIsCategoryMenuOpen(false)
+      }}
+      className={`w-full justify-start rounded-lg text-sm ${category === value ? 'bg-surface-secondary font-semibold' : 'text-muted'}`}>
       <Settings size={16} />
       {value === 'All' ? `All ${kind}` : value}
     </Button>
@@ -138,6 +168,8 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
     announcement,
     query,
     category,
+    isSearching,
+    isCategoryMenuOpen,
     showPreview,
     available,
     visible,
@@ -152,6 +184,7 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
     draggedTile,
     blankWidget,
     setDropTarget,
+    setIsCategoryMenuOpen,
     setShowPreview
   }
 }
@@ -242,7 +275,7 @@ const GalleryPreview = ({
               onDrop={event => dropTile(event, tile.id)}
               data-dragging={draggedId === tile.id || undefined}
               data-drop-target={dropTarget === tile.id || undefined}
-              className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
+              className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 group-focus-within:[&>div>*]:ring-foreground/35 group-hover:[&>div>*]:ring-foreground/35 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 [&>div>*]:transition-[box-shadow] group-focus-within:[&>div>*]:ring-1 group-hover:[&>div>*]:ring-1 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
               <div
                 inert
                 className={
@@ -250,15 +283,19 @@ const GalleryPreview = ({
                     ? 'pointer-events-none h-full [&>div]:aspect-auto [&>div]:h-full'
                     : 'pointer-events-none [&>button]:w-full'
                 }>
-                {kind === 'widgets' ? blankWidget(tile) : tile.preview}
+                {kind === 'widgets'
+                  ? (tile.preview ?? blankWidget(tile))
+                  : tile.preview}
               </div>
               {editable && (
-                <button
-                  type="button"
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="ghost"
                   aria-label={`Reorder ${tile.label}`}
                   aria-roledescription="reorderable tile"
                   aria-describedby={dragInstructionsId}
-                  className="focus-visible:outline-focus absolute inset-0 cursor-grab rounded-[inherit] focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing"
+                  className="focus-visible:outline-focus absolute inset-0 h-auto w-auto min-w-0 cursor-grab rounded-[inherit] bg-transparent! p-0 hover:bg-transparent! focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing active:bg-transparent!"
                   onKeyDown={event => {
                     if (
                       [
@@ -276,8 +313,9 @@ const GalleryPreview = ({
                           : 1
                       )
                     }
-                  }}
-                />
+                  }}>
+                  <span className="sr-only">Reorder {tile.label}</span>
+                </Button>
               )}
               {editable && (
                 <Tooltip>
@@ -285,7 +323,7 @@ const GalleryPreview = ({
                     isIconOnly
                     size="sm"
                     variant="secondary"
-                    className="text-muted absolute -top-2 -left-2 z-10 size-6 min-w-0 rounded-full p-0"
+                    className="text-muted absolute -top-2 -left-2 z-10 size-6 min-w-0 rounded-full p-0 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
                     aria-label={`Remove ${tile.label}`}
                     onPress={() => editor.onVisibilityChange(tile.id, false)}>
                     <Minus aria-hidden="true" className="size-3.5" />
@@ -317,9 +355,8 @@ const GalleryPreview = ({
 const GalleryAvailable = ({
   kind,
   editor,
+  isSearching,
   showPreview,
-  search,
-  categoryButtons,
   category,
   available,
   itemFor,
@@ -330,16 +367,12 @@ const GalleryAvailable = ({
   <section
     aria-label={`Available ${kind}`}
     className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col p-4 md:p-6`}>
-    <div className="mb-5 space-y-3 lg:hidden">
-      {search}
-      <nav
-        aria-label={`${kind} categories`}
-        className="flex gap-1 overflow-x-auto">
-        {categoryButtons}
-      </nav>
-    </div>
     <h2 className="mb-1 text-sm font-semibold">
-      {category === 'All' ? 'Suggestions' : category}
+      {isSearching
+        ? 'Search results'
+        : category === 'All'
+          ? 'Suggestions'
+          : category}
     </h2>
     <p className="text-muted mb-5 text-xs">
       Add or drag a tile into your preview. Changes save automatically.
@@ -360,23 +393,26 @@ const GalleryAvailable = ({
               draggable={item?.editable}
               onDragStart={event => startDrag(event, tile.id)}
               onDragEnd={finishDrag}
-              className={`min-w-0 ${tile.shape === 'medium' || tile.shape === 'large' || tile.shape === 'full' || tile.shape === 'wide' ? 'col-span-2' : ''}`}>
+              className={`group relative min-w-0 ${tile.shape === 'medium' || tile.shape === 'large' || tile.shape === 'full' || tile.shape === 'wide' ? 'col-span-2' : ''}`}>
               <div
                 inert
                 className="pointer-events-none flex min-h-24 items-center justify-center [&>button]:w-full">
-                {kind === 'widgets' ? blankWidget(tile) : tile.preview}
+                {kind === 'widgets'
+                  ? (tile.preview ?? blankWidget(tile))
+                  : tile.preview}
               </div>
-              <div className="mt-2 flex items-center justify-between gap-2">
-                <p className="min-w-0 truncate text-xs">{tile.label}</p>
+              {item?.editable && !item.visible && (
                 <Button
+                  isIconOnly
                   size="sm"
-                  variant="secondary"
-                  isDisabled={item?.visible || !item?.editable}
-                  aria-label={`Add ${tile.label}`}
+                  variant="ghost"
+                  aria-label={`Quick add ${tile.label}`}
+                  className="bg-success hover:bg-success/90 absolute -top-1 -left-1 z-10 size-7 min-w-0 rounded-full p-0 text-white opacity-0 shadow-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
                   onPress={() => editor.onVisibilityChange(tile.id, true)}>
-                  {item?.visible ? 'Added' : 'Add'}
+                  <Add aria-hidden="true" className="size-4" />
                 </Button>
-              </div>
+              )}
+              <p className="mt-2 min-w-0 truncate text-xs">{tile.label}</p>
             </div>
           )
         })}
@@ -393,7 +429,9 @@ export const TileGallery = (props: Props) => {
     kind,
     dragInstructionsId,
     announcement,
+    isCategoryMenuOpen,
     showPreview,
+    setIsCategoryMenuOpen,
     setShowPreview,
     search,
     categoryButtons
@@ -408,6 +446,17 @@ export const TileGallery = (props: Props) => {
       </span>
       <header className="border-border flex shrink-0 items-center justify-between gap-3 border-b p-4">
         <div className="flex min-w-0 items-center gap-3">
+          <Button
+            isIconOnly
+            size="sm"
+            variant="ghost"
+            aria-label="Show menu"
+            aria-expanded={isCategoryMenuOpen}
+            aria-haspopup="dialog"
+            className="md:hidden"
+            onPress={() => setIsCategoryMenuOpen(true)}>
+            <Sidebar aria-hidden="true" size={18} />
+          </Button>
           <Button
             isIconOnly
             size="sm"
@@ -433,7 +482,7 @@ export const TileGallery = (props: Props) => {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <aside className="border-border bg-surface-secondary/40 hidden w-56 shrink-0 overflow-y-auto border-r p-4 lg:block">
+        <aside className="border-border bg-surface-secondary/40 hidden w-56 shrink-0 overflow-y-auto border-r p-4 md:block">
           {search}
           <nav aria-label={`${kind} categories`} className="mt-4 space-y-1">
             {categoryButtons}
@@ -442,6 +491,26 @@ export const TileGallery = (props: Props) => {
         <GalleryAvailable {...context} />
         <GalleryPreview {...context} />
       </div>
+      <Drawer.Backdrop
+        isOpen={isCategoryMenuOpen}
+        onOpenChange={setIsCategoryMenuOpen}>
+        <Drawer.Content placement="left">
+          <Drawer.Dialog className="bg-background w-[min(20rem,calc(100vw-2rem))]">
+            <Drawer.Header>
+              <Drawer.Heading>
+                {kind === 'widgets' ? 'Widgets' : 'Controls'}
+              </Drawer.Heading>
+              <Drawer.CloseTrigger aria-label="Hide menu" />
+            </Drawer.Header>
+            <Drawer.Body className="space-y-4">
+              {search}
+              <nav aria-label={`${kind} categories`} className="space-y-1">
+                {categoryButtons}
+              </nav>
+            </Drawer.Body>
+          </Drawer.Dialog>
+        </Drawer.Content>
+      </Drawer.Backdrop>
     </div>
   )
 }

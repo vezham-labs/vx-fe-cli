@@ -46,6 +46,12 @@ describe('Section sidebar child pages', () => {
       />
     )
     const { rerender } = render(content('/academic/exams/grades'))
+    expect(screen.getByRole('button', { name: 'Examinations' })).toHaveClass(
+      'font-medium'
+    )
+    expect(screen.getByRole('link', { name: 'Grades' })).toHaveClass(
+      'font-bold'
+    )
     expect(screen.getByRole('link', { name: 'Grades' })).toHaveAttribute(
       'aria-current',
       'page'

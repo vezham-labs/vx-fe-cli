@@ -19,6 +19,11 @@
       "import": "./src/lib/components/actions-header/index.tsx",
       "default": "./src/lib/components/actions-header/index.tsx"
     },
+    "./pagination": {
+      "types": "./src/lib/components/pagination/index.tsx",
+      "import": "./src/lib/components/pagination/index.tsx",
+      "default": "./src/lib/components/pagination/index.tsx"
+    },
     "./app-icon": {
       "types": "./src/lib/components/app-icon/index.tsx",
       "import": "./src/lib/components/app-icon/index.tsx",

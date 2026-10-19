@@ -10,6 +10,7 @@ import { toast } from '@vezham/react-v3'
 
 import { type AppMenuItem, AppMenuProvider } from '../../components/app-menu'
 import { CommandProvider } from '../../components/command'
+import { MobileControlsProvider } from '../../components/mobile-controls'
 import { ConfiguredControlCenter } from '../../components/panel/footer/control-center/configured'
 import type {
   ControlCenterConfig,
@@ -64,9 +65,11 @@ export const AppLayoutProviders = ({
         <CommandProvider items={navigationItems}>
           <InfoPanelProvider>
             <WorkspaceNavigationProvider>
-              <ResponsiveToolbarActionProvider>
-                {children}
-              </ResponsiveToolbarActionProvider>
+              <MobileControlsProvider>
+                <ResponsiveToolbarActionProvider>
+                  {children}
+                </ResponsiveToolbarActionProvider>
+              </MobileControlsProvider>
             </WorkspaceNavigationProvider>
           </InfoPanelProvider>
         </CommandProvider>

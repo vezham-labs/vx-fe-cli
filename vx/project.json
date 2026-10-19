@@ -41,7 +41,7 @@
     },
     "@vx-ws/audit": {
       "command": "node vx/tools/audit/index.mjs",
-      "dependsOn": ["test:eslint"],
+      "dependsOn": ["test:eslint", "test:audit"],
       "cache": false
     },
     "@vx-ws/audit:fallow": {
@@ -156,6 +156,10 @@
     },
     "test:unit-nc": {
       "command": "pnpm nx run-many -t test --exclude=@vx/fe-kit --skipNxCache --passWithNoTests --reporter=json --outputFile=test-output/vitest/unit-test-results.json --no-cache"
+    },
+    "test:audit": {
+      "command": "node --test vx/tools/audit/*.test.mjs",
+      "cache": false
     },
     "test:eslint": {
       "command": "c8 --all --include='vx/tools/eslint/*.mjs' --reporter=json --reporter=text --reports-dir=test-output/audit/eslint-coverage node --test vx/tools/eslint/tests/*.test.mjs",

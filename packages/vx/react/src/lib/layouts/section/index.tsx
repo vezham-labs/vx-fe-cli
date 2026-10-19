@@ -12,6 +12,7 @@ import {
 import { Drawer, Surface, Tabs, useMediaQuery } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
+import { useMobileControls } from '../../components/mobile-controls'
 import { ShortcutButton } from '../../components/shortcut-key'
 import {
   useSidebarShortcut,
@@ -31,6 +32,10 @@ import {
   type SectionViewAction,
   type SectionViewMode
 } from './toolbar'
+import {
+  SectionToolbarContentProvider,
+  useRegisteredSectionToolbarContent
+} from './toolbar-content'
 
 export type SectionLayoutProps = {
   title: string
@@ -105,7 +110,10 @@ const SectionPanels = ({
   <>
     {displayTabs.length === 0 && children}
     {displayTabs.map(tab => (
-      <Tabs.Panel key={tab.key} id={tab.key} className="m-0 p-0">
+      <Tabs.Panel
+        key={tab.key}
+        id={tab.key}
+        className="m-0 flex min-h-0 flex-1 flex-col p-0">
         {tab.key === selectedTab?.key && children}
       </Tabs.Panel>
     ))}
@@ -153,7 +161,7 @@ const SectionBody = ({
           onSelectedFiltersChange={setSelectedFilters}
         />
       )}
-      <Surface className="relative min-h-0 flex-1 rounded-lg p-4 sm:p-5">
+      <Surface className="relative flex min-h-0 flex-1 flex-col rounded-lg p-4 sm:p-5">
         <SectionPanels displayTabs={displayTabs} selectedTab={selectedTab}>
           {children}
         </SectionPanels>
@@ -162,45 +170,55 @@ const SectionBody = ({
   </div>
 )
 
-const SectionLayout = ({
-  title,
-  sectionKey,
-  navigationLabel = `${title} sections`,
-  sidebarItems = EMPTY_SIDEBAR_ITEMS,
-  tabs,
-  toolbar,
-  search,
-  sync = true,
-  filter = false,
-  sort = false,
-  onSortChange,
-  view = EMPTY_VIEW_ACTIONS,
-  onSync,
-  menuActions = EMPTY_MENU_ACTIONS,
-  primaryAction,
-  children
-}: SectionLayoutProps) => {
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
+const SectionNavigationControls = ({
+  isNavigationCollapsed,
+  sidebarId,
+  toggleNavigation
+}: {
+  isNavigationCollapsed: boolean
+  sidebarId: string
+  toggleNavigation: () => void
+}) => {
   const router = useRouter()
-  const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
-    useWorkspaceNavigation()
-  const isCompactToolbar = useMediaQuery('(max-width: 767px)')
-  const {
-    expandedKeys: expandedSidebarKeys,
-    setExpandedKeys: setExpandedSidebarKeys
-  } = useSectionSidebarState(sidebarItems, pathname)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const stateScope =
-    sectionKey ??
-    getSelectedMenuKey(pathname, sidebarItems) ??
-    (tabs.length > 0 ? JSON.stringify(tabs.map(tab => tab.key)) : title)
-  const { selectedFilters, setSelectedFilters, sortValue, handleSortChange } =
-    useSectionPreferences(stateScope, onSortChange)
-  const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
-  const searchInput = useRef<HTMLInputElement>(null)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  return (
+    <>
+      {!isNavigationCollapsed && (
+        <ShortcutButton
+          className="h-9 w-9 min-w-9 p-0"
+          label="Hide Sidebar"
+          shortcut="⌘ S"
+          aria-keyshortcuts="Meta+S"
+          aria-controls={sidebarId}
+          aria-expanded
+          onPress={toggleNavigation}>
+          <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
+        </ShortcutButton>
+      )}
+      <ShortcutButton
+        className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
+        label="Back"
+        shortcut="⌘ ←"
+        aria-keyshortcuts="Meta+ArrowLeft"
+        onPress={() => router.history.back()}>
+        <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
+      </ShortcutButton>
+      <ShortcutButton
+        className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
+        label="Forward"
+        shortcut="⌘ →"
+        aria-keyshortcuts="Meta+ArrowRight"
+        onPress={() => router.history.forward()}>
+        <AppIcon icon="vx:arrow-right" size={18} aria-hidden="true" />
+      </ShortcutButton>
+    </>
+  )
+}
+
+const getSectionTabs = (
+  pathname: string,
+  sidebarItems: AppNavigationItem[],
+  tabs: AppNavigationItem[]
+) => {
   const displayTabs = sidebarItems.some(
     item =>
       item.childrenDisplay === 'sidebar' && getSelectedMenuKey(pathname, [item])
@@ -209,12 +227,29 @@ const SectionLayout = ({
     : tabs
   const selectedTab =
     displayTabs.find(tab => matchesPath(pathname, tab.href)) ?? displayTabs[0]
+  return { displayTabs, selectedTab }
+}
+
+const useSectionNavigation = (
+  sidebarItems: AppNavigationItem[],
+  sync: boolean,
+  onSync?: () => void
+) => {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const router = useRouter()
+  const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
+    useWorkspaceNavigation()
+  const {
+    expandedKeys: expandedSidebarKeys,
+    setExpandedKeys: setExpandedSidebarKeys
+  } = useSectionSidebarState(sidebarItems, pathname)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const hasSidebar = sidebarItems.length > 0
   const toggleMobileSidebar = useCallback(
     () => setIsDrawerOpen(open => !open),
     []
   )
-  const handleSync = useCallback(() => onSync?.(), [onSync])
   useEffect(() => {
     if (hasSidebar) {
       return registerMobileSidebar({
@@ -242,83 +277,217 @@ const SectionLayout = ({
     },
     { enabled: sync && Boolean(onSync) }
   )
+  return {
+    pathname,
+    navigate,
+    isNavigationCollapsed,
+    toggleNavigation,
+    expandedSidebarKeys,
+    setExpandedSidebarKeys,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    hasSidebar,
+    sidebarId
+  }
+}
+
+const getStateScope = (
+  sectionKey: string | undefined,
+  pathname: string,
+  sidebarItems: AppNavigationItem[],
+  tabs: AppNavigationItem[],
+  title: string
+) =>
+  sectionKey ??
+  getSelectedMenuKey(pathname, sidebarItems) ??
+  (tabs.length > 0 ? JSON.stringify(tabs.map(tab => tab.key)) : title)
+
+type SectionNavigation = ReturnType<typeof useSectionNavigation>
+
+const SectionDrawer = ({
+  title,
+  navigation,
+  children
+}: {
+  title: string
+  navigation: SectionNavigation
+  children: ReactNode
+}) => {
+  if (!navigation.hasSidebar) return null
+  return (
+    <Drawer.Backdrop
+      isOpen={navigation.isDrawerOpen}
+      onOpenChange={navigation.setIsDrawerOpen}>
+      <Drawer.Content placement="left">
+        <Drawer.Dialog className="bg-background w-[min(20rem,calc(100vw-2rem))]">
+          <Drawer.Header>
+            <Drawer.Heading>{title}</Drawer.Heading>
+            <Drawer.CloseTrigger aria-label="Hide Sidebar" />
+          </Drawer.Header>
+          <Drawer.Body>{children}</Drawer.Body>
+        </Drawer.Dialog>
+      </Drawer.Content>
+    </Drawer.Backdrop>
+  )
+}
+
+const SectionTabs = ({
+  displayTabs,
+  selectedTab,
+  navigate,
+  children
+}: {
+  displayTabs: AppNavigationItem[]
+  selectedTab?: AppNavigationItem
+  navigate: SectionNavigation['navigate']
+  children: ReactNode
+}) => (
+  <Tabs
+    selectedKey={selectedTab?.key ?? ''}
+    onSelectionChange={key => {
+      const tab = displayTabs.find(item => item.key === key)
+      if (tab?.href) void navigate({ to: tab.href })
+    }}
+    className="flex min-h-0 min-w-0 flex-1 flex-col gap-0">
+    {children}
+  </Tabs>
+)
+
+const useSectionSearch = (search?: SectionSearch) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [isOpen, onOpenChange] = useState(false)
+  return search ? { ...search, inputRef, isOpen, onOpenChange } : undefined
+}
+
+const SectionLayoutToolbar = ({
+  options,
+  navigation,
+  preferences,
+  displayTabs,
+  isCompactToolbar,
+  hideCompactControls
+}: {
+  options: SectionLayoutProps
+  navigation: SectionNavigation
+  preferences: ReturnType<typeof useSectionPreferences>
+  displayTabs: AppNavigationItem[]
+  isCompactToolbar: boolean
+  hideCompactControls: boolean
+}) => {
+  const {
+    title,
+    toolbar,
+    search,
+    sync = true,
+    filter = false,
+    sort = false,
+    view = EMPTY_VIEW_ACTIONS,
+    onSync,
+    menuActions = EMPTY_MENU_ACTIONS,
+    primaryAction
+  } = options
+  const { selectedFilters, setSelectedFilters, sortValue, handleSortChange } =
+    preferences
+  const registeredToolbarContent = useRegisteredSectionToolbarContent()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
+  const toolbarSearch = useSectionSearch(search)
+  const handleSync = useCallback(() => onSync?.(), [onSync])
+  return (
+    <SectionToolbar
+      title={title}
+      isNavigationCollapsed={navigation.isNavigationCollapsed}
+      sync={sync}
+      filter={filter}
+      sort={sort}
+      sortValue={sortValue}
+      onSortChange={handleSortChange}
+      view={view}
+      selectedFilters={selectedFilters}
+      onSelectedFiltersChange={setSelectedFilters}
+      viewMode={viewMode}
+      onViewModeChange={setViewMode}
+      tabs={isCompactToolbar ? [] : displayTabs}
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      search={toolbarSearch}
+      menuActions={menuActions}
+      primaryAction={hideCompactControls ? undefined : primaryAction}
+      toolbar={
+        <>
+          {toolbar}
+          {registeredToolbarContent.desktop}
+        </>
+      }
+      mobileToolbar={registeredToolbarContent.mobile}
+      onSync={handleSync}
+      navigationControls={
+        <SectionNavigationControls
+          isNavigationCollapsed={navigation.isNavigationCollapsed}
+          sidebarId={navigation.sidebarId}
+          toggleNavigation={navigation.toggleNavigation}
+        />
+      }
+    />
+  )
+}
+
+const SectionLayoutContent = (props: SectionLayoutProps) => {
+  const {
+    title,
+    sectionKey,
+    navigationLabel = `${title} sections`,
+    sidebarItems = EMPTY_SIDEBAR_ITEMS,
+    tabs,
+    search,
+    filter = false,
+    onSortChange,
+    primaryAction,
+    children
+  } = props
+  const navigation = useSectionNavigation(
+    sidebarItems,
+    props.sync ?? true,
+    props.onSync
+  )
+  const { isFooterHidden } = useMobileControls()
+  const isCompactToolbar = useMediaQuery('(max-width: 767px)')
+  const shouldHideCompactControls = isCompactToolbar && isFooterHidden
+  const stateScope = getStateScope(
+    sectionKey,
+    navigation.pathname,
+    sidebarItems,
+    tabs,
+    title
+  )
+  const preferences = useSectionPreferences(stateScope, onSortChange)
+  const { displayTabs, selectedTab } = getSectionTabs(
+    navigation.pathname,
+    sidebarItems,
+    tabs
+  )
   const sidebar = (
     <SectionSidebar
       items={sidebarItems}
-      pathname={pathname}
+      pathname={navigation.pathname}
       label={navigationLabel}
-      expandedKeys={expandedSidebarKeys}
-      onExpandedChange={setExpandedSidebarKeys}
-      onNavigate={() => setIsDrawerOpen(false)}
+      expandedKeys={navigation.expandedSidebarKeys}
+      onExpandedChange={navigation.setExpandedSidebarKeys}
+      onNavigate={() => navigation.setIsDrawerOpen(false)}
     />
   )
 
   const content = (
     <>
-      <SectionToolbar
-        title={title}
-        isNavigationCollapsed={isNavigationCollapsed}
-        sync={sync}
-        filter={filter}
-        sort={sort}
-        sortValue={sortValue}
-        onSortChange={handleSortChange}
-        view={view}
-        selectedFilters={selectedFilters}
-        onSelectedFiltersChange={setSelectedFilters}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        tabs={isCompactToolbar ? [] : displayTabs}
-        isMenuOpen={isMenuOpen}
-        onMenuOpenChange={setIsMenuOpen}
-        search={
-          search
-            ? {
-                ...search,
-                inputRef: searchInput,
-                isOpen: isSearchOpen,
-                onOpenChange: setIsSearchOpen
-              }
-            : undefined
-        }
-        menuActions={menuActions}
-        primaryAction={primaryAction}
-        toolbar={toolbar}
-        onSync={handleSync}
-        navigationControls={
-          <>
-            {!isNavigationCollapsed && (
-              <ShortcutButton
-                className="h-9 w-9 min-w-9 p-0"
-                label="Hide Sidebar"
-                shortcut="⌘ S"
-                aria-keyshortcuts="Meta+S"
-                aria-controls={sidebarId}
-                aria-expanded
-                onPress={toggleNavigation}>
-                <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
-              </ShortcutButton>
-            )}
-            <ShortcutButton
-              className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
-              label="Back"
-              shortcut="⌘ ←"
-              aria-keyshortcuts="Meta+ArrowLeft"
-              onPress={() => router.history.back()}>
-              <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
-            </ShortcutButton>
-            <ShortcutButton
-              className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
-              label="Forward"
-              shortcut="⌘ →"
-              aria-keyshortcuts="Meta+ArrowRight"
-              onPress={() => router.history.forward()}>
-              <AppIcon icon="vx:arrow-right" size={18} aria-hidden="true" />
-            </ShortcutButton>
-          </>
-        }
+      <SectionLayoutToolbar
+        options={props}
+        navigation={navigation}
+        preferences={preferences}
+        displayTabs={displayTabs}
+        isCompactToolbar={isCompactToolbar}
+        hideCompactControls={shouldHideCompactControls}
       />
-      {isCompactToolbar && (
+      {isCompactToolbar && !shouldHideCompactControls && (
         <CompactTabs
           title={title}
           displayTabs={displayTabs}
@@ -327,13 +496,13 @@ const SectionLayout = ({
         />
       )}
       <SectionBody
-        hasSidebar={hasSidebar}
-        isNavigationCollapsed={isNavigationCollapsed}
-        sidebarId={sidebarId}
+        hasSidebar={navigation.hasSidebar}
+        isNavigationCollapsed={navigation.isNavigationCollapsed}
+        sidebarId={navigation.sidebarId}
         sidebar={sidebar}
         filter={filter}
-        selectedFilters={selectedFilters}
-        setSelectedFilters={setSelectedFilters}
+        selectedFilters={preferences.selectedFilters}
+        setSelectedFilters={preferences.setSelectedFilters}
         displayTabs={displayTabs}
         selectedTab={selectedTab}>
         {children}
@@ -343,32 +512,24 @@ const SectionLayout = ({
 
   return (
     <div className="bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col">
-      <Tabs
-        selectedKey={selectedTab?.key ?? null}
-        onSelectionChange={key => {
-          const tab = displayTabs.find(item => item.key === key)
-          if (tab?.href) void navigate({ to: tab.href })
-        }}
-        className="flex min-h-0 min-w-0 flex-1 flex-col gap-0">
+      <SectionTabs
+        displayTabs={displayTabs}
+        selectedTab={selectedTab}
+        navigate={navigation.navigate}>
         {content}
-      </Tabs>
-
-      {hasSidebar && (
-        <Drawer.Backdrop isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-          <Drawer.Content placement="left">
-            <Drawer.Dialog className="bg-background w-[min(20rem,calc(100vw-2rem))]">
-              <Drawer.Header>
-                <Drawer.Heading>{title}</Drawer.Heading>
-                <Drawer.CloseTrigger aria-label="Hide Sidebar" />
-              </Drawer.Header>
-              <Drawer.Body>{sidebar}</Drawer.Body>
-            </Drawer.Dialog>
-          </Drawer.Content>
-        </Drawer.Backdrop>
-      )}
+      </SectionTabs>
+      <SectionDrawer title={title} navigation={navigation}>
+        {sidebar}
+      </SectionDrawer>
     </div>
   )
 }
+
+const SectionLayout = (props: SectionLayoutProps) => (
+  <SectionToolbarContentProvider>
+    <SectionLayoutContent {...props} />
+  </SectionToolbarContentProvider>
+)
 
 export type {
   SectionAction,
@@ -378,5 +539,7 @@ export type {
   SectionViewMode
 } from './toolbar'
 export { SectionLayout }
+export { useSectionToolbarContent } from './toolbar-content'
+export { useMobileToolbarNavigation } from './toolbar-more-sheet'
 
 export type { SectionSort } from './sort-menu'
