@@ -81,9 +81,12 @@ Fallow sets `health.maxCrap` to `0` to disable coverage-based risk findings and
 enabled. Fallow may still display estimated coverage and risk metrics; disabling
 enforcement does not change the overall health score's fixed calibration.
 
-The audit target depends on `test:eslint`, which runs the lint-rule tests and
-generates a c8 coverage report before auditing. A test failure blocks the audit.
-Run the tests separately with `pnpm nx run @vx:test:eslint`. Fallow does not
+The audit target depends on `test:eslint` and `test:audit`. The first runs the
+lint-rule tests and generates a c8 coverage report; the second runs the audit
+gate and runner regression tests. A test failure blocks the audit. Run them
+separately with `pnpm nx run @vx:test:eslint` or `pnpm nx run @vx:test:audit`.
+Fallow registers these Node test files as entry points because the CLI discovers
+them outside the application import graph. Fallow does not
 consume the coverage report while coverage enforcement is disabled. When
 reintroducing enforcement, restore the report path and an appropriate risk
 threshold.
