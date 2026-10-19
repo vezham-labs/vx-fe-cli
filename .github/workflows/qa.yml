@@ -1,13 +1,12 @@
 # @vx/INFO: @vx/ci
 name: 🧪 QA
 
-run-name: >
-  🧪 QA • ${{
-      github.event_name == 'schedule' && '🕒 Scheduled' ||
-      github.event_name == 'workflow_dispatch' && '⚡ Trails' ||
-      github.event.head_commit.message ||
-      github.ref_name
-  }}  - by @${{ github.actor || 'vx/ci' }}
+run-name: >-
+  ${{
+    github.event_name == 'schedule' && '🧪 QA • 🕒 Scheduled' ||
+    github.event_name == 'workflow_dispatch' && '🧪 QA • ⚡ Trails' ||
+    ''
+  }}
 
 on:
   schedule:
