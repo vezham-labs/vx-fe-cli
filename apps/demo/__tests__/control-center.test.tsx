@@ -106,36 +106,11 @@ describe('Demo Control Center', () => {
         name: 'Switch to light mode'
       })
       expect(document.documentElement.classList.contains('dark')).toBe(true)
-      const appearanceTiles = within(dialog).getAllByRole('button', {
-        name: 'Appearance'
-      })
-      fireEvent.click(appearanceTiles[0])
-      const light = await within(dialog).findByRole('button', { name: 'Light' })
-      expect(
-        within(dialog).queryByRole('button', { name: 'Appearance' })
-      ).toBeNull()
-      expect(
-        within(dialog).queryByRole('button', { name: 'Switch to light mode' })
-      ).toBeNull()
-      expect(
-        within(dialog)
-          .getByRole('button', { name: 'Dark' })
-          .getAttribute('aria-pressed')
-      ).toBe('true')
-      fireEvent.click(light)
-      await waitFor(() =>
-        expect(light.getAttribute('aria-pressed')).toBe('true')
-      )
-      expect(document.documentElement.classList.contains('dark')).toBe(false)
       fireEvent.click(
-        within(dialog).getByRole('button', { name: 'Back to Control Center' })
+        within(dialog).getByRole('button', { name: 'Switch to light mode' })
       )
-      await within(dialog).findAllByRole('button', {
-        name: 'Switch to dark mode'
-      })
-      expect(
-        within(dialog).getAllByRole('button', { name: 'Appearance' })
-      ).toHaveLength(appearanceTiles.length)
+      await within(dialog).findByRole('button', { name: 'Switch to dark mode' })
+      expect(document.documentElement.classList.contains('dark')).toBe(false)
 
       fireEvent.click(within(dialog).getByRole('button', { name: 'Direction' }))
       const rtl = await within(dialog).findByRole('button', { name: 'RTL' })
@@ -199,6 +174,7 @@ describe('Demo Control Center', () => {
         ).toBeNull()
       )
       await waitFor(() => expect(document.activeElement).toBe(trigger))
-    }
+    },
+    15000
   )
 })

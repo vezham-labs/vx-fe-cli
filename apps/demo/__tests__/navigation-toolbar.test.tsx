@@ -1,9 +1,11 @@
 import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
 import {
+  act,
   cleanup,
   fireEvent,
   render,
   screen,
+  waitFor,
   within
 } from '@testing-library/react'
 
@@ -40,50 +42,56 @@ describe('Navigation toolbar', () => {
     Element.prototype.getAnimations = () => []
   })
 
-  it('shows a placeholder toast for page search without opening command search', async () => {
+  it('opens page search without opening command search', async () => {
     await renderApp('/tabs/overview')
-    const search = await screen.findByRole('button', { name: 'Search' })
-    const notice = vi.spyOn(toast, 'info').mockReturnValue('search-notice')
-    try {
-      fireEvent.click(search)
-      expect(notice).toHaveBeenCalledWith('Search is not implemented yet.')
-      expect(screen.queryByPlaceholderText(/Search commands/)).toBeNull()
-    } finally {
-      notice.mockRestore()
-    }
+    fireEvent.click(await screen.findByRole('button', { name: 'Search' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Search content' })
+    const search = within(dialog).getByRole('searchbox')
+    fireEvent.change(search, { target: { value: 'overview' } })
+    expect((search as HTMLInputElement).value).toBe('overview')
+    expect(screen.queryByPlaceholderText(/Search commands/)).toBeNull()
   })
 
-  it('uses page-specific Add actions in the School OS toolbar order', async () => {
+  it('opens the class editor and discards unsaved changes when reopened', async () => {
     await renderApp('/academic/classes/allclasses')
     const create = await screen.findByRole('button', { name: 'Add Class' })
-    const notice = vi.spyOn(toast, 'info').mockReturnValue('create-notice')
-    try {
-      fireEvent.click(create)
-      expect(notice).toHaveBeenCalledWith(
-        'Create is not implemented in this navigation demo.'
-      )
-    } finally {
-      notice.mockRestore()
-    }
-    const actions = screen.getByRole('group', { name: 'Toolbar actions' })
+    fireEvent.click(create)
+    const editor = await screen.findByRole('dialog', { name: 'Add Class' })
     expect(
-      within(actions)
-        .getAllByRole('button')
-        .map(button => button.getAttribute('aria-label'))
-        .filter(Boolean)
-    ).toEqual([
-      'Search',
-      'Sync',
-      'Filter',
-      'Sort',
-      'Grid view',
-      'List view',
-      'Add Class',
-      'More'
-    ])
-    const viewOptions = within(actions).getByRole('group', {
-      name: 'View options'
+      within(editor).getByRole('textbox', { name: /class name/i })
+    ).toBeTruthy()
+    fireEvent.change(
+      within(editor).getByRole('textbox', { name: /class name/i }),
+      { target: { value: 'Unsaved class' } }
+    )
+    fireEvent.click(within(editor).getByRole('button', { name: 'Cancel' }))
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Add Class' })).toBeNull()
+    )
+
+    fireEvent.click(create)
+    const reopenedEditor = await screen.findByRole('dialog', {
+      name: 'Add Class'
     })
+    expect(
+      (
+        within(reopenedEditor).getByRole('textbox', {
+          name: /class name/i
+        }) as HTMLInputElement
+      ).value
+    ).toBe('')
+    fireEvent.click(
+      within(reopenedEditor).getByRole('button', { name: 'Cancel' })
+    )
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Add Class' })).toBeNull()
+    )
+  })
+
+  it('keeps page-specific view, navigation, and filter actions working', async () => {
+    const router = await renderApp('/academic/classes/allclasses')
+    await screen.findByRole('button', { name: 'Add Class' })
+    const viewOptions = screen.getByRole('group', { name: 'View options' })
     expect(
       within(viewOptions)
         .getByRole('button', { name: 'Grid view' })
@@ -97,15 +105,48 @@ describe('Navigation toolbar', () => {
         .getByRole('button', { name: 'List view' })
         .getAttribute('aria-pressed')
     ).toBe('true')
-    fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
+
+    await act(async () => {
+      await router.navigate({
+        to: '/academic/$',
+        params: { _splat: 'classes/schedule' }
+      })
+    })
     await screen.findByRole('button', { name: 'Add Schedule' })
     expect(screen.getByRole('tabpanel').textContent).toContain(
       '/academic/classes/schedule'
     )
+    const actions = screen.getByRole('group', { name: 'Toolbar actions' })
     const filter = within(actions).getByRole('button', { name: 'Filter' })
     fireEvent.click(filter)
     fireEvent.click(await screen.findByRole('menuitem', { name: 'Images' }))
     expect(filter.getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('loads class filters from the URL, removes them, and follows subsequent navigation', async () => {
+    const router = await renderApp('/academic/classes/allclasses?code=C138038')
+    const remove = await screen.findByRole('button', {
+      name: 'Remove Code: C138038 filter'
+    })
+    const table = screen.getByRole('grid')
+    expect(within(table).getByText('C138038')).toBeTruthy()
+    expect(within(table).queryByText('C138037')).toBeNull()
+    fireEvent.click(remove)
+    await waitFor(() =>
+      expect(router.state.location.search.code).toBeUndefined()
+    )
+    await within(table).findByText('C138037')
+    await act(async () => {
+      await router.navigate({
+        to: '/academic/$',
+        params: { _splat: 'classes/allclasses' },
+        search: { status: 'Inactive' }
+      })
+    })
+    await screen.findByRole('button', {
+      name: 'Remove Status: Inactive filter'
+    })
+    expect(within(table).queryByText('C138038')).toBeNull()
   })
 
   it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {

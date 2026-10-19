@@ -1,5 +1,11 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from 'react'
 import type { Selection } from 'react-aria-components'
 
 import {
@@ -95,15 +101,30 @@ const useClassesContent = () => {
   const search = useSearch({ strict: false })
   const { query: searchQuery } = useClassesSearch()
   const filtersFromSearch = useMemo(
-    () => getClassFiltersFromSearch(search),
-    [search]
+    () =>
+      getClassFiltersFromSearch({
+        code: search.code,
+        name: search.name,
+        status: search.status
+      }),
+    [search.code, search.name, search.status]
   )
   const [classRecords, setClassRecords] = useState<ClassRecord[]>(() => [
     ...initialClasses
   ])
-  const [filters, setFilters] = useState<ClassFilters>(filtersFromSearch)
-  const [draftFilters, setDraftFilters] =
-    useState<ClassFilters>(filtersFromSearch)
+  const filters = filtersFromSearch
+  const [draft, setDraft] = useState({
+    source: filtersFromSearch,
+    value: filtersFromSearch
+  })
+  const draftFilters =
+    draft.source === filtersFromSearch ? draft.value : filtersFromSearch
+  const setDraftFilters = useCallback(
+    (value: ClassFilters) => {
+      setDraft({ source: filtersFromSearch, value })
+    },
+    [filtersFromSearch]
+  )
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isColumnsOpen, setIsColumnsOpen] = useState(false)
   const [isSortOpen, setIsSortOpen] = useState(false)
@@ -135,16 +156,16 @@ const useClassesContent = () => {
     [filters]
   )
 
-  useLayoutEffect(() => {
-    setIsFilterOpen(false)
-    setIsColumnsOpen(false)
-    setIsSortOpen(false)
-  }, [isCompactToolbar])
-
-  useLayoutEffect(() => {
-    setFilters(filtersFromSearch)
-    setDraftFilters(filtersFromSearch)
-  }, [filtersFromSearch])
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)')
+    const closeToolbarOverlays = () => {
+      setIsFilterOpen(false)
+      setIsColumnsOpen(false)
+      setIsSortOpen(false)
+    }
+    media.addEventListener('change', closeToolbarOverlays)
+    return () => media.removeEventListener('change', closeToolbarOverlays)
+  }, [])
 
   useToolbarAction('create', () => setIsCreateClassOpen(true), {
     pageKey: 'allclasses',
@@ -235,11 +256,11 @@ const useClassesContent = () => {
     clearSelection()
   }, [clearSelection])
   const applyFilters = useCallback(() => {
-    setFilters(draftFilters)
     setIsFilterOpen(false)
     resetPage()
     void navigate({
-      to: '/academic/classes/allclasses',
+      to: '/academic/$',
+      params: { _splat: 'classes/allclasses' },
       search: current => ({
         ...current,
         ...getClassFilterSearch(draftFilters)
@@ -256,7 +277,7 @@ const useClassesContent = () => {
         setIsSortOpen(false)
       }
     },
-    [filters]
+    [filters, setDraftFilters]
   )
   const handleColumnsOpenChange = useCallback((isOpen: boolean) => {
     setIsColumnsOpen(isOpen)
@@ -276,26 +297,26 @@ const useClassesContent = () => {
     const emptyFilters = createEmptyClassFilters()
 
     setDraftFilters(emptyFilters)
-    setFilters(emptyFilters)
     resetPage()
     void navigate({
-      to: '/academic/classes/allclasses',
+      to: '/academic/$',
+      params: { _splat: 'classes/allclasses' },
       search: current => ({
         ...current,
         ...getClassFilterSearch(emptyFilters)
       }),
       replace: true
     })
-  }, [navigate, resetPage])
+  }, [navigate, resetPage, setDraftFilters])
   const removeFilter = useCallback(
     (filter: ClassFilterKey) => {
       const nextFilters = { ...filters, [filter]: null }
 
-      setFilters(nextFilters)
       setDraftFilters(nextFilters)
       resetPage()
       void navigate({
-        to: '/academic/classes/allclasses',
+        to: '/academic/$',
+        params: { _splat: 'classes/allclasses' },
         search: current => ({
           ...current,
           ...getClassFilterSearch(nextFilters)
@@ -303,7 +324,7 @@ const useClassesContent = () => {
         replace: true
       })
     },
-    [filters, navigate, resetPage]
+    [filters, navigate, resetPage, setDraftFilters]
   )
   const handleSortChange = useCallback(
     (descriptor: SortDescriptor) => {
@@ -397,7 +418,8 @@ const useClassesContent = () => {
       isSortOpen,
       resetFilters,
       sortDescriptor,
-      visibleColumns
+      visibleColumns,
+      setDraftFilters
     ]
   )
   const toolbarContent = useMemo(

@@ -76,6 +76,9 @@ Apply these rules whenever reviewing, migrating, or optimizing either app:
   `@vezham/icons-react`. Removed Vezham implementations and the previous
   Iconify, Lucide, Solar, MDI, and Gravity UI dependencies are not compatibility
   requirements.
+- Keep HeroUI's root `react-aria` peer pinned to the version bundled by the
+  `react-aria-components` catalog version. Custom tooltip triggers require a
+  shared focus context; review both versions together when updating dependencies.
 - Import fixed icons directly from `@vezham/icons-react`. Use `AppIcon` only
   when an icon is selected from serializable data or runtime configuration.
   Data-driven icon identifiers use semantic `vx:*` names, such as `vx:home`,
