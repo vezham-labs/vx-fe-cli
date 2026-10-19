@@ -5,9 +5,13 @@ import {
   waitFor,
   within
 } from '@testing-library/react'
-import { type ComponentProps, type ReactNode } from 'react'
+import { type ComponentProps, type ReactNode, useEffect } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import {
+  MobileControlsProvider,
+  useMobileControls
+} from '../../components/mobile-controls'
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
 import { SectionLayout } from '../section'
 import { MenuSM } from './index-sm'
@@ -96,6 +100,18 @@ const renderMobile = () =>
       <MenuSM items={items} />
     </WorkspaceNavigationProvider>
   )
+
+const HideMobileShell = () => {
+  const { setIsFooterHidden } = useMobileControls()
+
+  useEffect(() => {
+    setIsFooterHidden(true)
+
+    return () => setIsFooterHidden(false)
+  }, [setIsFooterHidden])
+
+  return null
+}
 
 describe('Small-screen navigation', () => {
   beforeEach(() => {
@@ -201,6 +217,27 @@ describe('Small-screen navigation', () => {
     expect(actions.bottomNavbar).toHaveBeenLastCalledWith({
       hasPrimaryAction: false
     })
+  })
+
+  it('hides only footer controls while page content has an open sheet', () => {
+    render(
+      <MobileControlsProvider>
+        <HideMobileShell />
+        <WorkspaceNavigationProvider>
+          <MenuSM items={items} />
+        </WorkspaceNavigationProvider>
+      </MobileControlsProvider>
+    )
+
+    expect(
+      screen.getByRole('group', { name: 'Mobile navigation controls' })
+    ).toBeVisible()
+    expect(
+      screen.getByRole('group', { name: 'Mobile account actions' })
+    ).toBeVisible()
+    expect(
+      screen.queryByRole('navigation', { name: 'Bottom navigation' })
+    ).toBeNull()
   })
 
   it.each([

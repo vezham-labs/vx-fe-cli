@@ -39,6 +39,7 @@
     "packages/vx/config/src/lib/{metadata,deploy}/cli.ts",
     "packages/vx/config/src/lib/presets/docs/cli.ts",
     "vx/tools/audit/index.mjs",
+    "vx/tools/audit/*.test.mjs",
     "vx/tools/eslint/tests/*.test.mjs",
     "vx/tools/release/index.ts",
     "vx/tools/release/version-actions.cjs"

@@ -2,6 +2,8 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 import { Surface, cn } from '@vezham/react-v3'
 
+import { useMobileControls } from '../../components/mobile-controls'
+
 export type AppFrameProps = {
   children: ReactNode
   contentClassName?: string
@@ -15,6 +17,8 @@ export const AppFrame = ({
   navigation,
   ...props
 }: AppFrameProps) => {
+  const { isFooterHidden } = useMobileControls()
+
   return (
     <Surface
       variant="transparent"
@@ -28,7 +32,8 @@ export const AppFrame = ({
       <main
         data-slot="app-layout-content"
         className={cn(
-          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pt-18 pb-20 transition-transform duration-300 ease-out md:p-0',
+          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pt-18 transition-transform duration-300 ease-out md:p-0',
+          isFooterHidden ? 'pb-0' : 'pb-20',
           contentClassName
         )}>
         {children}

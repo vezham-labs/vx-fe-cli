@@ -1,12 +1,37 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
+
+import { Button } from '@vezham/react-v3'
 
 import { DEFAULT_SORT, type SectionSort } from './sort-menu'
 import type { SectionFilterKey } from './toolbar'
-import { ToolbarMoreSheet } from './toolbar-more-sheet'
+import {
+  ToolbarMoreSheet,
+  useMobileToolbarNavigation
+} from './toolbar-more-sheet'
 
-const Fixture = ({ onExport }: { onExport: () => void }) => {
+const CustomMobileToolbar = () => {
+  const { openPage, page } = useMobileToolbarNavigation()
+
+  if (page?.key === 'columns') return <p>Column controls</p>
+
+  return (
+    <Button
+      variant="ghost"
+      onPress={() => openPage({ key: 'columns', title: 'Columns' })}>
+      Columns
+    </Button>
+  )
+}
+
+const Fixture = ({
+  mobileToolbar,
+  onExport
+}: {
+  mobileToolbar?: ReactNode
+  onExport: () => void
+}) => {
   const [filters, setFilters] = useState<SectionFilterKey[]>([])
   const [sort, setSort] = useState<SectionSort>(DEFAULT_SORT)
   return (
@@ -22,6 +47,7 @@ const Fixture = ({ onExport }: { onExport: () => void }) => {
           options: [{ key: 'images', label: 'Images', icon: 'vx:gallery' }]
         }
       ]}
+      mobileToolbar={mobileToolbar}
       selectedFilters={filters}
       onToggleFilter={key =>
         setFilters(current =>
@@ -57,6 +83,37 @@ const Fixture = ({ onExport }: { onExport: () => void }) => {
 }
 
 describe('Toolbar More sheet', () => {
+  it('renders page-specific toolbar actions', async () => {
+    render(
+      <Fixture
+        mobileToolbar={
+          <Button variant="ghost" onPress={vi.fn()}>
+            Columns
+          </Button>
+        }
+        onExport={vi.fn()}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'More' }))
+    expect(await screen.findByRole('button', { name: 'Columns' })).toBeVisible()
+  })
+
+  it('opens page-specific toolbar actions as nested sheet pages', async () => {
+    render(
+      <Fixture mobileToolbar={<CustomMobileToolbar />} onExport={vi.fn()} />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'More' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Columns' }))
+    expect(await screen.findByText('Column controls')).toBeVisible()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Back to toolbar actions' })
+    )
+    expect(screen.getByRole('button', { name: 'Columns' })).toBeVisible()
+  })
+
   it('keeps selections open, navigates back, and closes nested actions', async () => {
     const onExport = vi.fn()
     render(<Fixture onExport={onExport} />)

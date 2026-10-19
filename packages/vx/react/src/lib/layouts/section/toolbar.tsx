@@ -13,12 +13,11 @@ import {
   Chip,
   CloseButton,
   Dropdown,
-  InputGroup,
   Label,
   Popover,
+  SearchField,
   Separator,
   Tabs,
-  TextField,
   Tooltip,
   useMediaQuery
 } from '@vezham/react-v3'
@@ -76,6 +75,7 @@ type Props = {
   navigationControls: ReactNode
   isNavigationCollapsed?: boolean
   toolbar?: ReactNode
+  mobileToolbar?: ReactNode
   search?: ToolbarSearch
   menuActions: SectionAction[]
   primaryAction?: SectionAction
@@ -267,6 +267,21 @@ const renderMenuItems = (actions: SectionAction[]): ReactNode =>
     )
   )
 
+type MobileToolbarProps = {
+  filterAction?: SectionAction
+  menuActions: SectionAction[]
+  mobileToolbar?: ReactNode
+  onSync: () => void
+  onToggleFilter: (filter: SectionFilterKey) => void
+  onViewModeChange: (viewMode: SectionViewMode) => void
+  selectedFilters: SectionFilterKey[]
+  sync: boolean
+  sort: boolean
+  sortValue: SectionSort
+  onSortChange?: (value: SectionSort) => void
+  viewModeActions: SectionViewAction[]
+}
+
 const MobileToolbarDropdown = ({
   filterAction,
   menuActions,
@@ -279,19 +294,7 @@ const MobileToolbarDropdown = ({
   onSortChange,
   sync,
   viewModeActions
-}: {
-  filterAction?: SectionAction
-  menuActions: SectionAction[]
-  onSync: () => void
-  onToggleFilter: (filter: SectionFilterKey) => void
-  onViewModeChange: (viewMode: SectionViewMode) => void
-  selectedFilters: SectionFilterKey[]
-  sync: boolean
-  sort: boolean
-  sortValue: SectionSort
-  onSortChange?: (value: SectionSort) => void
-  viewModeActions: SectionViewAction[]
-}) => (
+}: MobileToolbarProps) => (
   <Dropdown>
     <Tooltip delay={0}>
       <Button
@@ -359,13 +362,11 @@ const MobileToolbarDropdown = ({
   </Dropdown>
 )
 
-const MobileToolbarMore = (
-  props: Parameters<typeof MobileToolbarDropdown>[0]
-) => {
+const MobileToolbarMore = (props: MobileToolbarProps) => {
   const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
     initializeWithValue: false
   })
-  return small ? (
+  return small || props.mobileToolbar ? (
     <ToolbarMoreSheet
       {...props}
       filterGroups={[
@@ -382,30 +383,24 @@ const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
   const label = search.label ?? 'Search content'
 
   const input = (isDesktop: boolean) => (
-    <TextField
+    <SearchField
       aria-label={label}
+      value={search.value}
+      onChange={search.onChange}
       className={isDesktop ? 'hidden w-56 lg:block' : 'w-56'}>
-      <InputGroup>
-        <InputGroup.Prefix>
-          <AppIcon
-            icon="vx:search"
-            size={16}
-            className="text-muted-foreground"
-            aria-hidden="true"
-          />
-        </InputGroup.Prefix>
-        <InputGroup.Input
+      <SearchField.Group>
+        <SearchField.SearchIcon />
+        <SearchField.Input
           ref={isDesktop ? search.inputRef : undefined}
-          type="search"
           placeholder={search.placeholder ?? 'Search'}
-          value={search.value}
-          onChange={event => search.onChange(event.target.value)}
           onKeyDown={event => {
             if (event.key === 'Enter') search.onSearch?.()
+            if (event.key === 'Escape') search.onOpenChange?.(false)
           }}
         />
-      </InputGroup>
-    </TextField>
+        <SearchField.ClearButton aria-label={`Clear ${label.toLowerCase()}`} />
+      </SearchField.Group>
+    </SearchField>
   )
 
   if (search.onSearch) {
@@ -491,7 +486,6 @@ const ToolbarActions = ({
     aria-label="Toolbar actions"
     className="scrollbar-hide col-start-2 row-start-1 -m-1 hidden max-w-[calc(100vw-2rem)] min-w-0 items-center gap-2 overflow-x-auto p-1 md:flex">
     {search && <SectionSearchField search={search} />}
-    {toolbar}
     {sync && (
       <ShortcutButton
         label="Sync"
@@ -502,6 +496,7 @@ const ToolbarActions = ({
         <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
       </ShortcutButton>
     )}
+    {toolbar}
     {filterAction && (
       <Dropdown
         isOpen={!isMobile && isFilterMenuOpen}
@@ -612,6 +607,7 @@ const SectionToolbar = (props: Props) => {
     title,
     tabs,
     navigationControls,
+    mobileToolbar,
     isNavigationCollapsed = false,
     menuActions,
     primaryAction,
@@ -656,6 +652,7 @@ const SectionToolbar = (props: Props) => {
         <MobileToolbarMore
           filterAction={filterAction}
           menuActions={menuActions}
+          mobileToolbar={mobileToolbar}
           onSync={onSync}
           onToggleFilter={toggleFilter}
           onViewModeChange={onViewModeChange}
@@ -671,6 +668,7 @@ const SectionToolbar = (props: Props) => {
       filterAction,
       isMobile,
       menuActions,
+      mobileToolbar,
       onSync,
       onViewModeChange,
       selectedFilters,

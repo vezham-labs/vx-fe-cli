@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Surface, toast } from '@vezham/react-v3'
 
 import { BottomNavbar } from '../../components/menu'
+import { useMobileControls } from '../../components/mobile-controls'
 import { Footer } from '../../components/panel/footer'
 import { aiPanel } from '../../components/panel/footer/ai'
 import { NotificationDrawer } from '../../components/panel/footer/notification-center'
@@ -29,6 +30,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
   const [settingsEntryPoint, setSettingsEntryPoint] = useState('account')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
+  const { isFooterHidden } = useMobileControls()
   const { mobileSidebar } = useWorkspaceNavigation()
   const { action: toolbarAction } = useResponsiveToolbarAction()
   const { pathname } = useLocation()
@@ -126,16 +128,18 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
         }}
       />
 
-      <div className="shrink-0">
-        <BottomNavbar
-          items={items}
-          showSearch={showSearch}
-          hasPrimaryAction={Boolean(toolbar.primaryAction)}
-          onSearch={handleSearch}
-          selectedKey={selectedKey}
-          onSelect={handleItemSelect}
-        />
-      </div>
+      {!isFooterHidden && (
+        <div className="shrink-0">
+          <BottomNavbar
+            items={items}
+            showSearch={showSearch}
+            hasPrimaryAction={Boolean(toolbar.primaryAction)}
+            onSearch={handleSearch}
+            selectedKey={selectedKey}
+            onSelect={handleItemSelect}
+          />
+        </div>
+      )}
     </>
   )
 }

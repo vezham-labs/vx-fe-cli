@@ -121,6 +121,10 @@ describe('Section toolbar', () => {
     fireEvent.change(input, { target: { value: 'science' } })
     expect(input).toHaveValue('science')
     expect(onSearch).not.toHaveBeenCalled()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Clear search content' })
+    )
+    expect(input).toHaveValue('')
     fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
     expect(onSearch).toHaveBeenCalledOnce()
     expect(screen.queryByRole('dialog', { name: 'Search content' })).toBeNull()

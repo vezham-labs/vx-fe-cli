@@ -398,6 +398,15 @@ describe('control center configuration', () => {
   })
 
   it.each([
+    [null],
+    ['tile'],
+    [[]],
+    [{ id: '', type: 'theme', span: 'wide' }],
+    [{ type: 'theme', span: 'wide' }],
+    [{ id: 'one', span: 'wide' }],
+    [{ id: 'one', type: 'theme', span: 'wide', editable: 'true' }],
+    [{ id: 'one', type: 'theme', span: 'wide', label: ' ' }],
+    [{ id: 'one', type: 'custom', span: 'wide', action: ' ' }],
     [{ id: 'one', type: 'unknown', span: 'wide' }],
     [{ id: 'one', type: 'theme', span: 'tiny' }],
     [{ id: 'one', type: 'edit-controls', span: 'full' }],

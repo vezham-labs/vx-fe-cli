@@ -29,6 +29,9 @@ type Props = {
   children: ReactNode
 }
 
+const footerActionClassName =
+  'text-muted hover:text-foreground h-5 w-5 min-w-0 p-0 [&_svg]:size-5'
+
 const FooterAction = ({ children, label, onPress }: Props) => {
   return (
     <Tooltip delay={0}>
@@ -38,7 +41,7 @@ const FooterAction = ({ children, label, onPress }: Props) => {
           isIconOnly
           variant="ghost"
           size="sm"
-          className="text-muted hover:text-foreground h-5 w-5"
+          className={footerActionClassName}
           onPress={onPress}>
           {children}
         </Button>
