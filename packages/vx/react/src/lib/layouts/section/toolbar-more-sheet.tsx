@@ -136,6 +136,37 @@ const SheetSort = ({
   </>
 )
 
+const getHomeSeparators = ({
+  sync,
+  filterAction,
+  sort,
+  viewModeActions,
+  menuActions,
+  mobileToolbar
+}: Pick<
+  Props,
+  | 'sync'
+  | 'filterAction'
+  | 'sort'
+  | 'viewModeActions'
+  | 'menuActions'
+  | 'mobileToolbar'
+>) => ({
+  afterMobile: Boolean(
+    mobileToolbar &&
+    (sync ||
+      filterAction ||
+      sort ||
+      viewModeActions.length > 0 ||
+      menuActions.length > 0)
+  ),
+  beforeView: Boolean((filterAction || sort) && viewModeActions.length > 0),
+  beforeMenu: Boolean(
+    menuActions.length > 0 &&
+    (sync || filterAction || sort || viewModeActions.length > 0)
+  )
+})
+
 const SheetHome = ({
   sync,
   onSync,
@@ -162,64 +193,104 @@ const SheetHome = ({
 > & {
   setPage: (page: 'home' | 'filter' | 'sort') => void
   renderActions: (actions: SectionAction[]) => ReactNode
-}) => (
-  <>
-    {mobileToolbar}
-    {mobileToolbar &&
-      (sync ||
-        filterAction ||
-        sort ||
-        viewModeActions.length > 0 ||
-        menuActions.length > 0) && <Separator className="my-1" />}
-    {sync &&
-      renderActions([
-        {
-          key: 'sync',
-          label: 'Sync',
-          icon: 'vx:refresh',
-          onAction: onSync
-        }
-      ])}
-    {filterAction && (
-      <Button
-        variant="ghost"
-        className={actionClass}
-        onPress={() => setPage('filter')}>
-        <AppIcon icon={filterAction.icon} size={18} aria-hidden="true" />
-        <span className="flex-1">Filter</span>
-        <AltArrowRight size={18} aria-hidden="true" />
-      </Button>
-    )}
-    {sort && (
-      <Button
-        variant="ghost"
-        className={actionClass}
-        onPress={() => setPage('sort')}>
-        {sortValue.direction === 'ascending' ? (
-          <SortFromBottomToTop size={18} aria-hidden="true" />
-        ) : (
-          <SortFromTopToBottom size={18} aria-hidden="true" />
-        )}
-        <span className="flex-1">Sort</span>
-        <AltArrowRight size={18} aria-hidden="true" />
-      </Button>
-    )}
-    {(filterAction || sort) && viewModeActions.length > 0 && (
-      <Separator className="my-1" />
-    )}
-    {renderActions(
-      viewModeActions.map(action => ({
-        ...action,
-        onAction: () => onViewModeChange(action.key)
-      }))
-    )}
-    {menuActions.length > 0 &&
-      (sync || filterAction || sort || viewModeActions.length > 0) && (
-        <Separator className="my-1" />
+}) => {
+  const separators = getHomeSeparators({
+    sync,
+    filterAction,
+    sort,
+    viewModeActions,
+    menuActions,
+    mobileToolbar
+  })
+  return (
+    <>
+      {mobileToolbar}
+      {separators.afterMobile && <Separator className="my-1" />}
+      {sync &&
+        renderActions([
+          {
+            key: 'sync',
+            label: 'Sync',
+            icon: 'vx:refresh',
+            onAction: onSync
+          }
+        ])}
+      {filterAction && (
+        <Button
+          variant="ghost"
+          className={actionClass}
+          onPress={() => setPage('filter')}>
+          <AppIcon icon={filterAction.icon} size={18} aria-hidden="true" />
+          <span className="flex-1">Filter</span>
+          <AltArrowRight size={18} aria-hidden="true" />
+        </Button>
       )}
-    {renderActions(menuActions)}
-  </>
-)
+      {sort && (
+        <Button
+          variant="ghost"
+          className={actionClass}
+          onPress={() => setPage('sort')}>
+          {sortValue.direction === 'ascending' ? (
+            <SortFromBottomToTop size={18} aria-hidden="true" />
+          ) : (
+            <SortFromTopToBottom size={18} aria-hidden="true" />
+          )}
+          <span className="flex-1">Sort</span>
+          <AltArrowRight size={18} aria-hidden="true" />
+        </Button>
+      )}
+      {separators.beforeView && <Separator className="my-1" />}
+      {renderActions(
+        viewModeActions.map(action => ({
+          ...action,
+          onAction: () => onViewModeChange(action.key)
+        }))
+      )}
+      {separators.beforeMenu && <Separator className="my-1" />}
+      {renderActions(menuActions)}
+    </>
+  )
+}
+
+const SheetActions = ({
+  actions,
+  path,
+  setPath,
+  run
+}: {
+  actions: SectionAction[]
+  path: SectionAction[]
+  setPath: (path: SectionAction[]) => void
+  run: (action?: () => void) => void
+}) =>
+  actions.map(action => (
+    <Button
+      key={action.key}
+      variant="ghost"
+      className={actionClass}
+      onPress={() =>
+        action.children?.length
+          ? setPath([...path, action])
+          : run(action.onAction)
+      }>
+      <AppIcon icon={action.icon} size={18} aria-hidden="true" />
+      <span className="flex-1">{action.label}</span>
+      {Boolean(action.children?.length) && (
+        <AltArrowRight size={18} aria-hidden="true" />
+      )}
+    </Button>
+  ))
+
+const getSheetTitle = (
+  mobilePage: MobileToolbarPage | null,
+  page: string,
+  current?: SectionAction
+) => {
+  if (mobilePage) return mobilePage.title
+  if (page === 'filter') return 'Filter'
+  if (page === 'sort') return 'Sort'
+  return current?.label ?? 'More'
+}
 
 export const ToolbarMoreSheet = ({
   filterAction,
@@ -253,13 +324,7 @@ export const ToolbarMoreSheet = ({
     action?.()
   }
   const current = path[path.length - 1]
-  const title =
-    mobilePage?.title ??
-    (page === 'filter'
-      ? 'Filter'
-      : page === 'sort'
-        ? 'Sort'
-        : (current?.label ?? 'More'))
+  const title = getSheetTitle(mobilePage, page, current)
   const mobileToolbarNavigation = useMemo(
     () => ({
       closeSheet: () => changeOpen(false),
@@ -272,24 +337,9 @@ export const ToolbarMoreSheet = ({
     }),
     [mobilePage]
   )
-  const renderActions = (actions: SectionAction[]) =>
-    actions.map(action => (
-      <Button
-        key={action.key}
-        variant="ghost"
-        className={actionClass}
-        onPress={() =>
-          action.children?.length
-            ? setPath([...path, action])
-            : run(action.onAction)
-        }>
-        <AppIcon icon={action.icon} size={18} aria-hidden="true" />
-        <span className="flex-1">{action.label}</span>
-        {Boolean(action.children?.length) && (
-          <AltArrowRight size={18} aria-hidden="true" />
-        )}
-      </Button>
-    ))
+  const renderActions = (actions: SectionAction[]) => (
+    <SheetActions actions={actions} path={path} setPath={setPath} run={run} />
+  )
   return (
     <MobileToolbarNavigationContext.Provider value={mobileToolbarNavigation}>
       <MenuSheet

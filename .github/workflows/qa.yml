@@ -1,5 +1,5 @@
 # @vx/INFO: @vx/ci
-name: QA
+name: 🧪 QA
 
 on:
   schedule:
@@ -9,7 +9,7 @@ on:
     branches:
       - timeline
       - next
-      - next-template
+      - next-*
       - feat/**
     # paths:
     #   - '.github/workflows/qa.yml'

@@ -23,6 +23,8 @@ import {
   Table
 } from '@vezham/react-v3'
 
+import { PaginationControls } from '@vx/react/pagination'
+
 import { pageSizeOptions } from './data'
 import type { ClassColumnKey, ClassRecord } from './types'
 import { formatDate } from './utils'
@@ -347,35 +349,16 @@ export const ClassesPagination = ({
           per page
         </span>
       </div>
-      <Pagination.Content className="self-center sm:self-auto">
-        <Pagination.Item>
-          <Pagination.Previous
-            isDisabled={currentPage <= 1}
-            onPress={() => onPageChange(currentPage - 1)}>
-            <Pagination.PreviousIcon />
-            <span>Prev</span>
-          </Pagination.Previous>
-        </Pagination.Item>
-        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-          page => (
-            <Pagination.Item key={page}>
-              <Pagination.Link
-                isActive={page === currentPage}
-                onPress={() => onPageChange(page)}>
-                {page}
-              </Pagination.Link>
-            </Pagination.Item>
+      <PaginationControls
+        className="self-center sm:self-auto"
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={nextPage =>
+          onPageChange(
+            typeof nextPage === 'function' ? nextPage(currentPage) : nextPage
           )
-        )}
-        <Pagination.Item>
-          <Pagination.Next
-            isDisabled={currentPage >= totalPages}
-            onPress={() => onPageChange(currentPage + 1)}>
-            <span>Next</span>
-            <Pagination.NextIcon />
-          </Pagination.Next>
-        </Pagination.Item>
-      </Pagination.Content>
+        }
+      />
     </Pagination>
   )
 }

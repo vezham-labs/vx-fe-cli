@@ -1,13 +1,13 @@
 import { type DragEvent, type ReactNode, useId, useState } from 'react'
 
-import { Add, AltArrowLeft, Minus, Settings, Sidebar } from '@vezham/icons-react'
 import {
-  Button,
-  Drawer,
-  SearchField,
-  Surface,
-  Tooltip
-} from '@vezham/react-v3'
+  Add,
+  AltArrowLeft,
+  Minus,
+  Settings,
+  Sidebar
+} from '@vezham/icons-react'
+import { Button, Drawer, SearchField, Surface, Tooltip } from '@vezham/react-v3'
 
 import type { EditorState } from '../../components/panel/footer/control-center/editor'
 
@@ -48,7 +48,9 @@ const useGallery = ({ kind, tiles, editor }: Props) => {
   ]
   const available = tiles.filter(
     tile =>
-      `${tile.label} ${tile.category}`.toLowerCase().includes(normalizedQuery) &&
+      `${tile.label} ${tile.category}`
+        .toLowerCase()
+        .includes(normalizedQuery) &&
       (category === 'All' || tile.category === category)
   )
   const visible = editor.items
@@ -273,7 +275,7 @@ const GalleryPreview = ({
               onDrop={event => dropTile(event, tile.id)}
               data-dragging={draggedId === tile.id || undefined}
               data-drop-target={dropTarget === tile.id || undefined}
-              className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 [&>div>*]:transition-[box-shadow] group-focus-within:[&>div>*]:ring-1 group-focus-within:[&>div>*]:ring-foreground/35 group-hover:[&>div>*]:ring-1 group-hover:[&>div>*]:ring-foreground/35 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
+              className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 group-focus-within:[&>div>*]:ring-foreground/35 group-hover:[&>div>*]:ring-foreground/35 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 [&>div>*]:transition-[box-shadow] group-focus-within:[&>div>*]:ring-1 group-hover:[&>div>*]:ring-1 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
               <div
                 inert
                 className={
@@ -281,7 +283,9 @@ const GalleryPreview = ({
                     ? 'pointer-events-none h-full [&>div]:aspect-auto [&>div]:h-full'
                     : 'pointer-events-none [&>button]:w-full'
                 }>
-                {kind === 'widgets' ? tile.preview ?? blankWidget(tile) : tile.preview}
+                {kind === 'widgets'
+                  ? (tile.preview ?? blankWidget(tile))
+                  : tile.preview}
               </div>
               {editable && (
                 <Button
@@ -364,7 +368,11 @@ const GalleryAvailable = ({
     aria-label={`Available ${kind}`}
     className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col p-4 md:p-6`}>
     <h2 className="mb-1 text-sm font-semibold">
-      {isSearching ? 'Search results' : category === 'All' ? 'Suggestions' : category}
+      {isSearching
+        ? 'Search results'
+        : category === 'All'
+          ? 'Suggestions'
+          : category}
     </h2>
     <p className="text-muted mb-5 text-xs">
       Add or drag a tile into your preview. Changes save automatically.
@@ -389,7 +397,9 @@ const GalleryAvailable = ({
               <div
                 inert
                 className="pointer-events-none flex min-h-24 items-center justify-center [&>button]:w-full">
-                {kind === 'widgets' ? tile.preview ?? blankWidget(tile) : tile.preview}
+                {kind === 'widgets'
+                  ? (tile.preview ?? blankWidget(tile))
+                  : tile.preview}
               </div>
               {item?.editable && !item.visible && (
                 <Button
@@ -397,7 +407,7 @@ const GalleryAvailable = ({
                   size="sm"
                   variant="ghost"
                   aria-label={`Quick add ${tile.label}`}
-                  className="bg-success text-white hover:bg-success/90 absolute -top-1 -left-1 z-10 size-7 min-w-0 rounded-full p-0 opacity-0 shadow-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+                  className="bg-success hover:bg-success/90 absolute -top-1 -left-1 z-10 size-7 min-w-0 rounded-full p-0 text-white opacity-0 shadow-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
                   onPress={() => editor.onVisibilityChange(tile.id, true)}>
                   <Add aria-hidden="true" className="size-4" />
                 </Button>

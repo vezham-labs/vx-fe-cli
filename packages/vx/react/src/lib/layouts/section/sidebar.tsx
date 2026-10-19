@@ -7,6 +7,34 @@ import { AppIcon } from '../../components/app-icon'
 import { type AppNavigationItem, getSelectedMenuKey } from '../../navigation'
 import { useSectionSidebarState } from './sidebar-state'
 
+const getEntryAppearance = (pathname: string, item: AppNavigationItem) => {
+  const active = Boolean(getSelectedMenuKey(pathname, [item]))
+  const hasActiveChild = Boolean(
+    item.children?.length && getSelectedMenuKey(pathname, item.children)
+  )
+  return {
+    active,
+    parentClass: active
+      ? `text-foreground ${hasActiveChild ? 'font-medium' : 'font-bold'}`
+      : 'text-muted',
+    href: item.href ?? item.children?.[0]?.href ?? '/'
+  }
+}
+
+const SidebarEntryLabel = ({ item }: { item: AppNavigationItem }) => (
+  <>
+    {item.icon && (
+      <AppIcon
+        icon={item.icon}
+        size={18}
+        className="shrink-0"
+        aria-hidden="true"
+      />
+    )}
+    <span className="min-w-0 flex-1 truncate">{item.title}</span>
+  </>
+)
+
 const SidebarEntry = ({
   item,
   pathname,
@@ -20,28 +48,11 @@ const SidebarEntry = ({
   expandedKeys: Set<string>
   setExpandedKeys: Dispatch<SetStateAction<Set<string>>>
 }) => {
-  const active = Boolean(getSelectedMenuKey(pathname, [item]))
-  const hasActiveChild = Boolean(
-    item.children?.length && getSelectedMenuKey(pathname, item.children)
-  )
-  const isParentOfActiveItem = active && hasActiveChild
+  const { active, parentClass, href } = getEntryAppearance(pathname, item)
   const expandable =
     item.childrenDisplay === 'sidebar' && Boolean(item.children?.length)
   const expanded = expandedKeys.has(item.key)
   const childrenId = useId()
-  const content = (
-    <>
-      {item.icon && (
-        <AppIcon
-          icon={item.icon}
-          size={18}
-          className="shrink-0"
-          aria-hidden="true"
-        />
-      )}
-      <span className="min-w-0 flex-1 truncate">{item.title}</span>
-    </>
-  )
   return (
     <div>
       {expandable ? (
@@ -50,7 +61,7 @@ const SidebarEntry = ({
           aria-label={item.title}
           aria-expanded={expanded}
           aria-controls={childrenId}
-          className={`hover:bg-surface-secondary flex w-full cursor-pointer items-center gap-3 rounded-full px-3 py-2 text-start text-sm ${active ? `text-foreground ${isParentOfActiveItem ? 'font-medium' : 'font-bold'}` : 'text-muted'}`}
+          className={`hover:bg-surface-secondary flex w-full cursor-pointer items-center gap-3 rounded-full px-3 py-2 text-start text-sm ${parentClass}`}
           onClick={() =>
             setExpandedKeys(current => {
               const next = new Set(current)
@@ -59,7 +70,7 @@ const SidebarEntry = ({
               return next
             })
           }>
-          {content}
+          <SidebarEntryLabel item={item} />
           <AltArrowDown
             size={16}
             className={`shrink-0 ${expanded ? '' : '-rotate-90'}`}
@@ -68,11 +79,11 @@ const SidebarEntry = ({
         </button>
       ) : (
         <Link
-          to={item.href ?? item.children?.[0]?.href ?? '/'}
+          to={href}
           aria-current={active ? 'page' : undefined}
           onClick={onNavigate}
           className={`flex items-center gap-3 rounded-full px-3 py-2 text-sm ${active ? 'bg-surface-secondary text-foreground font-bold' : 'text-muted hover:bg-surface-secondary'}`}>
-          {content}
+          <SidebarEntryLabel item={item} />
         </Link>
       )}
       {expandable && expanded && (

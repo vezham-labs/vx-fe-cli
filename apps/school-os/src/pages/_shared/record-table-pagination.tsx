@@ -2,7 +2,8 @@ import type { Dispatch, SetStateAction } from 'react'
 
 import { Pagination, Table } from '@vezham/react-v3'
 
-import { PaginationControls } from '@pages/_shared/pagination-controls'
+import { PaginationControls } from '@vx/react/pagination'
+
 import { getPaginationSummary } from '@pages/_shared/table-utils'
 
 export type RecordTablePaginationProps = {

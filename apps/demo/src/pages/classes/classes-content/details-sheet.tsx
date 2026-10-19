@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { Key } from 'react-aria-components'
 
 import { Book, Pen } from '@vezham/icons-react'
@@ -233,7 +233,7 @@ type ClassDetailsSheetProps = {
   onOpenChange: (isOpen: boolean) => void
 }
 
-export const ClassDetailsSheet = ({
+const ClassDetailsSheetContent = ({
   classRecord,
   onEdit,
   onOpenChange
@@ -243,10 +243,6 @@ export const ClassDetailsSheet = ({
   const detailTabs = isCompactSheet
     ? [{ id: 'home' as const, label: 'Home' }, ...classDetailTabs]
     : classDetailTabs
-
-  useEffect(() => {
-    setTab('overview')
-  }, [classRecord?.id])
 
   const handleTabChange = (key: Key) => {
     const nextTab = String(key)
@@ -361,3 +357,10 @@ export const ClassDetailsSheet = ({
     </Sheet>
   )
 }
+
+export const ClassDetailsSheet = (props: ClassDetailsSheetProps) => (
+  <ClassDetailsSheetContent
+    key={props.classRecord?.id ?? 'closed'}
+    {...props}
+  />
+)

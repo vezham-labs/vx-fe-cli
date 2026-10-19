@@ -5,9 +5,8 @@ type ClassesSearchContextValue = {
   setQuery: (query: string) => void
 }
 
-export const ClassesSearchContext = createContext<ClassesSearchContextValue | null>(
-  null
-)
+export const ClassesSearchContext =
+  createContext<ClassesSearchContextValue | null>(null)
 
 export const useClassesSearch = () => {
   const context = useContext(ClassesSearchContext)

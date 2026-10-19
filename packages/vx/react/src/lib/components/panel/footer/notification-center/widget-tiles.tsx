@@ -77,14 +77,18 @@ const WidgetPreviewContent = ({ id }: Pick<WidgetTileDefinition, 'id'>) => {
         <>
           <CalendarDate aria-hidden="true" className="text-accent size-5" />
           <span className="mt-2 text-xs font-semibold">October</span>
-          <span className="text-muted text-xl font-semibold tabular-nums">18</span>
+          <span className="text-muted text-xl font-semibold tabular-nums">
+            18
+          </span>
         </>
       )
     case 'world-clock':
       return (
         <>
           <ClockCircle aria-hidden="true" className="text-accent size-5" />
-          <span className="mt-auto text-xl font-semibold tabular-nums">10:09</span>
+          <span className="mt-auto text-xl font-semibold tabular-nums">
+            10:09
+          </span>
           <span className="text-muted text-xs">New Delhi</span>
         </>
       )
@@ -115,7 +119,10 @@ const WidgetPreviewContent = ({ id }: Pick<WidgetTileDefinition, 'id'>) => {
       return (
         <>
           <div className="flex items-center gap-2">
-            <NotebookBookmark aria-hidden="true" className="text-warning size-5" />
+            <NotebookBookmark
+              aria-hidden="true"
+              className="text-warning size-5"
+            />
             <span className="text-sm font-semibold">Notes</span>
           </div>
           <span className="text-muted mt-auto text-xs">No recent notes</span>

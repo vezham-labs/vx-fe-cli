@@ -18,8 +18,8 @@ import { useTileEditor } from '../../components/panel/footer/control-center/edit
 import { PreviewProvider } from '../../components/panel/footer/control-center/preview'
 import type { ControlCenterConfig } from '../../components/panel/footer/control-center/types'
 import {
-  useWidgetTiles,
-  WidgetPreview
+  WidgetPreview,
+  useWidgetTiles
 } from '../../components/panel/footer/notification-center/widget-tiles'
 import { ShortcutButton } from '../../components/shortcut-key'
 import {

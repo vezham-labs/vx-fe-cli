@@ -154,9 +154,7 @@ it('opens the mobile category menu from the gallery', () => {
       tiles={tiles}
       onDone={vi.fn()}
       editor={{
-        items: [
-          { id: 'first', label: 'First', visible: true, editable: true }
-        ],
+        items: [{ id: 'first', label: 'First', visible: true, editable: true }],
         onVisibilityChange: vi.fn(),
         onMove: vi.fn(),
         onReset: vi.fn()
@@ -222,9 +220,7 @@ it('shows matching category navigation for global search results', () => {
   expect(screen.getByText('Media')).toBeTruthy()
   expect(screen.queryByText('Theme')).toBeNull()
 
-  fireEvent.click(
-    screen.getByRole('button', { name: 'Clear controls search' })
-  )
+  fireEvent.click(screen.getByRole('button', { name: 'Clear controls search' }))
 
   expect(screen.getByRole('heading', { name: 'Suggestions' })).toBeTruthy()
   expect(screen.getByText('Theme')).toBeTruthy()
@@ -247,9 +243,7 @@ it('removes a preview control from its hover remove action', () => {
       tiles={tiles}
       onDone={vi.fn()}
       editor={{
-        items: [
-          { id: 'first', label: 'First', visible: true, editable: true }
-        ],
+        items: [{ id: 'first', label: 'First', visible: true, editable: true }],
         onVisibilityChange,
         onMove: vi.fn(),
         onReset: vi.fn()

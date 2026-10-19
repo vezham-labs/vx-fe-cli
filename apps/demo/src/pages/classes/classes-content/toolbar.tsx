@@ -150,7 +150,7 @@ const ClassFilterFields = ({
   </>
 )
 
-export const ClassFilterDropdown = ({
+const ClassFilterDropdown = ({
   classCodeOptions,
   classNameOptions,
   draftFilters,
@@ -208,7 +208,7 @@ type ColumnsDropdownProps = {
   onVisibleColumnsChange: (columns: Set<ClassColumnKey>) => void
 }
 
-export const ColumnsDropdown = ({
+const ColumnsDropdown = ({
   isOpen,
   isHeaderAction = false,
   visibleColumns,
@@ -274,7 +274,7 @@ type SortDropdownProps = {
   onSortChange: (descriptor: SortDescriptor) => void
 }
 
-export const SortDropdown = ({
+const SortDropdown = ({
   isOpen,
   isHeaderAction = false,
   sortDescriptor,

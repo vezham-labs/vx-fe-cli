@@ -1,6 +1,6 @@
 import { ListBox, Pagination, Select, Table } from '@vezham/react-v3'
 
-import { PaginationControls } from '@pages/_shared/pagination-controls'
+import { PaginationControls } from '@vx/react/pagination'
 
 type Props = {
   currentPage: number

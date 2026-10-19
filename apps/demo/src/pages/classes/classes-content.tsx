@@ -57,7 +57,40 @@ const filterLabels: Record<ClassFilterKey, string> = {
   status: 'Status'
 }
 
-const ClassesContent = () => {
+const ActiveClassFilters = ({
+  filters: activeFilters,
+  onRemove: removeFilter
+}: {
+  filters: { key: ClassFilterKey; value: string }[]
+  onRemove: (key: ClassFilterKey) => void
+}) =>
+  activeFilters.length > 0 && (
+    <div
+      role="group"
+      aria-label="Active class filters"
+      className="flex flex-wrap items-center gap-2">
+      {activeFilters.map(filter => {
+        const label = `${filterLabels[filter.key]}: ${filter.value}`
+
+        return (
+          <Chip
+            key={filter.key}
+            color="default"
+            variant="soft"
+            className="gap-1.5">
+            <Chip.Label>{label}</Chip.Label>
+            <CloseButton
+              aria-label={`Remove ${label} filter`}
+              className="h-5 min-h-5 w-5 min-w-5 rounded-full p-0"
+              onPress={() => removeFilter(filter.key)}
+            />
+          </Chip>
+        )
+      })}
+    </div>
+  )
+
+const useClassesContent = () => {
   const navigate = useNavigate()
   const search = useSearch({ strict: false })
   const { query: searchQuery } = useClassesSearch()
@@ -377,112 +410,125 @@ const ClassesContent = () => {
 
   useSectionToolbarContent(toolbarContent)
 
+  return {
+    activeFilters,
+    removeFilter,
+    pageClasses,
+    selectedKeys,
+    sortDescriptor,
+    visibleColumns,
+    setDetailClass,
+    setSelectedKeys,
+    handleSortChange,
+    activePage,
+    pageSize,
+    sortedClasses,
+    totalPages,
+    setCurrentPage,
+    clearSelection,
+    setPageSize,
+    resetPage,
+    detailClass,
+    setEditingClass,
+    editingClass,
+    saveClass,
+    isCreateClassOpen,
+    setIsCreateClassOpen,
+    createClass,
+    selectedClasses,
+    copyToClipboard,
+    deleteSelectedClasses
+  }
+}
+
+const ClassesContent = () => {
+  const model = useClassesContent()
+
   return (
     <section className="demo-classes-content relative flex h-full min-h-0 flex-1 flex-col gap-4">
-      {activeFilters.length > 0 && (
-        <div
-          role="group"
-          aria-label="Active class filters"
-          className="flex flex-wrap items-center gap-2">
-          {activeFilters.map(filter => {
-            const label = `${filterLabels[filter.key]}: ${filter.value}`
-
-            return (
-              <Chip
-                key={filter.key}
-                color="default"
-                variant="soft"
-                className="gap-1.5">
-                <Chip.Label>{label}</Chip.Label>
-                <CloseButton
-                  aria-label={`Remove ${label} filter`}
-                  className="h-5 min-h-5 w-5 min-w-5 rounded-full p-0"
-                  onPress={() => removeFilter(filter.key)}
-                />
-              </Chip>
-            )
-          })}
-        </div>
-      )}
+      <ActiveClassFilters
+        filters={model.activeFilters}
+        onRemove={model.removeFilter}
+      />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2 overflow-hidden">
         <ClassesTable
-          records={pageClasses}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          visibleColumns={visibleColumns}
-          onOpenClass={setDetailClass}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={handleSortChange}
+          records={model.pageClasses}
+          selectedKeys={model.selectedKeys}
+          sortDescriptor={model.sortDescriptor}
+          visibleColumns={model.visibleColumns}
+          onOpenClass={model.setDetailClass}
+          onSelectionChange={model.setSelectedKeys}
+          onSortChange={model.handleSortChange}
         />
         <ClassesPagination
-          currentPage={activePage}
-          pageSize={pageSize}
-          totalItems={sortedClasses.length}
-          totalPages={totalPages}
+          currentPage={model.activePage}
+          pageSize={model.pageSize}
+          totalItems={model.sortedClasses.length}
+          totalPages={model.totalPages}
           onPageChange={page => {
-            setCurrentPage(page)
-            clearSelection()
+            model.setCurrentPage(page)
+            model.clearSelection()
           }}
           onPageSizeChange={nextPageSize => {
-            setPageSize(nextPageSize as (typeof pageSizeOptions)[number])
-            resetPage()
+            model.setPageSize(nextPageSize as (typeof pageSizeOptions)[number])
+            model.resetPage()
           }}
         />
       </div>
 
       <ClassDetailsSheet
-        classRecord={detailClass}
+        classRecord={model.detailClass}
         onOpenChange={isOpen => {
-          if (!isOpen) setDetailClass(null)
+          if (!isOpen) model.setDetailClass(null)
         }}
         onEdit={classRecord => {
-          setDetailClass(null)
-          setEditingClass(classRecord)
+          model.setDetailClass(null)
+          model.setEditingClass(classRecord)
         }}
       />
       <ClassFormSheet
-        classRecord={editingClass}
+        classRecord={model.editingClass}
         isCreateMode={false}
-        isOpen={Boolean(editingClass)}
+        isOpen={Boolean(model.editingClass)}
         onOpenChange={isOpen => {
-          if (!isOpen) setEditingClass(null)
+          if (!isOpen) model.setEditingClass(null)
         }}
-        onSave={saveClass}
+        onSave={model.saveClass}
       />
       <ClassFormSheet
         classRecord={null}
         isCreateMode
-        isOpen={isCreateClassOpen}
-        onOpenChange={setIsCreateClassOpen}
-        onSave={createClass}
+        isOpen={model.isCreateClassOpen}
+        onOpenChange={model.setIsCreateClassOpen}
+        onSave={model.createClass}
       />
       <ClassesActionBar
-        selectedCount={selectedClasses.length}
-        onClear={clearSelection}
+        selectedCount={model.selectedClasses.length}
+        onClear={model.clearSelection}
         onCopyIds={() =>
-          copyToClipboard(
-            selectedClasses.map(classRecord => classRecord.id).join('\n'),
-            `${selectedClasses.length} class ${
-              selectedClasses.length === 1 ? 'ID' : 'IDs'
+          model.copyToClipboard(
+            model.selectedClasses.map(classRecord => classRecord.id).join('\n'),
+            `${model.selectedClasses.length} class ${
+              model.selectedClasses.length === 1 ? 'ID' : 'IDs'
             } copied.`
           )
         }
         onCopyLinks={() =>
-          copyToClipboard(
-            selectedClasses
+          model.copyToClipboard(
+            model.selectedClasses
               .map(
                 classRecord =>
                   `${window.location.origin}/academic/classes/allclasses/${classRecord.id}`
               )
               .join('\n'),
-            `${selectedClasses.length} class ${
-              selectedClasses.length === 1 ? 'link' : 'links'
+            `${model.selectedClasses.length} class ${
+              model.selectedClasses.length === 1 ? 'link' : 'links'
             } copied.`
           )
         }
-        onDelete={deleteSelectedClasses}
-        onEdit={() => setEditingClass(selectedClasses[0] ?? null)}
+        onDelete={model.deleteSelectedClasses}
+        onEdit={() => model.setEditingClass(model.selectedClasses[0] ?? null)}
       />
     </section>
   )

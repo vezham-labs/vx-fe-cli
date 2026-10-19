@@ -1,17 +1,21 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 import { Pagination } from '@vezham/react-v3'
 
 type Props = {
+  className?: string
   currentPage: number
   totalPages: number
-  onPageChange: (value: number | ((current: number) => number)) => void
+  onPageChange: Dispatch<SetStateAction<number>>
 }
 
 export const PaginationControls = ({
+  className,
   currentPage,
   totalPages,
   onPageChange
 }: Props) => (
-  <Pagination.Content>
+  <Pagination.Content className={className}>
     <Pagination.Item>
       <Pagination.Previous
         isDisabled={currentPage <= 1}

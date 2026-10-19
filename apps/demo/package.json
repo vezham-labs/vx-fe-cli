@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@vx/env": "workspace:*",
-    "@vx/start": "workspace:*"
+    "@vx/start": "workspace:*",
+    "react-aria-components": "catalog:"
   }
 }
