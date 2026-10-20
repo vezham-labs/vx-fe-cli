@@ -54,9 +54,10 @@ minimumReleaseAgeExclude:
   - '@vx-cli/*'
   - '@vx-oss/*'
   - '@vezham/*'
-  # vx-bot/NOTE: Allow these security fixes before the seven-day release delay.
-  - 'handlebars@4.7.10' # vx-bot/TODO: Remove after 2026-10-12 22:38 UTC.
-  - 'http-cache-semantics@4.3.0' # vx-bot/TODO: Remove after 2026-10-11 02:57 UTC.
+  # vx-bot/NOTE: Allow pnpm toolchain releases without the seven-day release delay.
+  # vx-bot/TODO: Remove the pnpm exclusions after 2026-10-22 13:40 UTC.
+  - 'pnpm'
+  - '@pnpm/*'
 
 allowBuilds:
   heroui-pro: true
