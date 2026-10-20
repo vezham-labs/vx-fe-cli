@@ -4,7 +4,7 @@ name: 🧪 QA
 run-name: >-
   ${{
     github.event_name == 'schedule' && '🧪 QA • 🕒 Scheduled' ||
-    github.event_name == 'workflow_dispatch' && '🧪 QA • ⚡ Trails' ||
+    github.event_name == 'workflow_dispatch' && '🧪 QA • ▶️ On demand' ||
     ''
   }}
 
