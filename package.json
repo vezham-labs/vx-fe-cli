@@ -149,7 +149,7 @@
     "yaml-eslint-parser": "^2.1.0",
     "yargs": "17.7.3"
   },
-  "packageManager": "pnpm@12.3.4",
+  "packageManager": "pnpm@12.14.0",
   "engines": {
     "node": ">=24.x",
     "pnpm": ">=12.x"
