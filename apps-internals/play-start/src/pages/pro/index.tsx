@@ -1,3 +1,3 @@
-import { Pro } from '@vx/template/pages'
+import { Pro } from '@vezham/template/pages'
 
 export default () => <Pro />

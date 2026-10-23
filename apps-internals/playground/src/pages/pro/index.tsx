@@ -1,4 +1,4 @@
-import { Pro } from '@vx/template/pages'
+import { Pro } from '@vezham/template/pages'
 
 const Page = () => <Pro />
 

@@ -16,7 +16,7 @@ import {
 import { StrictMode } from 'react'
 import { vi } from 'vitest'
 
-import { AppLayout } from '@vx/react/layouts/app'
+import { AppLayout } from '@vezham/react/layouts/app'
 
 import { controlCenter, navigationItems } from '../src/generated/navigation'
 import { vxI18n } from '../src/generated/vx'

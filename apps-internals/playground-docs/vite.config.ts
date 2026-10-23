@@ -4,16 +4,16 @@ import react from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
 import path from 'node:path'
 
-import story from '@vezham/docs-story/vite'
-
 import {
   defineConfig,
   docsMdx,
   getPrerenderPages
-} from '@vx/config/presets/docs'
+} from '@vezham/config/presets/docs'
+import story from '@vezham/docs-story/vite'
 
 export default defineConfig({
   root: __dirname,
+  ssr: { noExternal: ['@vezham/start', '@vezham/env'] },
   plugins: [
     docsMdx(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),

@@ -1,6 +1,6 @@
 import { notFound } from '@tanstack/react-router'
 
-import type { AppNavigationItem } from '@vx/react'
+import type { AppNavigationItem } from '@vezham/react'
 
 import { getNavigationChildren } from '@generated/navigation'
 

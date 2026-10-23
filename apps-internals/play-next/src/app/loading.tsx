@@ -1,5 +1,5 @@
 'use client'
 
-import { Loading } from '@vx/template/components'
+import { Loading } from '@vezham/template/components'
 
 export default Loading

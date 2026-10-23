@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { getDocsLLMSIndex } from '@vx/start/runtime/docs'
+import { getDocsLLMSIndex } from '@vezham/start/runtime/docs'
 
 import { source } from '@app/docs'
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@vx/config/playwright/test'
+import { expect, test } from '@vezham/config/playwright/test'
 
 test.describe('playground-cdn', () => {
   test('loads the application document', async ({ page }) => {

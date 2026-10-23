@@ -1,9 +1,8 @@
 import { useRouter } from '@tanstack/react-router'
 
 import { useTheme } from '@vezham/docs-react/provider/base'
-
-import { ConfiguredControlCenter as SharedControlCenter } from '@vx/react/control-center'
-import { getLanguageDisplayName } from '@vx/start/tanstack-docs'
+import { ConfiguredControlCenter as SharedControlCenter } from '@vezham/react/control-center'
+import { getLanguageDisplayName } from '@vezham/start/tanstack-docs'
 
 import { i18n } from '@app/docs'
 import { controlCenter } from '@generated/navigation'

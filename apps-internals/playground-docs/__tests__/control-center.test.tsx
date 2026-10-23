@@ -25,7 +25,7 @@ vi.mock('@vezham/docs-react/provider/base', () => ({
 vi.mock('@app/docs', () => ({
   i18n: { defaultLanguage: 'en', languages: ['en', 'cn'] }
 }))
-vi.mock('@vx/start/tanstack-docs', () => ({
+vi.mock('@vezham/start/tanstack-docs', () => ({
   getLanguageDisplayName: (locale: string) =>
     locale === 'en' ? 'English' : 'Chinese'
 }))

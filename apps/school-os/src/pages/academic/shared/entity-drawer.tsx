@@ -9,8 +9,7 @@ import {
   Pen as PenIcon
 } from '@vezham/icons-react'
 import { Button, Drawer, Tooltip } from '@vezham/react-v3'
-
-import { ShortcutTooltipLabel } from '@vx/react/shortcut-key'
+import { ShortcutTooltipLabel } from '@vezham/react/shortcut-key'
 
 import { DrawerEditAction } from '@pages/_shared/drawer-edit-action'
 import { DrawerToggle } from '@pages/_shared/drawer-toggle'

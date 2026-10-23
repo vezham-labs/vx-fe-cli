@@ -1,6 +1,6 @@
 // Generated from vx.nav.yaml. DO NOT EDIT.
-import type { AppNavigationItem, AppMenuItem } from '@vx/react'
-import type { ControlCenterConfig } from '@vx/react/control-center'
+import type { AppNavigationItem, AppMenuItem } from '@vezham/react'
+import type { ControlCenterConfig } from '@vezham/react/control-center'
 
 export const navigationItems = [
   {

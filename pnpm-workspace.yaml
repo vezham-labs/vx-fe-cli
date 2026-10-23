@@ -1,6 +1,4 @@
 packages:
-  - 'packages/*/*'
-  - '!packages/vx/styles'
   - 'apps/*'
   - 'apps-*/*'
 

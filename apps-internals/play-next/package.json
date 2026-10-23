@@ -1,13 +1,5 @@
 {
   "name": "play-next",
   "version": "26.0.0-alpha.1",
-  "private": true,
-  "dependencies": {
-    "@vx/template": "workspace:*"
-  },
-  "devDependencies": {
-    "@vx/config": "workspace:*",
-    "@vx/env": "workspace:*",
-    "@vx/start": "workspace:*"
-  }
+  "private": true
 }

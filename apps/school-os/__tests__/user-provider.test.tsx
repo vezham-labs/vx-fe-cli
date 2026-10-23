@@ -3,11 +3,11 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import type { ComponentType, ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { UserProvider, useUser } from '@vx/react/user'
+import { UserProvider, useUser } from '@vezham/react/user'
 
 import { Route } from '../src/routes/__root'
 
-vi.mock('@vx/start/tanstack', () => ({
+vi.mock('@vezham/start/tanstack', () => ({
   createRootComponent:
     ({ children }: { children?: ReactNode }) =>
     () =>
@@ -19,7 +19,7 @@ vi.mock('@generated/vx', () => ({
   vxI18n: { defaultLanguage: 'en' }
 }))
 
-vi.mock('@vx/react/layouts/app', () => ({
+vi.mock('@vezham/react/layouts/app', () => ({
   AppLayout: ({ children }: { children?: ReactNode }) => (
     <UserProvider initialUser={{ firstName: 'Mia' }}>
       <UserProbe />

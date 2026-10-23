@@ -10,15 +10,17 @@ import {
   useState
 } from 'react'
 
+import type { AppNavigationItem } from '@vezham/react'
 import { toast } from '@vezham/react-v3'
 import { cn } from '@vezham/react-v3'
-
-import type { AppNavigationItem } from '@vx/react'
-import { useToolbarAction, useToolbarActions } from '@vx/react/toolbar-actions'
+import {
+  useToolbarAction,
+  useToolbarActions
+} from '@vezham/react/toolbar-actions'
 import {
   useSidebarShortcut,
   useWorkspaceNavigation
-} from '@vx/react/workspace-navigation'
+} from '@vezham/react/workspace-navigation'
 
 import {
   defaultLeftActions,

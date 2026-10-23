@@ -1,6 +1,5 @@
 import { Checkbox, Table } from '@vezham/react-v3'
-
-import { AppIcon } from '@vx/react/app-icon'
+import { AppIcon } from '@vezham/react/app-icon'
 
 type Column = {
   defaultWidth: number

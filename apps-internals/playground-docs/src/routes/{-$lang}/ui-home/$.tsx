@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { DocsRoutePage } from '@vx/start/pages/docs/route'
+import { DocsRoutePage } from '@vezham/start/pages/docs/route'
 
 import { createDocsLoader, docs, getDocsRouteHead } from '@app/docs'
 import { baseOptions } from '@config/layout'

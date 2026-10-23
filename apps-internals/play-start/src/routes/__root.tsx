@@ -1,6 +1,6 @@
 import { createRootRoute } from '@tanstack/react-router'
 
-import { createRootComponent } from '@vx/start/tanstack'
+import { createRootComponent } from '@vezham/start/tanstack'
 
 import { tanstackHead, vxI18n } from '@generated/vx'
 

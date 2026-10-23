@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { createSearchServer } from '@vx/start/runtime/docs'
+import { createSearchServer } from '@vezham/start/runtime/docs'
 
 import { source } from '@app/docs'
 

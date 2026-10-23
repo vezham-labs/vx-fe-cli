@@ -1,7 +1,6 @@
 import { Pen as PenIcon } from '@vezham/icons-react'
 import { Button, Tooltip } from '@vezham/react-v3'
-
-import { ShortcutTooltipLabel } from '@vx/react/shortcut-key'
+import { ShortcutTooltipLabel } from '@vezham/react/shortcut-key'
 
 type Props = {
   ariaLabel: string

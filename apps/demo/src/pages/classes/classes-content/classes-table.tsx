@@ -22,8 +22,7 @@ import {
   type SortDescriptor,
   Table
 } from '@vezham/react-v3'
-
-import { PaginationControls } from '@vx/react/pagination'
+import { PaginationControls } from '@vezham/react/pagination'
 
 import { pageSizeOptions } from './data'
 import type { ClassColumnKey, ClassRecord } from './types'

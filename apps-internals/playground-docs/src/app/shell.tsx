@@ -1,5 +1,5 @@
-import type { getMDXComponents } from '@vx/start/mdx'
-import { createRouter } from '@vx/start/router/tanstack'
+import type { getMDXComponents } from '@vezham/start/mdx'
+import { createRouter } from '@vezham/start/router/tanstack'
 
 import { routeTree } from '@src/routeTree.gen'
 

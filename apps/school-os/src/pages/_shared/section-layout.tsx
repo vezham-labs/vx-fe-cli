@@ -14,9 +14,8 @@ import {
   TextField,
   Tooltip
 } from '@vezham/react-v3'
-
-import { AppIcon } from '@vx/react/app-icon'
-import { ShortcutKey } from '@vx/react/shortcut-key'
+import { AppIcon } from '@vezham/react/app-icon'
+import { ShortcutKey } from '@vezham/react/shortcut-key'
 
 import type { useAcademicLayoutProps } from '@pages/academic/layout/types'
 

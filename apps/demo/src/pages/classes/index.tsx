@@ -1,11 +1,13 @@
 import { Outlet, useChildMatches } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 
+import { getNavigationToolbar } from '@vezham/react'
 import { toast } from '@vezham/react-v3'
-
-import { getNavigationToolbar } from '@vx/react'
-import { SectionLayout } from '@vx/react/layouts/section'
-import { useToolbarAction, useToolbarActions } from '@vx/react/toolbar-actions'
+import { SectionLayout } from '@vezham/react/layouts/section'
+import {
+  useToolbarAction,
+  useToolbarActions
+} from '@vezham/react/toolbar-actions'
 
 import { navigationItems } from '@generated/navigation'
 

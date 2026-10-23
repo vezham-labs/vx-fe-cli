@@ -1,5 +1,5 @@
-import { type NavigationAction, getNavigationToolbar } from '@vx/react'
-import type { ToolbarActionEvent } from '@vx/react/toolbar-actions'
+import { type NavigationAction, getNavigationToolbar } from '@vezham/react'
+import type { ToolbarActionEvent } from '@vezham/react/toolbar-actions'
 
 import { navigationItems } from '@generated/navigation'
 import type { ActionItem } from '@pages/academic/layout/types'

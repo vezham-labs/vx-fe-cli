@@ -6,8 +6,7 @@ import {
   TrashBinTrash as TrashBinTrashIcon
 } from '@vezham/icons-react'
 import { Button, Drawer, Tabs, Tooltip } from '@vezham/react-v3'
-
-import { ShortcutKey } from '@vx/react/shortcut-key'
+import { ShortcutKey } from '@vezham/react/shortcut-key'
 
 import { RecordDrawerFrame } from '@pages/_shared/record-drawer-frame'
 import {

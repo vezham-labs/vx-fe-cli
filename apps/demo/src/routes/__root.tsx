@@ -1,7 +1,7 @@
 import { createRootRoute } from '@tanstack/react-router'
 
-import { AppLayout } from '@vx/react/layouts/app'
-import { createRootComponent } from '@vx/start/tanstack'
+import { AppLayout } from '@vezham/react/layouts/app'
+import { createRootComponent } from '@vezham/start/tanstack'
 
 import { appMenu, controlCenter, navigationItems } from '@generated/navigation'
 import { tanstackHead, vxI18n } from '@generated/vx'

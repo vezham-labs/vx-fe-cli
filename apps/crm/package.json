@@ -2,12 +2,5 @@
   "name": "crm",
   "version": "26.0.0-alpha.1",
   "private": true,
-  "type": "module",
-  "dependencies": {
-    "@vx/template": "workspace:*"
-  },
-  "devDependencies": {
-    "@vx/env": "workspace:*",
-    "@vx/start": "workspace:*"
-  }
+  "type": "module"
 }

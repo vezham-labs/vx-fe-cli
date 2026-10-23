@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { NavigationToolbar } from '@vx/react'
+import type { NavigationToolbar } from '@vezham/react'
 
 import { getToolbarActions } from './actions'
 

@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import '@vezham/styles-v3';
-@import './template/not-found.css';
+@import '@vezham/devtools';
+@import '@vezham/react';
+@import '@vezham/template';
 
 /* wjdlz/NOTE: for pro */
 @import '@vezham/react-pro-v3/css';
@@ -8,10 +10,7 @@
 
 @plugin './plugin.mts';
 
-@source '../../../node_modules/@vx-oss/heroui-v2-theme/dist/**/*.{js,ts,jsx,tsx}';
-@source '../devtools/src/**/*.{js,ts,jsx,tsx}';
-@source '../react/src/**/*.{js,ts,jsx,tsx}';
-@source '../template/src/**/*.{js,ts,jsx,tsx}';
+@source '../../node_modules/@vx-oss/heroui-v2-theme/dist/**/*.{js,ts,jsx,tsx}';
 
 /* @custom-variant - @vx/ds */
 

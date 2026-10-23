@@ -1,8 +1,7 @@
 import { Callout } from '@vezham/docs-react/components/callout'
 import { Card, Cards } from '@vezham/docs-react/components/card'
 import { Heading } from '@vezham/docs-react/components/heading'
-
-import { localizedUrl } from '@vx/start/runtime/docs'
+import { localizedUrl } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import type { Locale } from '@generated/vx'

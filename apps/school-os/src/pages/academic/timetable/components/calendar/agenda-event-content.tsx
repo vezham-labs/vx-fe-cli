@@ -1,7 +1,6 @@
 import { Agenda } from '@vezham/react-pro-v3'
 import { Avatar } from '@vezham/react-v3'
-
-import { getInitials } from '@vx/system-utils/name'
+import { getInitials } from '@vezham/utils/name'
 
 import type { TimetableAgendaEvent } from '@pages/academic/timetable/types'
 import { classNames } from '@pages/academic/timetable/variants'

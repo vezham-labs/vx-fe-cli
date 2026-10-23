@@ -1,8 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Pagination, Table } from '@vezham/react-v3'
-
-import { PaginationControls } from '@vx/react/pagination'
+import { PaginationControls } from '@vezham/react/pagination'
 
 import { getPaginationSummary } from '@pages/_shared/table-utils'
 

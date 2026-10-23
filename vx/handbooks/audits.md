@@ -33,7 +33,7 @@ false positives are configured separately so authored code remains covered.
 React Doctor supply-chain API calls remain disabled.
 
 The workspace-only template keeps reusable docs pages exported explicitly from
-`@vx/start` and registers the shared stylesheet roots as audit entry points.
+`@vezham/start` and registers the shared stylesheet roots as audit entry points.
 Removing reference apps must not make these generated-app inputs appear unused.
 Keep Next.js in the root development dependencies in both the source workspace
 and workspace-only template. Current Nx build and start commands use the full
@@ -59,8 +59,8 @@ The Fallow dependency exceptions cover these indirect uses:
 - `framework.toolingDependencies`: Nx-loaded ESLint configurations/plugins,
   the SWC loader and external helpers, TypeScript's `importHelpers`, config
   loading through Jiti, and the existing workspace CLI commands.
-- Root-declared dependencies used by private workspace packages: this workspace
-  installs them centrally instead of repeating declarations in each package.
+- Root-declared dependencies used by the consuming apps: this workspace
+  installs them centrally instead of repeating declarations in each app.
   The exact names in `ignoreDependencies` were checked against the root manifest.
 - `@vezham/react-v2`: intentionally retained as a build-time demo dependency.
   Revisit its placement if deployment starts installing production dependencies

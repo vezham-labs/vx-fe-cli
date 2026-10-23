@@ -3,8 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useAgenda } from '@vezham/react-pro-v3'
 import type { SortDescriptor } from '@vezham/react-v3'
-
-import { useToolbarAction } from '@vx/react/toolbar-actions'
+import { useToolbarAction } from '@vezham/react/toolbar-actions'
 
 import type {
   TimetableEvent,

@@ -1,10 +1,9 @@
 import { defineDocs } from '@vezham/docs-mdx/macro'
-
 import {
   createStaticDocsRuntime,
   docsMetaSchema,
   docsPageSchema
-} from '@vx/start/runtime/docs'
+} from '@vezham/start/runtime/docs'
 
 import { vxCore, vxDocs, vxI18n, vxMetadata } from '@generated/vx'
 

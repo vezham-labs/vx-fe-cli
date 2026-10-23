@@ -5,8 +5,7 @@ import {
   Separator,
   type SortDescriptor
 } from '@vezham/react-v3'
-
-import { AppIcon } from '@vx/react/app-icon'
+import { AppIcon } from '@vezham/react/app-icon'
 
 import { classNames } from '@pages/academic/class-routine/variants'
 

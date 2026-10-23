@@ -2,8 +2,7 @@ import { useHotkey } from '@tanstack/react-hotkeys'
 import type { Dispatch, SetStateAction } from 'react'
 
 import type { Selection } from '@vezham/react-v3'
-
-import { useToolbarAction } from '@vx/react/toolbar-actions'
+import { useToolbarAction } from '@vezham/react/toolbar-actions'
 
 import type {
   DrawerMode,

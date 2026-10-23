@@ -1,8 +1,7 @@
 import { Link as VLink, useNavigate } from '@tanstack/react-router'
 
 import { Link } from '@vezham/react-v3'
-
-import { Home } from '@vx/template/pages'
+import { Home } from '@vezham/template/pages'
 
 const Page = () => {
   const navigate = useNavigate()

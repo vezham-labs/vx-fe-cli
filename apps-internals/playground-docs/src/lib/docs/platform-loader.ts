@@ -1,6 +1,6 @@
 import { notFound } from '@tanstack/react-router'
 
-import { localizedUrl } from '@vx/start/runtime/docs'
+import { localizedUrl } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import { getPlatformDocsRuntime } from '@components/docs/platform-docs'

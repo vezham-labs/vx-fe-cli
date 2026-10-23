@@ -2,9 +2,8 @@ import { Link as VLink, useNavigate } from '@tanstack/react-router'
 
 import { HomeLayout } from '@vezham/docs-react/layouts/home'
 import { Link, buttonVariants } from '@vezham/react-v3'
-
-import { localizedRouteParam } from '@vx/start/runtime/docs'
-import { Home } from '@vx/template/pages'
+import { localizedRouteParam } from '@vezham/start/runtime/docs'
+import { Home } from '@vezham/template/pages'
 
 import { i18n } from '@app/docs'
 import { baseOptions } from '@config/layout'

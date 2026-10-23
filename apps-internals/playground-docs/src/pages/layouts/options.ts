@@ -1,7 +1,6 @@
 import type { Root } from '@vezham/docs-core/page-tree'
 import type { BaseLayoutProps } from '@vezham/docs-react/layouts/shared'
-
-import { localizedUrl } from '@vx/start/runtime/docs'
+import { localizedUrl } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import { baseOptions } from '@config/layout'

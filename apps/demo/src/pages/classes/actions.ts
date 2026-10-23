@@ -2,12 +2,12 @@ import type {
   NavigationAction,
   NavigationToolbar,
   NavigationViewAction
-} from '@vx/react'
+} from '@vezham/react'
 import type {
   SectionAction,
   SectionViewAction
-} from '@vx/react/layouts/section'
-import type { ToolbarActionEvent } from '@vx/react/toolbar-actions'
+} from '@vezham/react/layouts/section'
+import type { ToolbarActionEvent } from '@vezham/react/toolbar-actions'
 
 export const getToolbarActions = (
   toolbar: NavigationToolbar,

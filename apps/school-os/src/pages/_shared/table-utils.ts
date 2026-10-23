@@ -1,6 +1,5 @@
 import type { SortDescriptor } from '@vezham/react-v3'
-
-import { getLocalDateKey } from '@vx/react/date'
+import { getLocalDateKey } from '@vezham/react/date'
 
 import { reportDateFormatter } from '@src/utils/intl'
 

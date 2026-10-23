@@ -1,11 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { Home } from '@vx/template/pages'
-
-vi.mock('../../../packages/vx/template/src/lib/pages/home/posts', () => ({
-  Posts: () => null
-}))
+import { Home } from '@vezham/template/pages'
 
 describe('Home tooltips', () => {
   it.each([
@@ -13,7 +10,14 @@ describe('Home tooltips', () => {
     ['Status chip', 'Jane is currently online'],
     ['Info icon', 'Help Information']
   ])('opens %s on hover and keyboard focus', async (label, content) => {
-    render(<Home onPress={vi.fn()} />)
+    const client = new QueryClient({
+      defaultOptions: { queries: { enabled: false, retry: false } }
+    })
+    render(
+      <QueryClientProvider client={client}>
+        <Home onPress={vi.fn()} />
+      </QueryClientProvider>
+    )
     const trigger = screen.getByRole('button', { name: label })
     fireEvent.pointerMove(trigger, { pointerType: 'mouse' })
     fireEvent.mouseMove(trigger)

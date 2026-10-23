@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { normalizeLocale } from '@vx/start/runtime/docs'
+import { normalizeLocale } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import { LayoutPreviewPage } from '@pages/layouts'

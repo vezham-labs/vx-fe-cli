@@ -1,6 +1,9 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
-import { assertRouteLocale, parseRouteLocale } from '@vx/start/tanstack-docs'
+import {
+  assertRouteLocale,
+  parseRouteLocale
+} from '@vezham/start/tanstack-docs'
 
 import { i18n } from '@app/docs'
 

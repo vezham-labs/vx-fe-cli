@@ -19,20 +19,13 @@
       "**/public/{sw.js,404.html,offline.html}",
       "**/src/generated/**",
       "**/routeTree.gen.ts",
-      "apps*/**/*-mock/**"
+      "apps*/**/*-mock/**",
+      "packages/vx/**"
     ],
     "overrides": [
       {
         "files": ["apps*/**/src/pages/{home,pro}/index.tsx"],
         "rules": ["react-doctor/duplicate-jsx-subtree"]
-      },
-      {
-        "files": ["packages/vx/config/src/lib/presets/docs/og.ts"],
-        "rules": ["react-doctor/nextjs-no-vercel-og-import"]
-      },
-      {
-        "files": ["packages/vx/config/src/lib/metadata/templates/*.html"],
-        "rules": ["react-doctor/no-unguarded-browser-global-at-module-scope"]
       }
     ]
   }

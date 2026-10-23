@@ -6,12 +6,6 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/vx/start"
-    },
-    {
-      "path": "./packages/vx/system-utils"
-    },
-    {
       "path": "./apps-internals/playground-e2e"
     },
     {
@@ -28,18 +22,6 @@
     },
     {
       "path": "./apps-internals/play-next"
-    },
-    {
-      "path": "./packages/vx/template"
-    },
-    {
-      "path": "./packages/vx/env"
-    },
-    {
-      "path": "./packages/vx/devtools"
-    },
-    {
-      "path": "./packages/vx/config"
     },
     {
       "path": "./apps-internals/playground-docs"
@@ -70,9 +52,6 @@
     },
     {
       "path": "./apps/demo"
-    },
-    {
-      "path": "./packages/vx/react"
     }
   ],
   "compilerOptions": {

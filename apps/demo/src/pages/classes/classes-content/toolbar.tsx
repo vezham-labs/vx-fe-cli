@@ -18,8 +18,7 @@ import {
   Tooltip,
   useMediaQuery
 } from '@vezham/react-v3'
-
-import { useMobileToolbarNavigation } from '@vx/react/layouts/section'
+import { useMobileToolbarNavigation } from '@vezham/react/layouts/section'
 
 import { classColumnOptions, classStatusOptions, sortOptions } from './data'
 import type { ClassColumnKey, ClassFilters, ClassStatus } from './types'

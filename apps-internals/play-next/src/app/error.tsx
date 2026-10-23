@@ -1,6 +1,6 @@
 'use client'
 
-import { ErrorPage } from '@vx/template/components'
+import { ErrorPage } from '@vezham/template/components'
 
 type Props = {
   error: Error & { digest?: string }

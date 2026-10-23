@@ -1,7 +1,6 @@
 import type { BaseLayoutProps } from '@vezham/docs-react/layouts/shared'
 import { VezhamLogo } from '@vezham/icons-react'
-
-import { localizedUrl } from '@vx/start/runtime/docs'
+import { localizedUrl } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import type { Locale } from '@generated/vx'

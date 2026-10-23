@@ -4,8 +4,7 @@ import VLink from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Link } from '@vezham/react-v3'
-
-import { Home } from '@vx/template/pages'
+import { Home } from '@vezham/template/pages'
 
 export default () => {
   const router = useRouter()

@@ -1,4 +1,4 @@
-import { ReorderableGridList } from '@vx/react/bookmarks/favorites'
+import { ReorderableGridList } from '@vezham/react/bookmarks/favorites'
 
 const HomePage = () => {
   return (

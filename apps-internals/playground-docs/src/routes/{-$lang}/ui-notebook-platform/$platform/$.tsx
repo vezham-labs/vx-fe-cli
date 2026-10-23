@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, useNavigate } from '@tanstack/react-router'
 
-import { DocsRoutePage } from '@vx/start/pages/docs/route'
-import { localizedUrl } from '@vx/start/runtime/docs'
+import { DocsRoutePage } from '@vezham/start/pages/docs/route'
+import { localizedUrl } from '@vezham/start/runtime/docs'
 
 import { i18n } from '@app/docs'
 import {

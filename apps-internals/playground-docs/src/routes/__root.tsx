@@ -3,7 +3,7 @@ import { createRootRoute } from '@tanstack/react-router'
 import {
   createRootComponent,
   redirectDefaultLocale
-} from '@vx/start/tanstack-docs'
+} from '@vezham/start/tanstack-docs'
 
 import { i18n } from '@app/docs'
 import { tanstackHead } from '@generated/vx'

@@ -9,7 +9,7 @@ import {
 } from '@testing-library/react'
 import { vi } from 'vitest'
 
-import { createRouter } from '@vx/start/router/tanstack'
+import { createRouter } from '@vezham/start/router/tanstack'
 
 import { vxI18n } from '../src/generated/vx'
 import { routeTree } from '../src/routeTree.gen'

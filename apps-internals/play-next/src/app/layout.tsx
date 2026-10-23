@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
-import { defineConfig } from '@vx/start/next'
+import { defineConfig } from '@vezham/start/next'
 
 import { nextMetadata, nextViewport, vxI18n } from '@generated/vx'
 

@@ -5,9 +5,22 @@ creation. The current repository is the reviewed baseline. Keep adding test apps
 or scenarios when they help evaluate a framework, hosting preset, or shared Vx
 feature; a playground app does not need to be as small as the app the CLI creates.
 
-`vx-fe-kit-next` is the source workspace; changes flow from it into
-`vx-fe-kit-next-template`. Implement shared code, exports, and audit configuration
-in the source before carrying them into the workspace-only template. When removing
+`vx-fe-kit-next` on `next` verifies applications against published npm packages
+from `vx-fe-pkgs`. Shared package implementations and exports belong in that
+package repository; this workspace consumes the published `@vezham/*` interfaces.
+Keep package versions in root `package.json`. Apps and E2E projects must not link
+`@vx/*` runtime/config packages or reference their TypeScript source projects.
+The workspace stylesheet under `vx/styles` imports the packages’ published CSS;
+Tailwind must scan installed package output through those CSS entry points.
+The legacy `packages/vx` tree is excluded from pnpm workspace membership and Nx
+discovery; source comparisons can use Git history without building those packages.
+Vite app configs set `ssr.noExternal` for `@vezham/start` and `@vezham/env` so
+SSR development transforms the consumer environment. Vitest inlines the installed
+runtime packages so Vite replaces `import.meta.env`
+and test mocks follow the same module graph. Keep the consumer TypeScript config
+free of the package-authoring `@vx/fe-kit` export condition.
+
+Application conventions flow into `vx-fe-kit-next-template` after validation. When removing
 reference apps from the template, also remove their TypeScript project references.
 Keep the root Next.js dependency in `devDependencies` in both workspaces. The
 current Nx build and start commands use the full workspace installation. A Next
@@ -21,25 +34,24 @@ runtime dependency.
 
 - The CLI will copy only the files required by the selected app type. Do not
   copy an entire playground directory and then remove demos.
-- Keep reusable runtime and generation behavior in `@vx/start` and
-  `@vx/config`. Keep app identity, route intent, and hosting choices in each
+- Keep reusable runtime and generation behavior in `@vezham/start` and
+  `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.
 - Author app and deploy configuration in YAML. Keep JSON Schema definitions
   and generated provider artifacts in their existing JSON format. Use one
   YAML source per config; no legacy JSON input fallback is required.
-- Use [`@vx/system-utils`](./system-utils.md) for shared app-agnostic utilities
+- Use [`@vezham/utils`](./system-utils.md) for shared app-agnostic utilities
   instead of duplicating them in generated apps.
-- Keep the reusable application shell in `@vx/react`, including layouts,
-  menus, panels, shell providers, and their state. This package is the internal
-  boundary for React code intended to move to `@vezham/react`. Each app owns
+- Keep the reusable application shell in `@vezham/react`, including layouts,
+  menus, panels, shell providers, and their state. Each app owns
   its routes and passes its navigation metadata to the shared shell.
-- Do not change another `@vx/*` package as part of extracting app-common code
-  unless the user explicitly approves that package change.
+- Make reusable package implementation changes in `vx-fe-pkgs`, then validate
+  the published version here.
 - Keep demo pages, sample API routes, stories, fixture content, mocks, and E2E
   projects in the playground when they test behavior. Exclude them from CLI
   output unless the user explicitly selects the corresponding feature.
 - Pass generated `vxI18n` to the shared Control Center as `context={{ i18n: vxI18n }}`.
-  `@vx/react` owns language option labels and document-language behavior; do not
+  `@vezham/react` owns language option labels and document-language behavior; do not
   copy option mapping or hardcoded language lists into app wrappers.
 - Generated files are outputs, not templates to edit by hand. Generate them from
   the app config and source content in the created app.
@@ -52,9 +64,9 @@ runtime dependency.
   their target environment. Metadata generation supplies identity
   and version from `vx.app.yaml` and preserves the deployment setting. Do not
   infer deployment from build mode or substitute placeholder identity/version.
-- Next app configs import `configEnv` from `@vx/env/next/config` so Nx can
+- Next app configs import `configEnv` from `@vezham/env/next/config` so Nx can
   inspect configuration before runtime environment validation. Application code
-  uses `@vx/env/next` for validated settings.
+  uses `@vezham/env/next` for validated settings.
 - Use `V_RELEASE_CHANNEL` (`canary`, `beta`, or `stable`) as the only release-channel
   input in app templates. It defaults to `stable`; compare the channel directly for conditional behavior.
 
@@ -94,11 +106,8 @@ Apply these rules whenever reviewing, migrating, or optimizing either app:
 - Port tests that protect template behavior, and run validation through the
   corresponding app's Nx targets. A historical test or implementation is not itself a
   compatibility contract.
-- Declare dependencies in the app or package that consumes them. When multiple
-  workspace packages need the same version, keep that version in the pnpm
-  catalog and reference it from each package manifest. Keep CLI-generated mock
-  app manifests aligned with their template source rather than cataloging their
-  dependencies only in the generated examples.
+- Keep shared npm package dependency metadata in the root manifest for this
+  consumer test workspace. Preserve app-owned mock dependencies where needed.
 - Keep workspace audit suppressions scoped to real framework entry points or
   verified false positives. Remove unused app exports rather than copying
   app-specific `ignoreExports` entries into the CLI template.
@@ -143,10 +152,10 @@ detail panel heading, and editor entry. Built-in names are supplied by React;
 `title` is not accepted in YAML or configured tile registrations.
 
 Settings route entries use `SettingsRoute` and `validateSearch` from
-`@vx/react/pages/settings`. React owns section validation, query navigation, and
+`@vezham/react/pages/settings`. React owns section validation, query navigation, and
 Back to app behavior; applications supply their generated Control Center config.
 
-App root routes use `AppLayout` from `@vx/react/layouts/app`. It renders explicit
+App root routes use `AppLayout` from `@vezham/react/layouts/app`. It renders explicit
 children when supplied, otherwise the router outlet. Optional `settings` enables
 Settings navigation and layout switching and requires an app-owned `/settings`
 route. Pass generated Control Center configuration as `controlCenter` and language
@@ -159,7 +168,7 @@ Settings link for editing controls. It requires `AppLayout settings` and an
 app-owned `/settings` route. Docs omit this option. Control Center has no inline
 editor; hiding, reordering, and resetting controls happen in Settings.
 
-`createRouter` from `@vx/start/router/tanstack` supplies default not-found
+`createRouter` from `@vezham/start/router/tanstack` supplies default not-found
 boundaries below the root so unknown pages keep the application shell and panels
 mounted. App catch-all routes only throw `notFound()`; they do not repeat the
 shared `NotFound` component or app identity props. An explicit route

@@ -1,4 +1,4 @@
-import { defineStory } from '@vx/start/story'
+import { defineStory } from '@vezham/start/story'
 
 import { CalloutPreview } from '@components/callout'
 

@@ -15,10 +15,9 @@ import {
   toast,
   useMediaQuery
 } from '@vezham/react-v3'
-
-import { useSectionToolbarContent } from '@vx/react/layouts/section'
-import { useMobileControls } from '@vx/react/mobile-controls'
-import { useToolbarAction } from '@vx/react/toolbar-actions'
+import { useSectionToolbarContent } from '@vezham/react/layouts/section'
+import { useMobileControls } from '@vezham/react/mobile-controls'
+import { useToolbarAction } from '@vezham/react/toolbar-actions'
 
 import {
   ClassesActionBar,
