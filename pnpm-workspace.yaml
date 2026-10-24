@@ -55,10 +55,6 @@ minimumReleaseAgeExclude:
   - '@vx-cli/*'
   - '@vx-oss/*'
   - '@vezham/*'
-  # vx-bot/NOTE: Allow pnpm toolchain releases without the seven-day release delay.
-  # vx-bot/TODO: Remove the pnpm exclusions after 2026-10-22 13:40 UTC.
-  - 'pnpm'
-  - '@pnpm/*'
 
 allowBuilds:
   heroui-pro: true

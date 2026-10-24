@@ -75,41 +75,56 @@ describe('Demo Control Center', () => {
       vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
         ...matchMedia(query),
         matches:
-          mobile && ['(max-width: 767px)', '(width < 768px)'].includes(query)
+          mobile &&
+          ['(max-width: 767px)', '(width < 768px)', '(width < 640px)'].includes(
+            query
+          )
       }))
       await renderDemoLayout()
-      const trigger = await screen.findByRole('button', {
-        name: mobile ? 'Open footer actions' : 'Control center'
-      })
-      if (mobile)
+      if (mobile) {
+        const userMenuTrigger = await screen.findByRole('button', {
+          name: 'Open Arya Chan menu'
+        })
         expect(
-          screen.queryByRole('button', { name: 'Control center' })
+          screen.queryByRole('button', { name: 'Open footer actions' })
         ).toBeNull()
+        fireEvent.click(userMenuTrigger)
+      }
+      let accountSheet: HTMLElement | undefined
+      let trigger: HTMLElement
+      if (mobile) {
+        accountSheet = await screen.findByRole('dialog', { name: 'Account' })
+        trigger = within(accountSheet).getByRole('button', {
+          name: 'Control center'
+        })
+      } else {
+        trigger = await screen.findByRole('button', { name: 'Control center' })
+      }
       act(() => trigger.focus())
       fireEvent.click(trigger)
-      if (mobile)
-        fireEvent.click(
-          await screen.findByRole('menuitem', { name: 'Control center' })
-        )
       const dialog = await screen.findByRole('dialog', {
         name: 'Control Center'
       })
       expect(Boolean(dialog.closest('[data-slot="sheet-backdrop"]'))).toBe(
         mobile
       )
-      fireEvent.click(
-        within(dialog).getAllByRole('button', {
-          name: 'Switch to dark mode'
-        })[0]
-      )
-      await within(dialog).findAllByRole('button', {
-        name: 'Switch to light mode'
+      // vx-bot/NOTE: Demo includes multiple appearance tiles; exercise the same toggle in both directions.
+      const appearanceToggle = within(dialog).getAllByRole('button', {
+        name: 'Switch to dark mode'
+      })[0]
+      fireEvent.click(appearanceToggle)
+      await waitFor(() => {
+        expect(appearanceToggle.getAttribute('aria-label')).toBe(
+          'Switch to light mode'
+        )
       })
       expect(document.documentElement.classList.contains('dark')).toBe(true)
-      fireEvent.click(
-        within(dialog).getByRole('button', { name: 'Switch to light mode' })
-      )
-      await within(dialog).findByRole('button', { name: 'Switch to dark mode' })
+      fireEvent.click(appearanceToggle)
+      await waitFor(() => {
+        expect(appearanceToggle.getAttribute('aria-label')).toBe(
+          'Switch to dark mode'
+        )
+      })
       expect(document.documentElement.classList.contains('dark')).toBe(false)
 
       fireEvent.click(within(dialog).getByRole('button', { name: 'Direction' }))
@@ -145,7 +160,7 @@ describe('Demo Control Center', () => {
       )
 
       fireEvent.click(
-        await within(dialog).findByRole('button', { name: 'Theme' })
+        (await within(dialog).findAllByRole('button', { name: 'Theme' }))[0]
       )
       const purple = await within(dialog).findByRole('option', {
         name: 'Purple'
@@ -173,7 +188,8 @@ describe('Demo Control Center', () => {
           screen.queryByRole('dialog', { name: 'Control Center' })
         ).toBeNull()
       )
-      await waitFor(() => expect(document.activeElement).toBe(trigger))
+      if (accountSheet) expect(accountSheet).toBeVisible()
+      else await waitFor(() => expect(document.activeElement).toBe(trigger))
     },
     15000
   )
