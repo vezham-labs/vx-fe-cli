@@ -32,8 +32,15 @@ is excluded only from duplication checks. Framework entry points and targeted
 false positives are configured separately so authored code remains covered.
 React Doctor supply-chain API calls remain disabled.
 
+Fallow's `resolve.conditions` includes `@vx/fe-kit`, matching TypeScript's
+workspace source exports so analysis does not depend on built JavaScript.
+Public CSS source files are explicit entry points because package builds copy
+them to the exported `dist` paths. The exact `@vezham/start/styles/docs` import
+is exempt from unresolved-import checks because its export targets generated
+CSS; its source stays covered and the package build produces the exported file.
+
 The workspace-only template keeps reusable docs pages exported explicitly from
-`@vx/start` and registers the shared stylesheet roots as audit entry points.
+`@vezham/start` and registers the shared stylesheet roots as audit entry points.
 Removing reference apps must not make these generated-app inputs appear unused.
 Keep Next.js in the root development dependencies in both the source workspace
 and workspace-only template. Current Nx build and start commands use the full
@@ -42,6 +49,12 @@ declare their own runtime dependency.
 
 Review findings before adding suppressions. Do not add these audits to the
 formatter; QA enforces the reviewed `minimumScore` baseline.
+
+`@vezham/start` keeps component implementations separate from configuration
+factories, route helpers, and layout/page registries so Fast Refresh can track
+component exports. Public entry points re-export these modules with the existing
+package subpaths and export names. Preserve those entry points when reorganizing
+implementations instead of suppressing mixed-export warnings.
 
 Preview Fallow's suggested cleanup with `pnpm exec fallow fix --dry-run` before
 applying individual fixes. Confirm actual runtime, CSS, CLI, and optional peer
@@ -62,6 +75,8 @@ The Fallow dependency exceptions cover these indirect uses:
 - Root-declared dependencies used by private workspace packages: this workspace
   installs them centrally instead of repeating declarations in each package.
   The exact names in `ignoreDependencies` were checked against the root manifest.
+- `@testing-library/jest-dom`: the shared Vitest setup imports matchers from the
+  root development dependency. Keep that declaration at the root.
 - `@vezham/react-v2`: intentionally retained as a build-time demo dependency.
   Revisit its placement if deployment starts installing production dependencies
   to execute code that imports it directly.
@@ -70,6 +85,9 @@ Use exact package names. `ignoreDependencies` suppresses both unused and
 unlisted dependency findings, so keep these packages declared and review the
 exceptions alongside dependency updates. Tool-only dependencies belong in
 `framework.toolingDependencies` instead.
+
+The root development dependencies include `@vezham/start` because the shared
+docs stylesheet imports its CSS export from outside an application package.
 
 Fallow's average maintainability score also includes a penalty for each file's
 number of imports. It is not a percentage of resolved findings; removing all

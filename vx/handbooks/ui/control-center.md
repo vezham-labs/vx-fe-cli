@@ -5,8 +5,8 @@ ordered tile registry and a local panel outlet for detail screens. Opening a
 detail screen does not add a browser-history entry; Back returns to home.
 
 The shared implementation is `ControlCenter` in
-`packages/vx/react/src/lib/components/panel/footer/control-center`, exported
-from `@vx/react/control-center`. The package root also exports the main
+`packages/core/react/src/lib/components/panel/footer/control-center`, exported
+from `@vezham/react/control-center`. The package root also exports the main
 `ControlCenter` and `ControlCenterProps`; tile helpers and their types live under
 the dedicated path. It accepts a typed `tiles` registry and current `context`;
 the React package owns the tile UI, options lists, appearance behavior, and
@@ -113,8 +113,8 @@ uses `context.language` for routed languages, or `context.i18n` to
 update the HTML language attribute (English by default).
 
 ```tsx
-import { ConfiguredControlCenter } from '@vx/react/control-center'
-import { useToolbarAction } from '@vx/react/toolbar-actions'
+import { ConfiguredControlCenter } from '@vezham/react/control-center'
+import { useToolbarAction } from '@vezham/react/toolbar-actions'
 
 import { controlCenter } from '@generated/navigation'
 
@@ -167,7 +167,7 @@ import {
   LanguageSettings,
   LanguageTile,
   type TileDefinition
-} from '@vx/react/control-center'
+} from '@vezham/react/control-center'
 
 type Context = {
   language: LanguageAdapter
