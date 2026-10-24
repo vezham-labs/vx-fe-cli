@@ -66,6 +66,8 @@
     }
   ],
   "ignoreDependencies": [
+    // vx-bot/NOTE: @vezham/config/vite-lib loads this root-supplied declaration plugin.
+    "vite-plugin-dts",
     // vx-bot/NOTE: Published packages are declared at root and supplied to app workspaces.
     "@vezham/config",
     "@vezham/env",
