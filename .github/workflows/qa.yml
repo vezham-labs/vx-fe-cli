@@ -15,9 +15,9 @@ on:
   push:
     branches:
       - timeline
-      - next
-      - next-*
-      - feat/**
+      - next**
+      - feat**
+      - fix**
     # paths:
     #   - '.github/workflows/qa.yml'
     #   - 'vx/handbooks/ci.md'
