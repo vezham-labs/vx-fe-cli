@@ -52,6 +52,9 @@
     },
     {
       "path": "./apps/demo"
+    },
+    {
+      "path": "./packages/vx/react"
     }
   ],
   "compilerOptions": {
