@@ -1,4 +1,7 @@
+/* wjdlz/NOTE: for vx-pkgs */
 @import '@vezham/start/styles/docs';
+
+/* wjdlz/NOTE: for vx-oss/docs */
 @import '@vezham/docs-react/css/neutral.css';
 @import '@vezham/docs-react/css/preset.css';
 @import '@vezham/docs-react/css/generated/glass.css';

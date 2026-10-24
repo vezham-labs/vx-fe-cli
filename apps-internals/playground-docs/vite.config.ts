@@ -12,14 +12,13 @@ import {
 import story from '@vezham/docs-story/vite'
 
 export default defineConfig({
-  root: __dirname,
-  ssr: { noExternal: ['@vezham/start', '@vezham/env'] },
+  root: import.meta.dirname,
   plugins: [
     docsMdx(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
     story({
-      tsconfigPath: path.join(__dirname, 'tsconfig.app.json')
+      tsconfigPath: path.join(import.meta.dirname, 'tsconfig.app.json')
     }),
     tanstackStart({
       spa: {
@@ -30,7 +29,7 @@ export default defineConfig({
           crawlLinks: true
         }
       },
-      pages: getPrerenderPages(__dirname)
+      pages: getPrerenderPages(import.meta.dirname)
     }),
     react()
   ]

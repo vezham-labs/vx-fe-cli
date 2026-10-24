@@ -37,7 +37,7 @@ export default defineConfig(async env => {
       watch: false,
       globals: true,
       environment: 'node',
-      // vx-bot/NOTE: Transform installed runtime packages so import.meta.env and test mocks use Vite's module runner.
+      // vx-bot/NOTE: Transform installed packages so import.meta.env and mocks use Vite's module runner.
       server: {
         deps: {
           inline: [

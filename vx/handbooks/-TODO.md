@@ -5,7 +5,7 @@ app/main.tsx
 
 ---
 
-packages/vx/start/src/lib/provider/src
+packages/start/src/lib/provider/src
 
 - Vmode, templates, Provider's
 

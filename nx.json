@@ -14,7 +14,7 @@
       "!{projectRoot}/vitest.config.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": ["{workspaceRoot}/vx/styles/**/*"]
+    "sharedGlobals": ["{workspaceRoot}/packages/vx/styles/**/*"]
   },
   "nxCloudId": "6887e1bae4deca638dc2324a",
   "plugins": [
@@ -269,7 +269,7 @@
         "style": "tailwind"
       },
       "library": {
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint",
         "unitTestRunner": "vitest"
       }
@@ -284,7 +284,7 @@
   "release": {
     "projects": ["*", "!@vx/fe-kit"],
     "version": {
-      "preVersionCommand": "pnpm nx run-many -t build",
+      "preVersionCommand": "pnpm nx run @vx:@vx-ci/build",
       "conventionalCommits": true,
       "versionActions": "./vx/tools/release/version-actions.cjs"
     },
@@ -322,7 +322,8 @@
       }
     },
     "releaseTag": {
-      "pattern": "{version}"
+      "pattern": "{version}",
+      "strictPreid": false
     }
   },
   "analytics": false

@@ -19,8 +19,7 @@
       "**/public/{sw.js,404.html,offline.html}",
       "**/src/generated/**",
       "**/routeTree.gen.ts",
-      "apps*/**/*-mock/**",
-      "packages/vx/**"
+      "apps*/**/*-mock/**"
     ],
     "overrides": [
       {

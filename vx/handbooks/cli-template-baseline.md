@@ -5,22 +5,9 @@ creation. The current repository is the reviewed baseline. Keep adding test apps
 or scenarios when they help evaluate a framework, hosting preset, or shared Vx
 feature; a playground app does not need to be as small as the app the CLI creates.
 
-`vx-fe-kit-next` on `next` verifies applications against published npm packages
-from `vx-fe-pkgs`. Shared package implementations and exports belong in that
-package repository; this workspace consumes the published `@vezham/*` interfaces.
-Keep package versions in root `package.json`. Apps and E2E projects must not link
-`@vx/*` runtime/config packages or reference their TypeScript source projects.
-The workspace stylesheet under `vx/styles` imports the packages’ published CSS;
-Tailwind must scan installed package output through those CSS entry points.
-The legacy `packages/vx` tree is excluded from pnpm workspace membership and Nx
-discovery; source comparisons can use Git history without building those packages.
-Vite app configs set `ssr.noExternal` for `@vezham/start` and `@vezham/env` so
-SSR development transforms the consumer environment. Vitest inlines the installed
-runtime packages so Vite replaces `import.meta.env`
-and test mocks follow the same module graph. Keep the consumer TypeScript config
-free of the package-authoring `@vx/fe-kit` export condition.
-
-Application conventions flow into `vx-fe-kit-next-template` after validation. When removing
+`vx-fe-kit-next` is the source workspace; changes flow from it into
+`vx-fe-kit-next-template`. Implement shared code, exports, and audit configuration
+in the source before carrying them into the workspace-only template. When removing
 reference apps from the template, also remove their TypeScript project references.
 Keep the root Next.js dependency in `devDependencies` in both workspaces. The
 current Nx build and start commands use the full workspace installation. A Next
@@ -43,10 +30,10 @@ runtime dependency.
 - Use [`@vezham/utils`](./system-utils.md) for shared app-agnostic utilities
   instead of duplicating them in generated apps.
 - Keep the reusable application shell in `@vezham/react`, including layouts,
-  menus, panels, shell providers, and their state. Each app owns
-  its routes and passes its navigation metadata to the shared shell.
-- Make reusable package implementation changes in `vx-fe-pkgs`, then validate
-  the published version here.
+  menus, panels, shell providers, and their state. Each app owns its routes and
+  passes its navigation metadata to the shared shell.
+- Do not change another `@vx/*` package as part of extracting app-common code
+  unless the user explicitly approves that package change.
 - Keep demo pages, sample API routes, stories, fixture content, mocks, and E2E
   projects in the playground when they test behavior. Exclude them from CLI
   output unless the user explicitly selects the corresponding feature.
@@ -106,8 +93,11 @@ Apply these rules whenever reviewing, migrating, or optimizing either app:
 - Port tests that protect template behavior, and run validation through the
   corresponding app's Nx targets. A historical test or implementation is not itself a
   compatibility contract.
-- Keep shared npm package dependency metadata in the root manifest for this
-  consumer test workspace. Preserve app-owned mock dependencies where needed.
+- Declare dependencies in the app or package that consumes them. When multiple
+  workspace packages need the same version, keep that version in the pnpm
+  catalog and reference it from each package manifest. Keep CLI-generated mock
+  app manifests aligned with their template source rather than cataloging their
+  dependencies only in the generated examples.
 - Keep workspace audit suppressions scoped to real framework entry points or
   verified false positives. Remove unused app exports rather than copying
   app-specific `ignoreExports` entries into the CLI template.
@@ -179,3 +169,64 @@ See [App layout](./ui/app-layout.md) for the shared props and app route examples
 Keep the filename `vx.nav.yaml`. Its required top-level `navigation` array
 defines visible destinations; `items` is not accepted as a legacy alias. Generated
 React exports retain the name `navigationItems`.
+
+## Package library templates
+
+Package templates use `defineConfig` from `@vezham/config/vite-lib`, or
+`@vezham/config/vite-lib/react` for React packages. These presets discover source
+entry points from package exports and CLI entries, preserve ES module paths, keep
+package dependencies external, copy CSS and HTML assets into `dist`, and disable
+minification. They also provide workspace cache defaults and declarations from
+`tsconfig.lib.json`. React packages add the React SWC plugin. Packages can override
+Vite build options through `defineConfig`; test configs remain separate and use
+the shared Vitest preset. Shared library defaults stay internal to the presets.
+
+Declare the `@vezham/config` tooling package in workspace-root
+`devDependencies`, rather than in publishable package manifests. Package builds
+and tests use the workspace installation.
+
+## Public package migration
+
+Reusable implementations live in `@vezham/utils`, `@vezham/hooks`,
+`@vezham/react`, `@vezham/env`, `@vezham/template`, `@vezham/start`,
+`@vezham/devtools`, and `@vezham/config`. Preserve existing runtime subpaths
+when changing package scope. Template components, pages, and store keep their
+subpaths; `@vezham/template/app` is the aggregate app entry.
+
+This repository tests installed npm packages. Keep shared conventions aligned with
+`vx-fe-pkgs-timeline`, while implementing public package changes in that repository.
+Declare published packages at the workspace root. Consumers import
+`@vezham/config` directly from its built npm exports; this repository does not
+need the package author's workspace loaders or local public-package builds.
+Root `prepare` only runs Husky. Cross-package imports use package paths.
+
+The shared app preset in `@vezham/config` alpha.9 and later owns
+`ssr.noExternal` for `@vezham/start` and `@vezham/env`; CDN and docs inherit it.
+App configs do not need to repeat those entries. Keep installed runtime packages
+in Vitest's `server.deps.inline` list so Vite resolves preserved `import.meta.env`
+expressions and applies test mocks instead of executing native Node modules.
+
+Workspace CSS remains under `packages/vx/styles`. Public UI packages expose
+`dist/index.css` through their root `style` export and top-level `style` field.
+Import the package name from CSS; JavaScript imports retain their runtime exports.
+These stylesheets register the packages' compiled JavaScript with Tailwind.
+The shared library preset emits component CSS to `dist/index.css` and merges the
+authored stylesheet into that file. Preserve the generated scoped selectors and
+keyframes; replacing this output with only `@source` directives breaks panel
+animations and sizing in consumers of the built package.
+The docs runtime uses `@vezham/start/styles/docs` for docs layouts and pages.
+Keep source paths inside each package's stylesheet rather than referring to
+workspace source directories from shared CSS. CSS exports remain side effects;
+JavaScript exports remain eligible for tree shaking.
+Apps consume published stylesheets from installed npm packages; they do not
+need implicit dependencies on local `devtools`, `react`, or `template` projects.
+Keep `packages/vx/styles/**/*` in Nx shared cache inputs and register its CSS
+entry points in Fallow. Keep root-only package dependency exceptions in Fallow.
+
+Public library builds preserve ES modules, externalize package dependencies, and
+publish declarations for every JavaScript export. Environment adapters defer app
+values to the consuming app build. Shared test setup and metadata HTML templates
+ship with `@vezham/config`.
+
+Keep component-owned state and hooks with their UI. Extract independent hooks
+into `@vezham/hooks` and plain utilities into `@vezham/utils`.

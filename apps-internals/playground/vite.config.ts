@@ -5,8 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from '@vezham/config/presets/app'
 
 export default defineConfig({
-  root: __dirname,
-  ssr: { noExternal: ['@vezham/start', '@vezham/env'] },
+  root: import.meta.dirname,
   plugins: [
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),

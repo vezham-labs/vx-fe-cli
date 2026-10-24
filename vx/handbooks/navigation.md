@@ -136,7 +136,7 @@ Standalone consumers can mount `ToolbarActionsProvider` without `AppLayout`.
 tooltip say Sync. App handlers currently show “Server sync is not implemented
 yet.” without reloading or invalidating the route. Replace the notice with
 server synchronization when available. Shared layouts invoke the app's `onSync`
-callback; `@vx/start` mounts the toast provider once in its shared app provider,
+callback; `@vezham/start` mounts the toast provider once in its shared app provider,
 including apps that do not use `AppLayout`.
 
 `metadata:generate` writes `src/generated/navigation.ts` when the YAML file

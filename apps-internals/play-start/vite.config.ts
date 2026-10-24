@@ -6,8 +6,7 @@ import { nitro } from 'nitro/vite'
 import { defineConfig } from '@vezham/config/presets/app'
 
 export default defineConfig({
-  root: __dirname,
-  ssr: { noExternal: ['@vezham/start', '@vezham/env'] },
+  root: import.meta.dirname,
   plugins: [
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),

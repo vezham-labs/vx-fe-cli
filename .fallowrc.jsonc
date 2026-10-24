@@ -22,11 +22,11 @@
     "**/routeTree.gen.ts",
     "apps*/**/*-mock/**",
     // vx-bot/NOTE: Legacy implementations are outside this npm-consumer workspace.
-    "packages/vx/**"
+    "packages/vx/react/**"
   ],
   "entry": [
     // vx-bot/NOTE: Generated apps import these shared stylesheet roots directly.
-    "vx/styles/{index.css,docs/index.css}",
+    "packages/vx/styles/{index.css,docs/index.css}",
     // vx-bot/NOTE: For Next.js app
     "**/src/app/**/{page,layout,error,global-error,loading,not-found}.tsx",
     "**/src/app/**/route.ts",
@@ -66,7 +66,7 @@
     }
   ],
   "ignoreDependencies": [
-    // vx-bot/NOTE: These npm packages are declared at root and supplied to app workspaces.
+    // vx-bot/NOTE: Published packages are declared at root and supplied to app workspaces.
     "@vezham/config",
     "@vezham/env",
     "@vezham/react",
@@ -83,6 +83,8 @@
     "@tanstack/react-devtools",
     "@tanstack/react-query",
     "@tanstack/react-query-devtools",
+    // vx-bot/NOTE: Shared Vitest setup uses this dependency declared at the workspace root.
+    "@testing-library/jest-dom",
     "@testing-library/react",
     "@tiptap/core",
     "@tiptap/extension-link",
