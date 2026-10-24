@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.app.json",
+  "extends": ["./tsconfig.app.json", "../../tsconfig.spec.json"],
   "compilerOptions": {
     "outDir": "./out-tsc/vitest",
     "noEmit": false,
@@ -7,15 +7,6 @@
     "tsBuildInfoFile": "./out-tsc/vitest/tsconfig.spec.tsbuildinfo",
     "plugins": [],
     "lib": ["dom"],
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node",
-      "vitest",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts"
-    ],
     "jsx": "react-jsx",
     "ignoreDeprecations": "6.0",
     "rootDir": "."

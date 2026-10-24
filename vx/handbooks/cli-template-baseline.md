@@ -230,3 +230,12 @@ ship with `@vezham/config`.
 
 Keep component-owned state and hooks with their UI. Extract independent hooks
 into `@vezham/hooks` and plain utilities into `@vezham/utils`.
+
+## Shared test types
+
+App test configs extend their existing base plus the root `tsconfig.spec.json`.
+The root test config owns Vitest, DOM matcher, and framework asset types. Do not
+repeat the `types` array in app test configs: TypeScript replaces inherited arrays.
+Keep these declarations out of production configs. The shared `@vezham/config`
+Vitest setup registers matchers at runtime, so individual tests do not import
+`@testing-library/jest-dom/vitest`. Future CLI templates use the same inheritance.
