@@ -66,6 +66,16 @@
     }
   ],
   "ignoreDependencies": [
+    // vx-bot/NOTE: Required peers of @vezham/react-pro-v3 and @vezham/react-v3.
+    "@heroui/react",
+    "@internationalized/date",
+    "@react-aria/utils",
+    "motion",
+    "react-aria",
+    "react-aria-components",
+    "react-resizable-panels",
+    "react-stately",
+    "tailwind-merge",
     // vx-bot/NOTE: @vezham/config/vite-lib loads this root-supplied declaration plugin.
     "vite-plugin-dts",
     // vx-bot/NOTE: Published packages are declared at root and supplied to app workspaces.

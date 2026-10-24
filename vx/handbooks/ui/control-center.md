@@ -4,9 +4,8 @@ A Control Center is a compact overlay for frequent preferences. It uses an
 ordered tile registry and a local panel outlet for detail screens. Opening a
 detail screen does not add a browser-history entry; Back returns to home.
 
-The shared implementation is `ControlCenter` in
-`packages/core/react/src/lib/components/panel/footer/control-center`, exported
-from `@vezham/react/control-center`. The package root also exports the main
+The shared implementation is `ControlCenter`, exported from
+`@vezham/react/control-center`. The package root also exports the main
 `ControlCenter` and `ControlCenterProps`; tile helpers and their types live under
 the dedicated path. It accepts a typed `tiles` registry and current `context`;
 the React package owns the tile UI, options lists, appearance behavior, and

@@ -32,16 +32,13 @@ is excluded only from duplication checks. Framework entry points and targeted
 false positives are configured separately so authored code remains covered.
 React Doctor supply-chain API calls remain disabled.
 
-Fallow's `resolve.conditions` includes `@vx/fe-kit`, matching TypeScript's
-workspace source exports so analysis does not depend on built JavaScript.
-Public CSS source files are explicit entry points because package builds copy
-them to the exported `dist` paths. The exact `@vezham/start/styles/docs` import
-is exempt from unresolved-import checks because its export targets generated
-CSS; its source stays covered and the package build produces the exported file.
+This workspace consumes published `@vezham/*` packages from npm. Fallow analyzes
+workspace-owned code and configuration; it does not require local public-package
+source exports or builds. The shared stylesheet roots under `packages/vx/styles`
+are explicit entry points because generated apps import them directly. Their
+`@vezham/start/styles/docs` import resolves through the installed package's CSS
+export.
 
-The workspace-only template keeps reusable docs pages exported explicitly from
-`@vezham/start` and registers the shared stylesheet roots as audit entry points.
-Removing reference apps must not make these generated-app inputs appear unused.
 Keep Next.js in the root development dependencies in both the source workspace
 and workspace-only template. Current Nx build and start commands use the full
 workspace installation; Next apps using production-only installations must
@@ -66,6 +63,10 @@ The Fallow dependency exceptions cover these indirect uses:
 
 - `@fontsource/inter` and `@fontsource/jura`: OG font files loaded with
   `require.resolve`; `@vezham/styles-v3`: imported from the shared CSS entry.
+- The required peers of `@vezham/react-pro-v3` and `@vezham/react-v3`: HeroUI,
+  React Aria/Stately, date utilities, motion, panels, and Tailwind merge are
+  supplied at the root for published UI packages. Keep the React Aria versions
+  aligned as described in the CLI template baseline.
 - The listed Pro optional peers: retained for the workspace's component demos
   and supported component features; review them when `@vezham/react-pro-v3`
   changes or those features are removed.
@@ -86,8 +87,8 @@ unlisted dependency findings, so keep these packages declared and review the
 exceptions alongside dependency updates. Tool-only dependencies belong in
 `framework.toolingDependencies` instead.
 
-The root development dependencies include `@vezham/start` because the shared
-docs stylesheet imports its CSS export from outside an application package.
+The root dependencies include `@vezham/start` because the shared docs stylesheet
+imports its CSS export from outside an application package.
 
 Fallow's average maintainability score also includes a penalty for each file's
 number of imports. It is not a percentage of resolved findings; removing all
