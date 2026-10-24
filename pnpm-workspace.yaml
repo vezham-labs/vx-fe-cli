@@ -7,7 +7,8 @@ packages:
 
 catalog:
   '@internationalized/date': 3.12.4
-  # vx-bot/NOTE: fallow-ignore-next-line unused-catalog-entry -- Reserved for app keyboard shortcuts.
+  # vx-bot/NOTE: Reserved for app keyboard shortcuts; keep the Fallow directive below intact.
+  # fallow-ignore-next-line unused-catalog-entry
   '@tanstack/react-hotkeys': ^0.10.0
   framer-motion: ^12.40.0
   react-aria-components: 1.21.1
