@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "Template",
+  "title": "Create a Template Library for Scaffolding",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the template library?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the lib is placed"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the library (used for linting)"
+    },
+    "publishable": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create a publishable library."
+    },
+    "importPath": {
+      "type": "string",
+      "description": "The library name used to import it, like @myorg/my-awesome-lib"
+    },
+    "templateType": {
+      "type": "string",
+      "enum": ["page", "component", "feature", "layout"],
+      "default": "component",
+      "description": "Type of templates to generate"
+    }
+  },
+  "required": ["name"]
+}

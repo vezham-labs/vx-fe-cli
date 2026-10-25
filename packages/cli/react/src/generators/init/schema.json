@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "Init",
+  "title": "Initialize Custom NX Generators",
+  "type": "object",
+  "properties": {
+    "overrideDefaults": {
+      "type": "boolean",
+      "description": "Override default Vx CLI React generators",
+      "default": true
+    }
+  }
+}

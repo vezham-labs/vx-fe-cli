@@ -1,0 +1,15 @@
+{
+  "name": "<%= importPath || '@' + name %>",
+  "version": "0.0.1",
+  "type": "module",<% if (publishable) { %>
+  "main": "./index.js",
+  "types": "./index.d.ts",<% } %>
+  "peerDependencies": {<% if (component) { %>
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"<% } %>
+  },
+  "devDependencies": {<% if (component) { %>
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0"<% } %>
+  }
+}

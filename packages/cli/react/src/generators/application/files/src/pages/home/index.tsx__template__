@@ -1,0 +1,5 @@
+const Page = () => {
+  return <div>Welcome to <%= projectLabel %>!...</div>
+}
+
+export default Page

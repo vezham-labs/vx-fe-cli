@@ -1,0 +1,56 @@
+<% if (component) { %>import './<%=fileName%>.module.css';
+
+export interface <%= className %>Props {
+  /**
+   * The content to display inside the component
+   */
+  children?: React.ReactNode;
+  /**
+   * Additional CSS classes to apply
+   */
+  className?: string;
+  /**
+   * The variant style to apply
+   */
+  variant?: 'primary' | 'secondary' | 'outline';
+  /**
+   * The size of the component
+   */
+  size?: 'small' | 'medium' | 'large';
+}
+
+export function <%= className %>({
+  children = 'Hello from <%= className %>!',
+  className = '',
+  variant = 'primary',
+  size = 'medium',
+}: <%= className %>Props) {
+  const baseClasses = 'custom-component';
+  const variantClasses = {
+    primary: 'custom-component--primary',
+    secondary: 'custom-component--secondary',
+    outline: 'custom-component--outline',
+  };
+  const sizeClasses = {
+    small: 'custom-component--small',
+    medium: 'custom-component--medium',
+    large: 'custom-component--large',
+  };
+
+  const classes = [
+    baseClasses,
+    variantClasses[variant],
+    sizeClasses[size],
+    className,
+  ].filter(Boolean).join(' ');
+
+  return (
+    <div className={classes}>
+      <div className="custom-component__content">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export default <%= className %>;<% } %>

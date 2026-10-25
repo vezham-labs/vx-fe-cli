@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "Application",
+  "title": "Create a Custom React Application",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the application.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the application?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "The directory of the new application."
+    },
+    "category": {
+      "type": "string",
+      "description": "Application category that determines the project structure",
+      "default": "internal",
+      "enum": ["cdn", "pod", "suit", "platform", "widget", "internal", "app"],
+      "x-prompt": {
+        "message": "Which category should this application belong to?",
+        "type": "list",
+        "items": [
+          { "value": "cdn", "label": "Cdns - Global CDNs applications" },
+          { "value": "pod", "label": "Pods - Micro-People applications" },
+          {
+            "value": "suit",
+            "label": "Suits - suit-bundle applications"
+          },
+          {
+            "value": "platform",
+            "label": "Platforms - CX platform applications"
+          },
+          {
+            "value": "widget",
+            "label": "Widgets - App Widgets applications"
+          },
+          {
+            "value": "internal",
+            "label": "Internal - Internal tools and utilities"
+          },
+          { "value": "app", "label": "Apps - Standard applications" }
+        ]
+      }
+    },
+    "style": {
+      "type": "string",
+      "description": "The file extension to be used for style files.",
+      "default": "tailwind",
+      "enum": ["tailwind"]
+    },
+    "linter": {
+      "type": "string",
+      "description": "The tool to use for running lint checks.",
+      "default": "eslint",
+      "enum": ["eslint"]
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "description": "Test runner to use for unit tests.",
+      "default": "vitest",
+      "enum": ["vitest"]
+    },
+    "e2eTestRunner": {
+      "type": "string",
+      "description": "Test runner to use for end to end (E2E) tests.",
+      "default": "playwright",
+      "enum": ["playwright"]
+    },
+    "mockServer": {
+      "type": "boolean",
+      "description": "Generate a JSON Server mock backend for API simulation.",
+      "default": true
+    },
+    "cdnHost": {
+      "type": "string",
+      "description": "CDN config (cdn - static.vezham.com, self - self-hosting,..)",
+      "default": "cdn",
+      "enum": ["cdn", "self"]
+    },
+    "strict": {
+      "type": "boolean",
+      "description": "Creates an application with strict mode enabled.",
+      "default": true
+    }
+  },
+  "required": ["name"]
+}

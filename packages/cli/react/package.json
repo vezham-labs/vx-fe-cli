@@ -1,0 +1,50 @@
+{
+  "name": "@vx-cli/react",
+  "version": "26.0.0-beta.2",
+  "keywords": [
+    "vezham-cli",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vezham-labs/vx-fe-cli.git",
+    "directory": "packages/cli/react"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@vx/fe-kit": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./generators.json": "./generators.json",
+    "./executors.json": "./executors.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "vx-react": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo",
+    "LICENSE",
+    "generators.json",
+    "executors.json"
+  ],
+  "dependencies": {
+    "@nx/devkit": "23.2.1"
+  },
+  "peerDependencies": {
+    "nx": "^23.2.1"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "executors": "./executors.json",
+  "generators": "./generators.json"
+}

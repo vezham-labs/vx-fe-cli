@@ -1,0 +1,12 @@
+{
+  "name": "@vx-cli/react",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/cli/react/src",
+  "projectType": "library",
+  "tags": ["type:plugin", "scope:cli"],
+  "targets": {
+    "test": {
+      "dependsOn": ["build", "^build"]
+    }
+  }
+}

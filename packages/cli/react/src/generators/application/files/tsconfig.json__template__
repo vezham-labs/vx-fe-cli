@@ -1,0 +1,19 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "<%= offsetFromRoot %>packages/vx/system-utils"
+    },
+    {
+      "path": "<%= offsetFromRoot %>packages/vx/start"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "<%= offsetFromRoot %>tsconfig.base.json"
+}

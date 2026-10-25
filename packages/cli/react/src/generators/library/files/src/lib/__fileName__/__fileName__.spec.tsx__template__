@@ -1,0 +1,35 @@
+<% if (component) { %>import { render } from '@testing-library/react';
+
+import <%= className %> from './<%= fileName %>';
+
+describe('<%= className %>', () => {
+  it('should render successfully', () => {
+    const { baseElement } = render(<<%= className %> />);
+    expect(baseElement).toBeTruthy();
+  });
+
+  it('should render with default content', () => {
+    const { getByText } = render(<<%= className %> />);
+    expect(getByText('Hello from <%= className %>!')).toBeTruthy();
+  });
+
+  it('should render with custom children', () => {
+    const { getByText } = render(<<%= className %>>Custom Content</<%= className %>>);
+    expect(getByText('Custom Content')).toBeTruthy();
+  });
+
+  it('should apply custom className', () => {
+    const { container } = render(<<%= className %> className="test-class" />);
+    expect(container.firstChild).toHaveClass('test-class');
+  });
+
+  it('should apply variant classes', () => {
+    const { container } = render(<<%= className %> variant="secondary" />);
+    expect(container.firstChild).toHaveClass('custom-component--secondary');
+  });
+
+  it('should apply size classes', () => {
+    const { container } = render(<<%= className %> size="large" />);
+    expect(container.firstChild).toHaveClass('custom-component--large');
+  });
+});<% } %>

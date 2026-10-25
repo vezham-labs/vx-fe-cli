@@ -1,0 +1,208 @@
+import { execFileSync, spawnSync } from 'node:child_process'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync
+} from 'node:fs'
+import { createRequire } from 'node:module'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
+import { pathToFileURL } from 'node:url'
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi
+} from 'vitest'
+
+const packageRoot = path.resolve(import.meta.dirname, '..')
+const temporaryRoot = mkdtempSync(path.join(tmpdir(), 'vx-cli-react-package-'))
+const installedRoot = path.join(temporaryRoot, 'node_modules/@vx-cli/react')
+const readJson = (file: string) => JSON.parse(readFileSync(file, 'utf8'))
+
+beforeAll(() => {
+  execFileSync('pnpm', ['pack', '--pack-destination', temporaryRoot], {
+    cwd: packageRoot,
+    stdio: 'pipe'
+  })
+  const tarballs = readdirSync(temporaryRoot).filter(file =>
+    file.endsWith('.tgz')
+  )
+  expect(tarballs).toHaveLength(1)
+  mkdirSync(installedRoot, { recursive: true })
+  const require = createRequire(path.join(packageRoot, 'package.json'))
+  const dependencies = readJson(
+    path.join(packageRoot, 'package.json')
+  ).dependencies
+  for (const name of Object.keys(dependencies)) {
+    const target = path.join(temporaryRoot, 'node_modules', name)
+    mkdirSync(path.dirname(target), { recursive: true })
+    symlinkSync(
+      path.dirname(require.resolve(`${name}/package.json`)),
+      target,
+      'dir'
+    )
+  }
+  symlinkSync(
+    path.dirname(require.resolve('nx/package.json')),
+    path.join(temporaryRoot, 'node_modules/nx'),
+    'dir'
+  )
+  execFileSync('tar', [
+    '-xzf',
+    path.join(temporaryRoot, tarballs[0]),
+    '--strip-components=1',
+    '-C',
+    installedRoot
+  ])
+}, 30000)
+
+afterAll(() => rmSync(temporaryRoot, { recursive: true, force: true }))
+
+beforeEach(() => vi.stubEnv('NX_SKIP_FORMAT', 'true'))
+afterEach(() => vi.unstubAllEnvs())
+
+describe('published Nx plugin', () => {
+  it('loads the packed entry through Node package resolution outside the workspace', async () => {
+    const require = createRequire(path.join(temporaryRoot, 'package.json'))
+    const packageName: string = readJson(
+      path.join(installedRoot, 'package.json')
+    ).name
+    expect(typeof require(packageName)).toBe('object')
+    const entry = require.resolve(packageName)
+    expect(entry.startsWith(realpathSync(installedRoot) + path.sep)).toBe(true)
+    expect(await import(pathToFileURL(entry).href)).toBeDefined()
+    const manifest = require(`${packageName}/package.json`)
+    expect(existsSync(path.join(installedRoot, manifest.types))).toBe(true)
+  })
+
+  it('ships Nx collection metadata and every registered factory and schema', () => {
+    const manifest = readJson(path.join(installedRoot, 'package.json'))
+    for (const key of ['generators', 'executors']) {
+      const collection = readJson(path.join(installedRoot, manifest[key]))
+      expect(collection[key]).toBeTypeOf('object')
+      for (const registration of Object.values(collection[key]) as Array<{
+        factory?: string
+        implementation?: string
+        schema: string
+      }>) {
+        const factory = registration.factory ?? registration.implementation
+        if (!factory) throw new Error('Nx registration is missing its factory')
+        const entry = factory.split('#')[0]
+        expect(
+          existsSync(
+            path.join(installedRoot, entry + (path.extname(entry) ? '' : '.js'))
+          )
+        ).toBe(true)
+        expect(existsSync(path.join(installedRoot, registration.schema))).toBe(
+          true
+        )
+      }
+    }
+  })
+
+  it('ships renderable app and library templates and an executable CLI', async () => {
+    const require = createRequire(path.join(temporaryRoot, 'package.json'))
+    const { createTreeWithEmptyWorkspace } = require('@nx/devkit/testing')
+    const { updateNxJson } = require('@nx/devkit')
+    const { applicationGenerator, libraryGenerator } = require(
+      readJson(path.join(installedRoot, 'package.json')).name
+    )
+    const tree = createTreeWithEmptyWorkspace()
+    updateNxJson(tree, {
+      workspaceLayout: { appsDir: 'apps', libsDir: 'libs' }
+    })
+    tree.write('tsconfig.base.json', JSON.stringify({ compilerOptions: {} }))
+    await applicationGenerator(tree, {
+      name: 'packed-app',
+      category: 'app',
+      mockServer: false,
+      strict: true,
+      cdnHost: 'self'
+    })
+    await libraryGenerator(tree, {
+      name: 'packed-lib',
+      component: true,
+      publishable: false,
+      skipFormat: true
+    })
+    expect(tree.exists('apps/packed-app/src/app/main.tsx')).toBe(true)
+    expect(
+      tree.exists('libs/packed-lib/src/lib/packed-lib/packed-lib.tsx')
+    ).toBe(true)
+    expect(
+      tree.exists('libs/packed-lib/src/lib/packed-lib/packed-lib.spec.tsx')
+    ).toBe(true)
+    const manifest = readJson(path.join(installedRoot, 'package.json'))
+    const help = execFileSync(
+      process.execPath,
+      [path.join(installedRoot, manifest.bin['vx-react']), '--help'],
+      { encoding: 'utf8' }
+    )
+    expect(help).toContain('Vx CLI - React Generators')
+    expect(help).toContain('pnpx @vx-cli/react <generator> [options]')
+    expect(help).toContain('application       app')
+    expect(help).toContain('library           lib')
+    expect(help).toContain('init')
+    expect(help).toContain('Examples:')
+    expect(help).toContain('pnpx @vx-cli/react app my-app')
+    expect(help).toContain('pnpx @vx-cli/react lib my-lib --publishable')
+  }, 30000)
+
+  it('exposes usable declarations to a NodeNext TypeScript consumer', () => {
+    const require = createRequire(path.join(packageRoot, 'package.json'))
+    const consumer = path.join(temporaryRoot, 'consumer.mts')
+    writeFileSync(
+      consumer,
+      `import { applicationGenerator, libraryGenerator } from '@vx-cli/react'
+const appOptions: Parameters<typeof applicationGenerator>[1] = { name: 'typed-app' }
+const libOptions: Parameters<typeof libraryGenerator>[1] = { name: 'typed-lib' }
+void appOptions
+void libOptions
+`
+    )
+    const result = spawnSync(
+      process.execPath,
+      [
+        require.resolve('typescript/lib/tsc.js'),
+        consumer,
+        '--noEmit',
+        '--strict',
+        '--skipLibCheck',
+        '--module',
+        'NodeNext',
+        '--moduleResolution',
+        'NodeNext',
+        '--target',
+        'es2022',
+        '--types',
+        'node',
+        '--typeRoots',
+        path.dirname(path.dirname(require.resolve('@types/node/package.json')))
+      ],
+      { cwd: temporaryRoot, encoding: 'utf8' }
+    )
+    expect(result.status, result.stdout + result.stderr).toBe(0)
+  }, 30000)
+
+  it('ships documentation and license without workspace source or compiler state', () => {
+    for (const file of ['README.md', 'LICENSE']) {
+      expect(existsSync(path.join(installedRoot, file))).toBe(true)
+    }
+    expect(existsSync(path.join(installedRoot, 'src'))).toBe(false)
+    expect(existsSync(path.join(installedRoot, 'tests'))).toBe(false)
+    expect(
+      existsSync(path.join(installedRoot, 'dist/tsconfig.lib.tsbuildinfo'))
+    ).toBe(false)
+  })
+})

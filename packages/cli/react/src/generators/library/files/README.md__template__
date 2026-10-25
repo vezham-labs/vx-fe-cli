@@ -1,0 +1,63 @@
+# <%= className %>
+
+<% if (component) { %>A custom React library generated with VX CLI React generators.
+
+## Usage
+
+```tsx
+import { <%= className %> } from '<%= importPath || '@' + name %>';
+
+function MyComponent() {
+  return (
+    <<%= className %> variant="primary" size="medium">
+      Click me!
+    </<%= className %>>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Content to display inside the component |
+| `variant` | `'primary' \| 'secondary' \| 'outline'` | `'primary'` | Visual style variant |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Component size |
+| `disabled` | `boolean` | `false` | Whether the component is disabled |
+| `onClick` | `() => void` | - | Click handler function |
+
+<% } else { %>A utility library generated with VX CLI React generators.
+
+## Installation
+
+```bash
+npm install <%= importPath || '@' + name %>
+```
+
+## Usage
+
+```tsx
+import { someFunction } from '<%= importPath || '@' + name %>';
+
+const result = someFunction();
+```<% } %>
+
+## Development
+
+### Building
+
+```bash
+nx build <%= name %>
+```
+
+### Testing
+
+```bash
+nx test <%= name %>
+```
+
+### Linting
+
+```bash
+nx lint <%= name %>
+```

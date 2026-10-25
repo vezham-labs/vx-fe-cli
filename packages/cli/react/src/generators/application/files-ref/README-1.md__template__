@@ -1,0 +1,341 @@
+# <%= mockProjectName %>
+
+Mock API server for <%= projectName %> using JSON Server.
+
+## Configuration
+
+The mock server can be configured using environment variables. Copy `.env.example` to `.env` and modify as needed:
+
+```bash
+cp .env.example .env
+```
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `HOST` | Server hostname | `localhost` |
+| `PORT` | Server port number | `3001` |
+| `DEBUG` | Enable debug logging | `false` |
+| `CORS_ORIGIN` | CORS allowed origin | `*` |
+| `DB_PATH` | Path to database file | `./data/db.json` |
+
+### Example .env file
+
+```env
+HOST=localhost
+PORT=8080
+DEBUG=true
+CORS_ORIGIN=http://localhost:4200
+DB_PATH=./data/custom-db.json
+```
+
+## Overview
+
+This mock server provides a RESTful API for development and testing purposes. It simulates a real backend with realistic data and supports all standard HTTP methods.
+
+## Available Endpoints
+
+All API responses follow a standardized format:
+
+**Comprehensive Response Structure:**
+
+All responses include comprehensive metadata following industry standards:
+
+```json
+{
+  "data": { /* actual response data */ },
+  "meta": {
+    "type": "user",
+    "url": "/api/users/1",
+    "timestamp": "2024-01-15T10:30:00.000Z",
+    "request_id": "req_1234567890_abc123def",
+    "version": "v1",
+    "status": 200,
+    "message": "Resource retrieved successfully",
+    "rate_limit": {
+      "remaining": 95,
+      "reset_time": "2024-01-15T10:31:00.000Z",
+      "limit": 100,
+      "window": 60
+    }
+  }
+}
+```
+
+**Collection Response:**
+```json
+{
+  "data": [
+    { "id": 1, "name": "John Doe", "email": "john@example.com" },
+    { "id": 2, "name": "Jane Smith", "email": "jane@example.com" }
+  ],
+  "meta": {
+    "type": "user.list",
+    "url": "/api/users",
+    "timestamp": "2024-01-15T10:30:00.000Z",
+    "request_id": "req_1234567890_abc123def",
+    "version": "v1",
+    "status": 200,
+    "message": "Resources retrieved successfully",
+    "rate_limit": {
+      "remaining": 95,
+      "reset_time": "2024-01-15T10:31:00.000Z",
+      "limit": 100,
+            "window": 60
+    }
+  },
+  "pagination": {
+    "total": 150,
+    "limit": 10,
+    "offset": 0,
+    "has_more": true,
+    "current_page": 1,
+    "total_pages": 15,
+    "cursors": {
+      "first": null,
+      "previous": null,
+      "next": "cursor_page_2",
+      "last": "cursor_page_15"
+    }
+  }
+}
+```
+
+**Error Response:**
+```json
+{
+  "data": {
+    "error": "Resource not found",
+    "details": "User with ID 999 does not exist",
+    "error_code": "RESOURCE_NOT_FOUND"
+  },
+  "meta": {
+    "type": "error.user",
+    "url": "/api/users/999",
+    "timestamp": "2024-01-15T10:30:00.000Z",
+    "request_id": "req_1234567890_abc123def",
+    "version": "v1",
+    "status": 404,
+    "message": "Resource not found",
+    "rate_limit": {
+      "remaining": 95,
+      "reset_time": "2024-01-15T10:31:00.000Z",
+      "limit": 100,
+      "window": 60
+    }
+  }
+}
+```
+
+## Meta Fields Explanation
+
+| Field | Purpose | When Used |
+|-------|---------|-----------|
+| `type` | Identifies the resource type and operation | Always |
+| `url` | The clean API endpoint called (without query params) | Always |
+| `timestamp` | ISO 8601 timestamp of response generation | Always |
+| `request_id` | Unique identifier for request tracing and debugging | Always |
+| `version` | API version being used | Always |
+| `status` | HTTP status code | Always |
+| `message` | Human-readable status message | Always |
+| `rate_limit` | Rate limiting information and remaining quota | Always |
+| `pagination` | Pagination metadata for collection responses | List responses only |
+
+## Rate Limiting
+
+The API implements rate limiting with the following defaults:
+- **Limit**: 100 requests per minute per IP
+- **Window**: 60 seconds
+- **Headers**: Rate limit info included in every response
+- **429 Response**: When limit exceeded
+
+### Users
+- `GET /users` - Get all users
+- `GET /users/:id` - Get user by ID
+- `POST /users` - Create new user
+- `PUT /users/:id` - Update user
+- `DELETE /users/:id` - Delete user
+
+### Posts
+- `GET /posts` - Get all posts
+- `GET /posts/:id` - Get post by ID
+- `POST /posts` - Create new post
+- `PUT /posts/:id` - Update post
+- `DELETE /posts/:id` - Delete post
+- `GET /posts?authorId=:id` - Get posts by author
+- `GET /posts?_embed=comments` - Get posts with comments
+
+### Comments
+- `GET /comments` - Get all comments
+- `GET /comments/:id` - Get comment by ID
+- `POST /comments` - Create new comment
+- `PUT /comments/:id` - Update comment
+- `DELETE /comments/:id` - Delete comment
+- `GET /comments?postId=:id` - Get comments by post
+
+### Categories
+- `GET /categories` - Get all categories
+- `GET /categories/:id` - Get category by ID
+- `POST /categories` - Create new category
+- `PUT /categories/:id` - Update category
+- `DELETE /categories/:id` - Delete category
+
+### Settings
+- `GET /settings` - Get application settings
+- `PUT /settings` - Update settings
+
+## Query Parameters
+
+JSON Server supports various query parameters:
+
+- `_page` & `_limit` - Pagination
+- `_sort` & `_order` - Sorting
+- `_embed` - Include related resources
+- `_expand` - Include parent resource
+- `q` - Full-text search
+
+Examples:
+```
+GET /posts?_page=1&_limit=10
+GET /posts?_sort=createdAt&_order=desc
+GET /posts?q=react
+GET /users?role=admin
+```
+
+## Development
+
+### Generate realistic data
+
+Generate new mock data using Faker.js:
+
+```bash
+pnpm nx run <%= mockProjectName %>:generate
+```
+
+Or generate and start the server:
+
+```bash
+pnpm nx run <%= mockProjectName %>:seed
+```
+
+### Direct execution (alternative)
+
+Build and run the server directly:
+
+```bash
+cd <%= mockProjectRoot %>
+pnpm build
+node dist/src/server.js
+```
+
+### Clean Build
+
+```bash
+pnpm clean && pnpm build
+```
+
+### Start the mock server
+
+```bash
+pnpm nx serve <%= mockProjectName %>
+```
+
+The server will be available at the configured host and port (default: `http://localhost:3001`)
+
+### Configuration Examples
+
+**Run on a different port:**
+```bash
+PORT=8080 pnpm nx serve <%= mockProjectName %>
+```
+
+**Run with debug logging:**
+```bash
+DEBUG=true pnpm nx serve <%= mockProjectName %>
+```
+
+**Run on all network interfaces:**
+```bash
+HOST=0.0.0.0 pnpm nx serve <%= mockProjectName %>
+```
+
+### Module Resolution Issues
+
+If you encounter "Cannot find module" errors, this is likely due to ES module resolution. The package.json scripts include the `--experimental-specifier-resolution=node` flag to handle this.
+
+Alternatively, you can:
+1. Use Node.js 18+ which has better ES module support
+2. Ensure all import statements use `.js` extensions
+3. Check that the TypeScript compilation is generating correct output
+
+### Modify data
+
+Edit the `db.json` file to add, modify, or remove mock data. The server will automatically reload when changes are detected.
+
+## Usage in Frontend
+
+```typescript
+// The API service automatically handles the data/meta format
+// You'll receive just the data portion in your responses
+
+const API_BASE_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:3001'  // or your configured host:port
+  : '/api';
+
+// Get all users - returns just the user array
+const users = await fetch(`${API_BASE_URL}/users`).then(res => res.json());
+
+// Create a new post - returns just the created post object
+const newPost = await fetch(`${API_BASE_URL}/posts`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    title: 'New Post',
+    content: 'Post content...',
+    authorId: 1,
+    tags: ['react'],
+    isPublished: true
+  })
+}).then(res => res.json());
+
+// Get posts with comments - returns just the posts array
+const postsWithComments = await fetch(`${API_BASE_URL}/posts?_embed=comments`)
+  .then(res => res.json());
+
+// Access pagination info (if needed) by making a raw fetch call
+const response = await fetch(`${API_BASE_URL}/users?_page=1&_limit=10`);
+const result = await response.json();
+console.log('Data:', result.data);
+console.log('Pagination:', result.meta.pagination);
+```
+
+## CORS
+
+The mock server is configured to allow CORS requests from any origin, making it easy to use during development.
+
+## Data Persistence
+
+Changes made through the API are persisted to the `db.json` file, so your mock data will survive server restarts during development.
+
+## Troubleshooting
+
+### Port Already in Use
+If you see an error about the port being in use, either:
+1. Change the port in your `.env` file
+2. Stop the conflicting service
+3. Use a different port: `PORT=3002 nx serve <%= mockProjectName %>`
+
+### Permission Denied
+If you get permission errors, try using a port number above 1024 or run with appropriate permissions.
+
+### Package Manager
+This project uses pnpm as the package manager. Make sure you have pnpm installed:
+```bash
+npm install -g pnpm
+```
+
+### Configuration Issues
+The server validates configuration on startup and will show warnings for invalid values, falling back to defaults when possible.

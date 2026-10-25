@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "Common",
+  "title": "Create a Common Utilities Library",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Library name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the common library?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the lib is placed"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the library (used for linting)"
+    },
+    "publishable": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create a publishable library."
+    },
+    "importPath": {
+      "type": "string",
+      "description": "The library name used to import it, like @myorg/my-awesome-lib"
+    }
+  },
+  "required": ["name"]
+}
