@@ -52,6 +52,8 @@
         "@nx/plugin",
         "@swc-node/register",
         "@swc/helpers",
+        // vx-bot/NOTE: The Nx test:eslint command invokes c8 for rule coverage.
+        "c8",
         "eslint-config-prettier",
         "eslint-plugin-import",
         "eslint-plugin-react",
@@ -67,6 +69,14 @@
     }
   ],
   "ignoreDependencies": [
+    // vx-bot/NOTE: Root-supplied framework integrations remain available for generated Next and TanStack apps.
+    "@tailwindcss/postcss",
+    "@tanstack/react-router",
+    "@tanstack/react-router-devtools",
+    "@tanstack/react-start",
+    "@tanstack/router-cli",
+    "@tanstack/router-plugin",
+    "next",
     // vx-bot/NOTE: Required peers of @vezham/react-pro-v3 and @vezham/react-v3.
     "@heroui/react",
     "@internationalized/date",
