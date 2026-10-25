@@ -16,6 +16,7 @@ if (!generator || ['--help', '-h'].includes(generator)) {
   }
   const preferredOrder = [
     'application',
+    'mock',
     'library',
     'library-react',
     'common',
@@ -58,6 +59,7 @@ ${list}
 Examples:
   pnpx @vx-cli/react init
   pnpx @vx-cli/react app my-app
+  pnpx @vx-cli/react mock my-app --category=internal
   pnpx @vx-cli/react lib my-utils --publishable
   pnpx @vx-cli/react react-lib my-components --publishable`)
 } else {

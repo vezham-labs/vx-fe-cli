@@ -1,4 +1,5 @@
 export { applicationGenerator } from './generators/application/generator'
+export { mockGenerator } from './generators/mock/generator'
 export { commonGenerator } from './generators/common/generator'
 export { componentGenerator } from './generators/component/generator'
 export { componentStoreGenerator } from './generators/component-store/generator'

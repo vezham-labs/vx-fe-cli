@@ -12,6 +12,11 @@
       "description": "Create a custom React application",
       "aliases": ["app"]
     },
+    "mock": {
+      "factory": "./dist/generators/mock/generator#mockGenerator",
+      "schema": "./dist/generators/mock/schema.json",
+      "description": "Create a mock API project"
+    },
     "library": {
       "factory": "./dist/generators/library/generator#libraryGenerator",
       "schema": "./dist/generators/library/schema.json",

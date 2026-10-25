@@ -1,0 +1,30 @@
+{
+  "name": "__projectName__",
+  "$schema": "__nxSchemaPath__",
+  "projectType": "application",
+  "sourceRoot": "__projectRoot__/src",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "pnpm serve"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "pnpm build"
+      }
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "pnpm generate"
+      }
+    }
+  },
+  "tags": ["category:__category__", "mock"]
+}

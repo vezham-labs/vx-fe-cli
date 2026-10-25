@@ -18,6 +18,7 @@ import {
   initGenerator,
   layoutGenerator,
   libraryGenerator,
+  mockGenerator,
   reactLibraryGenerator,
   templateGenerator,
   utilitiesGenerator
@@ -113,6 +114,31 @@ describe('legacy generator baseline', () => {
       'https://static.cdn.vezham.com/apps_internals/portal'
     )
     expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
+  })
+
+  it('generates a categorized mock project independently of the app', async () => {
+    const tree = createWorkspace()
+    await mockGenerator(tree, {
+      name: 'portal',
+      directory: 'team',
+      category: 'cdn'
+    })
+    expect(readProjectConfiguration(tree, 'team-portal-mock').root).toBe(
+      'apps_cdns/team/portal-mock'
+    )
+    expect(readProjectConfiguration(tree, 'team-portal-mock').tags).toEqual([
+      'category:cdn',
+      'mock'
+    ])
+    expect(readJson(tree, 'apps_cdns/team/portal-mock/package.json').name).toBe(
+      'team-portal-mock'
+    )
+    expect(
+      tree.read('apps_cdns/team/portal-mock/src/lib/config.ts', 'utf8')
+    ).toContain("'team-portal-mock'")
+    expect(
+      generatedFiles(tree).some(file => file.includes('__template__'))
+    ).toBe(false)
   })
 
   it('generates a plain package at packages/<name> by default', async () => {

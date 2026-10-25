@@ -9,6 +9,7 @@ import {
 } from '@nx/devkit'
 import * as path from 'path'
 
+import { normalizeApplicationLocation } from '../../utils/application-category'
 import { toPascalCase } from '../../utils/casing'
 import { assertTemplateFiles } from '../../utils/templates'
 import type { GeneratorSchema } from './schema'
@@ -25,24 +26,20 @@ interface NormalizedSchema extends GeneratorSchema {
   e2eProjectRoot: string
 }
 const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
-  const name = names(options.name).fileName
-  const category = options.category || 'apps'
-  let categoryPrefix = 'apps'
-  if (category !== 'app') {
-    const suffix = category === 'vezham' ? `_${category}` : `_${category}s`
-    categoryPrefix += suffix
-  }
-  const projectDirectory = options.directory
-    ? `${categoryPrefix}/${names(options.directory).fileName}/${name}`
-    : `${categoryPrefix}/${name}`
-  const projectName = options.directory
-    ? `${names(options.directory).fileName}-${name}`
-    : name
+  const {
+    category,
+    categoryPrefix,
+    parsedTags,
+    projectDirectory,
+    projectName
+  } = normalizeApplicationLocation(
+    options.name,
+    options.category,
+    options.directory
+  )
   const projectRoot = `${projectDirectory}`
   const e2eProjectName = `${projectName}-e2e`
   const e2eProjectRoot = `${projectDirectory}-e2e`
-  const parsedTags = []
-  parsedTags.push(`category:${category}`)
   const projectLabel = toPascalCase(projectName)
   // wjdlz/NOTE: for CDN
   const cdnPath =

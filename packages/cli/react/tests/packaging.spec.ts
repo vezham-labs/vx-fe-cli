@@ -118,6 +118,7 @@ describe('published Nx plugin', () => {
     const {
       applicationGenerator,
       libraryGenerator,
+      mockGenerator,
       reactLibraryGenerator
     } = require(readJson(path.join(installedRoot, 'package.json')).name)
     const tree = createTreeWithEmptyWorkspace()
@@ -137,6 +138,7 @@ describe('published Nx plugin', () => {
       strict: true,
       cdnHost: 'self'
     })
+    await mockGenerator(tree, { name: 'packed-app', category: 'app' })
     await libraryGenerator(tree, { name: 'packed-lib' })
     await reactLibraryGenerator(tree, { name: 'packed-react-lib' })
     expect(
@@ -144,7 +146,7 @@ describe('published Nx plugin', () => {
         .repository.url
     ).toBe('https://example.test/consumer.git')
     expect(tree.exists('apps/packed-app/src/app/main.tsx')).toBe(true)
-    expect(tree.exists('apps/packed-app-mock/project.json')).toBe(false)
+    expect(tree.exists('apps/packed-app-mock/project.json')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.ts')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.spec.ts')).toBe(
       true

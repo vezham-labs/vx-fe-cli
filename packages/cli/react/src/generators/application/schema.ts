@@ -1,17 +1,9 @@
+import type { ApplicationCategory } from '../../utils/application-category'
+
 export interface GeneratorSchema {
   name: string
   directory?: string
-  category?:
-    | 'vezham'
-    | 'demo'
-    | 'doc'
-    | 'internal'
-    | 'app'
-    | 'cdn'
-    | 'pod'
-    | 'suit'
-    | 'platform'
-    | 'widget'
+  category?: ApplicationCategory
   cdnHost?: 'cdn' | 'self'
   strict?: boolean
 }

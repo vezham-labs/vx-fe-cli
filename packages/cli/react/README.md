@@ -21,6 +21,10 @@ The first supported library generators are `library` (`lib`) and
 `library-react` (`react-lib`). They create package projects based on the
 templates in `.vezham/library` and `.vezham/library-react`.
 
+The `mock` generator creates a standalone mock API project from
+`.vezham/app-mock`. It uses the same application categories and directory
+grouping as apps, and names the generated project `<name>-mock`.
+
 Both generators default to `packages/<name>`. `--directory` overrides the full
 workspace-relative output path; for example, `--directory=packages/shared/ui`
 creates the project at that exact location. Absolute paths and paths outside the
@@ -41,6 +45,7 @@ pnpm add -Dw @vx-cli/react
 pnpm nx list @vx-cli/react
 pnpm nx generate @vx-cli/react:init
 pnpm nx generate @vx-cli/react:app portal --category=internal --dry-run
+pnpm nx generate @vx-cli/react:mock portal --category=internal --dry-run
 pnpm nx generate @vx-cli/react:lib utils --publishable --dry-run
 pnpm nx generate @vx-cli/react:react-lib button --directory=packages/ui/button --publishable --dry-run
 ```
@@ -61,6 +66,7 @@ redirect `@nx/react` generators or register an empty task-inference plugin.
 
 - Update plain package files in `src/generators/library/files`.
 - Update React package files in `src/generators/library-react/files`.
+- Update standalone mock API files in `src/generators/mock/files`.
 - Keep each generator schema and TypeScript interface aligned.
 - Keep generated package output paths workspace-relative, defaulting to
   `packages/<name>`.
