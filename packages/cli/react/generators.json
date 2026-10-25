@@ -25,7 +25,7 @@
     "app-start": {
       "factory": "./dist/generators/start/generator#startGenerator",
       "schema": "./dist/generators/start/schema.json",
-      "description": "Create a Start application (template pending)"
+      "description": "Create a TanStack Start application"
     },
     "mock": {
       "factory": "./dist/generators/mock/generator#mockGenerator",
