@@ -1,3 +1,26 @@
+## 26.0.0-beta.2 (2026-10-25)
+
+### 🚀 Features
+
+- **nx-cloud:** set up nx cloud workspace ([d21b5dec](https://github.com/vezham-labs/vx-fe-kit/commit/d21b5dec))
+
+### 🏡 Chore
+
+- **workspace:** format workspace config ([3f1ea8b3](https://github.com/vezham-labs/vx-fe-kit/commit/3f1ea8b3))
+- **workspace:** adjust fallow dependency rules ([19bc93d3](https://github.com/vezham-labs/vx-fe-kit/commit/19bc93d3))
+
+### 🤖 CI
+
+- **workspace:** enable Nx Cloud ([f172b0c2](https://github.com/vezham-labs/vx-fe-kit/commit/f172b0c2))
+
+### deps
+
+- **repo:** update tools and security fixes ([c554d268](https://github.com/vezham-labs/vx-fe-kit/commit/c554d268))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran @vx-vigneshwaran
+
 ## 26.0.0-beta.1 (2026-10-25)
 
 ### 🚀 Features
