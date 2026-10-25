@@ -1,19 +1,44 @@
-import { render } from '@testing-library/react'
+import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
+import { render, waitFor } from '@testing-library/react'
 
-import Page from '../src/pages/home'
+import { createRouter } from '@vezham/start/router/tanstack'
 
-const App = () => <Page />
+import { vxI18n } from '../src/generated/vx'
+import { routeTree } from '../src/routeTree.gen'
 
-describe('App', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<App />)
-
-    expect(baseElement).toBeTruthy()
+const renderApp = async (path = '/') => {
+  const router = createRouter({
+    history: createMemoryHistory({
+      initialEntries: [path]
+    }),
+    routeTree
   })
 
-  it('should have a greeting as the title', () => {
-    const { getAllByText } = render(<App />)
+  await router.load()
 
-    expect(getAllByText(new RegExp('Home | ', 'gi')).length > 0).toBeTruthy()
+  return render(<RouterProvider router={router} />)
+}
+
+describe('App', () => {
+  it('uses the configured default language for the document', async () => {
+    await renderApp()
+
+    await waitFor(() =>
+      expect(document.documentElement.lang).toBe(vxI18n.defaultLanguage)
+    )
+  })
+
+  it('should render successfully', async () => {
+    const { baseElement } = await renderApp()
+
+    await waitFor(() => expect(baseElement).toBeTruthy())
+  })
+
+  it('should mount app shell container', async () => {
+    const { baseElement } = await renderApp()
+
+    await waitFor(() =>
+      expect(baseElement.querySelector('.vx-app')).toBeTruthy()
+    )
   })
 })

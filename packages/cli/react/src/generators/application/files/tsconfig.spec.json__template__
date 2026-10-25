@@ -1,17 +1,11 @@
 {
-  "extends": "<%= offsetFromRoot %>tsconfig.base.json",
+  "extends": ["<%= offsetFromRoot %>tsconfig.base.json", "<%= offsetFromRoot %>tsconfig.spec.json"],
   "compilerOptions": {
     "outDir": "./out-tsc/vitest",
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node",
-      "vitest",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts"
-    ],
-    "jsx": "react-jsx"
+    "lib": ["dom"],
+    "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "include": [
     "__tests__/**/*.test.tsx",

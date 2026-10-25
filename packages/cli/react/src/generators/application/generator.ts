@@ -78,19 +78,6 @@ const addFiles = (
     template: ''
   }
   generateFiles(tree, templateDirectory, options.projectRoot, templateOptions)
-  addVxProjectConfiguration(tree, options)
-}
-const addVxProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
-  const targets: Record<string, TargetConfiguration> = {}
-  targets['hosts:setup'] = {}
-  targets['routes:tanstack'] = {}
-  addProjectConfiguration(tree, options.projectName, {
-    root: options.projectRoot,
-    projectType: 'application',
-    sourceRoot: `${options.projectRoot}/src`,
-    targets,
-    tags: options.parsedTags
-  })
 }
 const addE2eFiles = (tree: Tree, options: NormalizedSchema) => {
   const templateOptions = {

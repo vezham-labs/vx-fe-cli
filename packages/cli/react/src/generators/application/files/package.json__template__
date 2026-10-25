@@ -1,9 +1,6 @@
 {
   "name": "<%= projectName %>",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
-  "devDependencies": {
-    "@vx/start": "workspace:*",
-    "@vx/system-utils": "workspace:*"
-  }
+  "type": "module"
 }

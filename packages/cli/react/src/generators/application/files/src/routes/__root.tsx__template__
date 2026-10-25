@@ -1,23 +1,23 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { lazy } from 'react'
+import { createRootRoute } from '@tanstack/react-router'
 
-import { __DEV__ } from '@vx/system-utils'
+import { AppLayout } from '@vezham/react/layouts/app'
+import { createRootComponent } from '@vezham/start/tanstack'
 
-const TanStackRouterDevtools = lazy(() =>
-  import('@tanstack/react-router-devtools').then(d => ({
-    default: d.TanStackRouterDevtools
-  }))
-)
+import { appMenu, controlCenter, navigationItems } from '@generated/navigation'
+import { tanstackHead, vxI18n } from '@generated/vx'
 
 export const Route = createRootRoute({
-  component: RootComponent
+  head: () => tanstackHead,
+  component: createRootComponent({
+    lang: vxI18n.defaultLanguage,
+    children: (
+      <AppLayout
+        settings
+        navigationItems={navigationItems}
+        appMenu={appMenu}
+        controlCenter={controlCenter}
+        i18n={vxI18n}
+      />
+    )
+  })
 })
-
-function RootComponent() {
-  return (
-    <>
-      <Outlet />
-      {__DEV__ ? <TanStackRouterDevtools position="bottom-right" /> : null}
-    </>
-  )
-}
