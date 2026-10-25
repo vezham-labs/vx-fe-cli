@@ -10,6 +10,7 @@ import {
 import * as path from 'path'
 
 import { normalizeApplicationLocation } from '../../utils/application-category'
+import type { ApplicationType } from '../../utils/application-type'
 import { toPascalCase } from '../../utils/casing'
 import { assertTemplateFiles } from '../../utils/templates'
 import type { GeneratorSchema } from './schema'
@@ -63,19 +64,20 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
     e2eProjectRoot
   }
 }
-const addFiles = (tree: Tree, options: NormalizedSchema) => {
+const addFiles = (
+  tree: Tree,
+  options: NormalizedSchema,
+  templateDirectory: string,
+  applicationType: ApplicationType
+) => {
   const templateOptions = {
     ...options,
     ...names(options.name),
+    applicationType,
     offsetFromRoot: offsetFromRoot(options.projectRoot),
     template: ''
   }
-  generateFiles(
-    tree,
-    path.join(import.meta.dirname, 'files'),
-    options.projectRoot,
-    templateOptions
-  )
+  generateFiles(tree, templateDirectory, options.projectRoot, templateOptions)
   addVxProjectConfiguration(tree, options)
 }
 const addVxProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
@@ -116,13 +118,23 @@ const addE2eProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
     implicitDependencies: [options.projectName]
   })
 }
-export const applicationGenerator = async (
+export const generateApplication = async (
   tree: Tree,
-  options: GeneratorSchema
+  options: GeneratorSchema,
+  applicationType: ApplicationType,
+  templateDirectory: string
 ) => {
-  assertTemplateFiles(path.join(import.meta.dirname, 'files'), 'application')
+  assertTemplateFiles(templateDirectory, `${applicationType} application`)
   const normalizedOptions = normalizeOptions(options)
-  addFiles(tree, normalizedOptions)
+  addFiles(tree, normalizedOptions, templateDirectory, applicationType)
   addE2eFiles(tree, normalizedOptions)
   await formatFiles(tree)
 }
+
+export const applicationGenerator = (tree: Tree, options: GeneratorSchema) =>
+  generateApplication(
+    tree,
+    options,
+    'app',
+    path.join(import.meta.dirname, 'files')
+  )

@@ -12,6 +12,21 @@
       "description": "Create a custom React application",
       "aliases": ["app"]
     },
+    "app-cdn": {
+      "factory": "./dist/generators/cdn/generator#cdnGenerator",
+      "schema": "./dist/generators/cdn/schema.json",
+      "description": "Create a CDN application (template pending)"
+    },
+    "app-doc": {
+      "factory": "./dist/generators/doc/generator#docGenerator",
+      "schema": "./dist/generators/doc/schema.json",
+      "description": "Create a documentation application (template pending)"
+    },
+    "app-start": {
+      "factory": "./dist/generators/start/generator#startGenerator",
+      "schema": "./dist/generators/start/schema.json",
+      "description": "Create a Start application (template pending)"
+    },
     "mock": {
       "factory": "./dist/generators/mock/generator#mockGenerator",
       "schema": "./dist/generators/mock/schema.json",

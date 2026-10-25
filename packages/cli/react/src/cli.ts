@@ -16,6 +16,9 @@ if (!generator || ['--help', '-h'].includes(generator)) {
   }
   const preferredOrder = [
     'application',
+    'app-cdn',
+    'app-doc',
+    'app-start',
     'mock',
     'library',
     'library-react',

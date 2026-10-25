@@ -10,16 +10,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   applicationGenerator,
+  cdnGenerator,
   commonGenerator,
   componentGenerator,
   componentStoreGenerator,
   coreGenerator,
+  docGenerator,
   hookGenerator,
   initGenerator,
   layoutGenerator,
   libraryGenerator,
   mockGenerator,
   reactLibraryGenerator,
+  startGenerator,
   templateGenerator,
   utilitiesGenerator
 } from '../src/index'
@@ -115,6 +118,24 @@ describe('legacy generator baseline', () => {
     )
     expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
   })
+
+  it.each([
+    ['cdn', cdnGenerator],
+    ['doc', docGenerator],
+    ['start', startGenerator]
+  ] as const)(
+    'keeps the %s generator pending until its template is supplied',
+    async (type, generator) => {
+      const tree = createWorkspace()
+      const before = generatedFiles(tree)
+      await expect(
+        generator(tree, { name: 'portal', category: 'internal' })
+      ).rejects.toThrow(
+        `The ${type} application generator has no committed templates yet`
+      )
+      expect(generatedFiles(tree)).toEqual(before)
+    }
+  )
 
   it('generates a categorized mock project independently of the app', async () => {
     const tree = createWorkspace()
@@ -224,7 +245,7 @@ describe('legacy generator baseline', () => {
       const tree = createWorkspace()
       const before = generatedFiles(tree)
       await expect(generator(tree, { name: 'example' })).rejects.toThrow(
-        `The legacy ${name} generator has no committed templates`
+        `The ${name} generator has no committed templates yet`
       )
       expect(generatedFiles(tree)).toEqual(before)
     }

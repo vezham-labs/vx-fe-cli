@@ -21,14 +21,23 @@ The first supported library generators are `library` (`lib`) and
 `library-react` (`react-lib`). They create package projects based on the
 templates in `.vezham/library` and `.vezham/library-react`.
 
+Application generation is split into `app`, `app-cdn`, `app-doc`, and
+`app-start`. They share category and directory options. The `app` template is
+available; the other three generators report missing templates until those are
+provided.
+
 The `mock` generator creates a standalone mock API project from
 `.vezham/app-mock`. It uses the same application categories and directory
 grouping as apps, and names the generated project `<name>-mock`.
 
-Both generators default to `packages/<name>`. `--directory` overrides the full
-workspace-relative output path; for example, `--directory=packages/shared/ui`
-creates the project at that exact location. Absolute paths and paths outside the
-workspace are rejected. The generated npm package name is `@vezham/<name>`.
+The CDN and documentation generators are registered with shared category and
+directory options; they report missing templates until those are supplied.
+
+Both library generators default to `packages/<name>`. `--directory` overrides
+the full workspace-relative output path; for example,
+`--directory=packages/shared/ui` creates the project at that exact location.
+Absolute paths and paths outside the workspace are rejected. The generated npm
+package name is `@vezham/<name>`.
 Packages default to non-publishable and include `"private": true`; pass
 `--publishable` to omit that field for a package intended for npm publishing.
 
@@ -66,6 +75,9 @@ redirect `@nx/react` generators or register an empty task-inference plugin.
 
 - Update plain package files in `src/generators/library/files`.
 - Update React package files in `src/generators/library-react/files`.
+- Add CDN application files in `src/generators/cdn/files`.
+- Add documentation application files in `src/generators/doc/files`.
+- Add Start application files in `src/generators/start/files`.
 - Update standalone mock API files in `src/generators/mock/files`.
 - Keep each generator schema and TypeScript interface aligned.
 - Keep generated package output paths workspace-relative, defaulting to
