@@ -17,6 +17,7 @@ if (!generator || ['--help', '-h'].includes(generator)) {
   const preferredOrder = [
     'application',
     'library',
+    'library-react',
     'common',
     'component',
     'component-store',
@@ -57,12 +58,8 @@ ${list}
 Examples:
   pnpx @vx-cli/react init
   pnpx @vx-cli/react app my-app
-  pnpx @vx-cli/react lib my-lib --publishable`)
-
-  // vx-bot/TODO: add based on use-case
-  // pnpx @vx-cli/react comp my-components
-  // pnpx @vx-cli/react hook my-hooks
-  // pnpx @vx-cli/react utils my-utils
+  pnpx @vx-cli/react lib my-utils --publishable
+  pnpx @vx-cli/react react-lib my-components --publishable`)
 } else {
   const result = spawnSync(
     process.execPath,

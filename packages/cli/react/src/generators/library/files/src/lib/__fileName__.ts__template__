@@ -1,0 +1,3 @@
+export const __propertyName__ = (): string => {
+  return '__fileName__'
+}

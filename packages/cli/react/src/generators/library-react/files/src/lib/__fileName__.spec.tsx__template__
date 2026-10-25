@@ -1,0 +1,10 @@
+import { render } from '@testing-library/react'
+
+import { __className__ } from './__fileName__'
+
+describe('__className__', () => {
+  it('should render successfully', () => {
+    const { baseElement } = render(<__className__ />)
+    expect(baseElement).toBeTruthy()
+  })
+})

@@ -115,13 +115,21 @@ describe('published Nx plugin', () => {
     const require = createRequire(path.join(temporaryRoot, 'package.json'))
     const { createTreeWithEmptyWorkspace } = require('@nx/devkit/testing')
     const { updateNxJson } = require('@nx/devkit')
-    const { applicationGenerator, libraryGenerator } = require(
-      readJson(path.join(installedRoot, 'package.json')).name
-    )
+    const {
+      applicationGenerator,
+      libraryGenerator,
+      reactLibraryGenerator
+    } = require(readJson(path.join(installedRoot, 'package.json')).name)
     const tree = createTreeWithEmptyWorkspace()
     updateNxJson(tree, {
-      workspaceLayout: { appsDir: 'apps', libsDir: 'libs' }
+      workspaceLayout: { appsDir: 'apps', libsDir: 'packages' }
     })
+    tree.write(
+      'package.json',
+      JSON.stringify({
+        repository: { type: 'git', url: 'https://example.test/consumer.git' }
+      })
+    )
     tree.write('tsconfig.base.json', JSON.stringify({ compilerOptions: {} }))
     await applicationGenerator(tree, {
       name: 'packed-app',
@@ -130,18 +138,19 @@ describe('published Nx plugin', () => {
       strict: true,
       cdnHost: 'self'
     })
-    await libraryGenerator(tree, {
-      name: 'packed-lib',
-      component: true,
-      publishable: false,
-      skipFormat: true
-    })
+    await libraryGenerator(tree, { name: 'packed-lib' })
+    await reactLibraryGenerator(tree, { name: 'packed-react-lib' })
+    expect(
+      JSON.parse(tree.read('packages/packed-react-lib/package.json', 'utf8')!)
+        .repository.url
+    ).toBe('https://example.test/consumer.git')
     expect(tree.exists('apps/packed-app/src/app/main.tsx')).toBe(true)
+    expect(tree.exists('packages/packed-lib/src/lib/packed-lib.ts')).toBe(true)
+    expect(tree.exists('packages/packed-lib/src/lib/packed-lib.spec.ts')).toBe(
+      true
+    )
     expect(
-      tree.exists('libs/packed-lib/src/lib/packed-lib/packed-lib.tsx')
-    ).toBe(true)
-    expect(
-      tree.exists('libs/packed-lib/src/lib/packed-lib/packed-lib.spec.tsx')
+      tree.exists('packages/packed-react-lib/src/lib/packed-react-lib.tsx')
     ).toBe(true)
     const manifest = readJson(path.join(installedRoot, 'package.json'))
     const help = execFileSync(
@@ -156,7 +165,10 @@ describe('published Nx plugin', () => {
     expect(help).toContain('init')
     expect(help).toContain('Examples:')
     expect(help).toContain('pnpx @vx-cli/react app my-app')
-    expect(help).toContain('pnpx @vx-cli/react lib my-lib --publishable')
+    expect(help).toContain('pnpx @vx-cli/react lib my-utils --publishable')
+    expect(help).toContain(
+      'pnpx @vx-cli/react react-lib my-components --publishable'
+    )
   }, 30000)
 
   it('exposes usable declarations to a NodeNext TypeScript consumer', () => {
@@ -164,11 +176,13 @@ describe('published Nx plugin', () => {
     const consumer = path.join(temporaryRoot, 'consumer.mts')
     writeFileSync(
       consumer,
-      `import { applicationGenerator, libraryGenerator } from '@vx-cli/react'
+      `import { applicationGenerator, libraryGenerator, reactLibraryGenerator } from '@vx-cli/react'
 const appOptions: Parameters<typeof applicationGenerator>[1] = { name: 'typed-app' }
 const libOptions: Parameters<typeof libraryGenerator>[1] = { name: 'typed-lib' }
+const reactLibOptions: Parameters<typeof reactLibraryGenerator>[1] = { name: 'typed-react-lib' }
 void appOptions
 void libOptions
+void reactLibOptions
 `
     )
     const result = spawnSync(

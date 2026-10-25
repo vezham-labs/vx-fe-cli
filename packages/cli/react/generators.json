@@ -1,11 +1,28 @@
 {
   "$schema": "https://json-schema.org/schema",
   "generators": {
+    "init": {
+      "factory": "./dist/generators/init/generator#initGenerator",
+      "schema": "./dist/generators/init/schema.json",
+      "description": "Initialize Vx CLI React generators in workspace"
+    },
     "application": {
       "factory": "./dist/generators/application/generator#applicationGenerator",
       "schema": "./dist/generators/application/schema.json",
       "description": "Create a custom React application",
       "aliases": ["app"]
+    },
+    "library": {
+      "factory": "./dist/generators/library/generator#libraryGenerator",
+      "schema": "./dist/generators/library/schema.json",
+      "description": "Create a TypeScript library package",
+      "aliases": ["lib"]
+    },
+    "library-react": {
+      "factory": "./dist/generators/library-react/generator#reactLibraryGenerator",
+      "schema": "./dist/generators/library-react/schema.json",
+      "description": "Create a React library package",
+      "aliases": ["react-lib"]
     },
     "common": {
       "factory": "./dist/generators/common/generator#commonGenerator",
@@ -49,17 +66,6 @@
       "schema": "./dist/generators/utilities/schema.json",
       "description": "Create a utilities and helper functions library",
       "aliases": ["utils"]
-    },
-    "init": {
-      "factory": "./dist/generators/init/generator#initGenerator",
-      "schema": "./dist/generators/init/schema.json",
-      "description": "Initialize VX CLI React generators in workspace"
-    },
-    "library": {
-      "factory": "./dist/generators/library/generator#libraryGenerator",
-      "schema": "./dist/generators/library/schema.json",
-      "description": "Create a custom React library",
-      "aliases": ["lib"]
     }
   }
 }

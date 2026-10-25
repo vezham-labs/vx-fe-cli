@@ -1,0 +1,30 @@
+{
+  "name": "@vezham/__fileName__",
+  "version": "0.0.0",
+<% if (repositoryUrl) { %>  "repository": {
+    "type": "git",
+    "url": <%- JSON.stringify(repositoryUrl) %>,
+    "directory": "__projectRoot__"
+  },
+<% } %>
+  "type": "module",
+<% if (!publishable) { %>  "private": true,
+<% } %>
+  "exports": {
+    ".": {
+      "@vx/fe-kit": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "!**/*.tsbuildinfo",
+    "dist",
+    "LICENSE"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "__projectName__",
+  "$schema": "__nxSchemaPath__",
+  "sourceRoot": "__projectRoot__/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project react --web",
+  "targets": {}
+}

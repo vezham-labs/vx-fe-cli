@@ -15,32 +15,22 @@
 
 Nx plugin for Vezham frontend generators, published as an npm package.
 
-## Legacy baseline
+## Generators
 
-The generator implementations, schemas, aliases, and available template files are
-synced from the [previous implementation](https://github.com/vezham/vx-fe-pkgs-cli/tree/timeline/packages/cli/react).
-The package uses the current Nx 23 build, lint, Node test setup, and npm packaging.
-Templates retain the old application format; replacing them with the new format
-is the next phase. Generated projects may still reference legacy `@vx/*` packages
-and Nx executors from the reference workspace. Generation and packaging are tested;
-modern application builds are not part of this baseline sync.
+The first supported library generators are `library` (`lib`) and
+`library-react` (`react-lib`). They create package projects based on the
+templates in `.vezham/library` and `.vezham/library-react`.
 
-| Generator         | Aliases      | Template status                                                  |
-| ----------------- | ------------ | ---------------------------------------------------------------- |
-| `application`     | `app`        | Old app, Playwright, and optional mock-server templates included |
-| `library`         | `lib`        | Old library templates included                                   |
-| `init`            |              | Configures this plugin's recommended defaults                    |
-| `common`          |              | No template files in the old reference                           |
-| `component`       | `comp`       | No template files in the old reference                           |
-| `component-store` | `comp-store` | No template files in the old reference                           |
-| `core`            |              | No template files in the old reference                           |
-| `hook`            |              | No template files in the old reference                           |
-| `layout`          |              | No template files in the old reference                           |
-| `template`        |              | No template files in the old reference                           |
-| `utilities`       | `utils`      | No template files in the old reference                           |
+Both generators default to `packages/<name>`. `--directory` overrides the full
+workspace-relative output path; for example, `--directory=packages/shared/ui`
+creates the project at that exact location. Absolute paths and paths outside the
+workspace are rejected. The generated npm package name is `@vezham/<name>`.
+Packages default to non-publishable and include `"private": true`; pass
+`--publishable` to omit that field for a package intended for npm publishing.
 
-Generators without template files report the missing directory before changing
-the workspace. Their implementations and schemas are retained for later updates.
+The other registered generators are retained from the older CLI implementation.
+Generators without committed template files report that before changing the
+workspace; they are not part of this first supported cut.
 
 ## Consumer usage
 
@@ -51,7 +41,8 @@ pnpm add -Dw @vx-cli/react
 pnpm nx list @vx-cli/react
 pnpm nx generate @vx-cli/react:init
 pnpm nx generate @vx-cli/react:app portal --category=internal --dry-run
-pnpm nx generate @vx-cli/react:lib buttons --directory=ui --dry-run
+pnpm nx generate @vx-cli/react:lib utils --publishable --dry-run
+pnpm nx generate @vx-cli/react:react-lib button --directory=packages/ui/button --publishable --dry-run
 ```
 
 The `vx-react` binary forwards generator commands to the installed Nx CLI:
@@ -68,13 +59,12 @@ redirect `@nx/react` generators or register an empty task-inference plugin.
 
 ## Template updates
 
-- Replace app files in `src/generators/application/files`.
-- Update Playwright and mock-server companions in `files-e2e-playwright` and
-  `files-mock-server` under the application generator.
-- Replace shared library files in `src/generators/library/files`.
-- Supply a `files` directory for each specialized generator before using it.
-- Keep schemas and their TypeScript interfaces aligned with template options.
-- Keep reusable runtime behavior in `@vezham/*` packages in the new format.
+- Update plain package files in `src/generators/library/files`.
+- Update React package files in `src/generators/library-react/files`.
+- Keep each generator schema and TypeScript interface aligned.
+- Keep generated package output paths workspace-relative, defaulting to
+  `packages/<name>`.
+- Keep reusable runtime behavior in `@vezham/*` packages.
 
 Factories use named exports registered in `generators.json`. The TypeScript
 build emits ES modules to `dist` and copies schemas and template assets alongside

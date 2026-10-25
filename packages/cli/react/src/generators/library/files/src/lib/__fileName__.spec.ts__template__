@@ -1,0 +1,7 @@
+import { __propertyName__ } from './__fileName__'
+
+describe('__propertyName__', () => {
+  it('should work', () => {
+    expect(__propertyName__()).toEqual('__fileName__')
+  })
+})

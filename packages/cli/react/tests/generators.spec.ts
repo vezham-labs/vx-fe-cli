@@ -18,6 +18,7 @@ import {
   initGenerator,
   layoutGenerator,
   libraryGenerator,
+  reactLibraryGenerator,
   templateGenerator,
   utilitiesGenerator
 } from '../src/index'
@@ -27,6 +28,12 @@ const createWorkspace = () => {
   updateNxJson(tree, {
     workspaceLayout: { appsDir: 'apps', libsDir: 'packages' }
   })
+  tree.write(
+    'package.json',
+    JSON.stringify({
+      repository: { type: 'git', url: 'https://example.test/consumer.git' }
+    })
+  )
   tree.write('tsconfig.base.json', JSON.stringify({ compilerOptions: {} }))
   return tree
 }
@@ -109,43 +116,70 @@ describe('legacy generator baseline', () => {
     expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
   })
 
-  it.each([false, true])(
-    'renders the library templates (publishable: %s)',
-    async publishable => {
-      const tree = createWorkspace()
-      await libraryGenerator(tree, {
-        name: 'button',
-        directory: 'ui',
-        importPath: '@example/button',
-        component: true,
-        publishable,
-        skipFormat: true
-      })
-      expect(readProjectConfiguration(tree, 'ui-button').root).toBe(
-        'packages/ui/button'
-      )
-      expect(readJson(tree, 'packages/ui/button/package.json').name).toBe(
-        '@example/button'
-      )
-      expect(tree.exists('packages/ui/button/src/lib/button/button.tsx')).toBe(
-        true
-      )
-      expect(
-        generatedFiles(tree).some(file => file.includes('__template__'))
-      ).toBe(false)
-    }
-  )
-
-  it('honors the library option to preserve existing TypeScript configuration', async () => {
+  it('generates a plain package at packages/<name> by default', async () => {
     const tree = createWorkspace()
-    const before = tree.read('tsconfig.base.json', 'utf8')
-    await libraryGenerator(tree, {
-      name: 'helpers',
-      component: false,
-      skipTsConfig: true,
-      skipFormat: true
+    await libraryGenerator(tree, { name: 'helpers' })
+    expect(readProjectConfiguration(tree, 'helpers').root).toBe(
+      'packages/helpers'
+    )
+    expect(readJson(tree, 'packages/helpers/package.json').name).toBe(
+      '@vezham/helpers'
+    )
+    expect(readJson(tree, 'packages/helpers/package.json').private).toBe(true)
+    expect(readJson(tree, 'packages/helpers/package.json').repository).toEqual({
+      type: 'git',
+      url: 'https://example.test/consumer.git',
+      directory: 'packages/helpers'
     })
-    expect(tree.read('tsconfig.base.json', 'utf8')).toBe(before)
+    expect(tree.exists('packages/helpers/src/lib/helpers.ts')).toBe(true)
+    expect(tree.exists('packages/helpers/src/lib/helpers.spec.ts')).toBe(true)
+    expect(
+      generatedFiles(tree).some(file => file.includes('__template__'))
+    ).toBe(false)
+  })
+
+  it('lets a plain package use a workspace-relative directory override', async () => {
+    const tree = createWorkspace()
+    await libraryGenerator(tree, { name: 'helpers', directory: 'libs/shared' })
+    expect(readProjectConfiguration(tree, 'helpers').root).toBe('libs/shared')
+    expect(tree.exists('libs/shared/src/lib/helpers.ts')).toBe(true)
+  })
+
+  it('omits private for a publishable plain package', async () => {
+    const tree = createWorkspace()
+    await libraryGenerator(tree, { name: 'helpers', publishable: true })
+    expect(readJson(tree, 'packages/helpers/package.json')).not.toHaveProperty(
+      'private'
+    )
+  })
+
+  it('generates a React package at packages/<name> by default', async () => {
+    const tree = createWorkspace()
+    await reactLibraryGenerator(tree, { name: 'button' })
+    expect(readProjectConfiguration(tree, 'button').root).toBe(
+      'packages/button'
+    )
+    expect(readJson(tree, 'packages/button/package.json').name).toBe(
+      '@vezham/button'
+    )
+    expect(readJson(tree, 'packages/button/package.json').private).toBe(true)
+    expect(tree.exists('packages/button/src/lib/button.tsx')).toBe(true)
+    expect(tree.exists('packages/button/src/lib/button.spec.tsx')).toBe(true)
+  })
+
+  it('omits private for a publishable React package', async () => {
+    const tree = createWorkspace()
+    await reactLibraryGenerator(tree, { name: 'button', publishable: true })
+    expect(readJson(tree, 'packages/button/package.json')).not.toHaveProperty(
+      'private'
+    )
+  })
+
+  it('rejects output directories outside the workspace', async () => {
+    const tree = createWorkspace()
+    await expect(
+      libraryGenerator(tree, { name: 'helpers', directory: '../outside' })
+    ).rejects.toThrow('The output directory must stay within the workspace.')
   })
 
   const missingTemplates = {

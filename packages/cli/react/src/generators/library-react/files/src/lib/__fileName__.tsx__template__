@@ -1,0 +1,7 @@
+export const __className__ = () => {
+  return (
+    <div>
+      <h1>Welcome to __className__!</h1>
+    </div>
+  )
+}
