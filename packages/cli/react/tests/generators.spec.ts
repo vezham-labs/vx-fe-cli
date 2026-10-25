@@ -10,7 +10,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
   applicationGenerator,
-  cdnGenerator,
   commonGenerator,
   componentGenerator,
   componentStoreGenerator,
@@ -22,7 +21,6 @@ import {
   libraryGenerator,
   mockGenerator,
   reactLibraryGenerator,
-  startGenerator,
   templateGenerator,
   utilitiesGenerator
 } from '../src/index'
@@ -97,8 +95,8 @@ describe('legacy generator baseline', () => {
       'team-portal'
     )
     expect(
-      tree.read('apps_internals/team/portal/index.html', 'utf8')
-    ).toContain('TeamPortal')
+      tree.read('apps_internals/team/portal/vx.app.yaml', 'utf8')
+    ).toContain('id: vezham-team-portal')
     expect(tree.exists('apps_internals/team/portal-mock/project.json')).toBe(
       false
     )
@@ -113,17 +111,13 @@ describe('legacy generator baseline', () => {
     expect(readProjectConfiguration(tree, 'portal').root).toBe(
       'apps_internals/portal'
     )
-    expect(tree.read('apps_internals/portal/index.html', 'utf8')).toContain(
-      'https://static.cdn.vezham.com/apps_internals/portal'
+    expect(tree.read('apps_internals/portal/vx.app.yaml', 'utf8')).toContain(
+      'id: vezham-portal'
     )
     expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
   })
 
-  it.each([
-    ['cdn', cdnGenerator],
-    ['doc', docGenerator],
-    ['start', startGenerator]
-  ] as const)(
+  it.each([['doc', docGenerator]] as const)(
     'keeps the %s generator pending until its template is supplied',
     async (type, generator) => {
       const tree = createWorkspace()

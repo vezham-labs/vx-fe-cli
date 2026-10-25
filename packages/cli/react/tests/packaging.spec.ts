@@ -145,7 +145,7 @@ describe('published Nx plugin', () => {
       JSON.parse(tree.read('packages/packed-react-lib/package.json', 'utf8')!)
         .repository.url
     ).toBe('https://example.test/consumer.git')
-    expect(tree.exists('apps/packed-app/src/app/main.tsx')).toBe(true)
+    expect(tree.exists('apps/packed-app/src/app/shell.tsx')).toBe(true)
     expect(tree.exists('apps/packed-app-mock/project.json')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.ts')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.spec.ts')).toBe(

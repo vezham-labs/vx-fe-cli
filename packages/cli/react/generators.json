@@ -15,7 +15,7 @@
     "app-cdn": {
       "factory": "./dist/generators/cdn/generator#cdnGenerator",
       "schema": "./dist/generators/cdn/schema.json",
-      "description": "Create a CDN application (template pending)"
+      "description": "Create a CDN application"
     },
     "app-doc": {
       "factory": "./dist/generators/doc/generator#docGenerator",
