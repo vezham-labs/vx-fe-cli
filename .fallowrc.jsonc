@@ -40,6 +40,7 @@
     "vx/tools/audit/*.test.mjs",
     "vx/tools/eslint/tests/*.test.mjs",
     "vx/tools/release/index.ts",
+    "vx/tools/release/*.test.ts",
     "vx/tools/release/version-actions.cjs"
   ],
   "framework": [
