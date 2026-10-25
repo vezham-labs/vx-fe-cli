@@ -2,7 +2,3 @@
 
 # <%= projectName %>-e2e
 E2E for <%= projectName %> using playwright.
-<% if (mockServer) { %>
-# <%= mockProjectName %>
-Mock API server for <%= projectName %> using JSON Server.
- <% } %>

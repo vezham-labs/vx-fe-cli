@@ -12,7 +12,6 @@ export interface GeneratorSchema {
     | 'suit'
     | 'platform'
     | 'widget'
-  mockServer?: boolean
   cdnHost?: 'cdn' | 'self'
   strict?: boolean
 }

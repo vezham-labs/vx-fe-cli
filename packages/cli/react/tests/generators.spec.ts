@@ -74,14 +74,13 @@ describe('legacy generator baseline', () => {
     expect(readNxJson(tree)).toEqual(before)
   })
 
-  it('renders the app, Playwright, and mock templates with nested category paths', async () => {
+  it('renders app and Playwright templates with nested category paths', async () => {
     const tree = createWorkspace()
     await applicationGenerator(tree, {
       name: 'portal',
       directory: 'team',
       category: 'internal',
       cdnHost: 'cdn',
-      mockServer: true,
       strict: true
     })
     expect(readProjectConfiguration(tree, 'team-portal').root).toBe(
@@ -90,23 +89,23 @@ describe('legacy generator baseline', () => {
     expect(
       readProjectConfiguration(tree, 'team-portal-e2e').implicitDependencies
     ).toEqual(['team-portal'])
-    expect(readProjectConfiguration(tree, 'team-portal-mock').root).toBe(
-      'apps_internals/team/portal-mock'
-    )
     expect(readJson(tree, 'apps_internals/team/portal/package.json').name).toBe(
       'team-portal'
     )
     expect(
       tree.read('apps_internals/team/portal/index.html', 'utf8')
     ).toContain('TeamPortal')
+    expect(tree.exists('apps_internals/team/portal-mock/project.json')).toBe(
+      false
+    )
     expect(
       generatedFiles(tree).some(file => file.includes('__template__'))
     ).toBe(false)
   })
 
-  it('uses schema defaults for direct app calls and can omit the mock backend', async () => {
+  it('uses schema defaults and does not generate a mock backend', async () => {
     const tree = createWorkspace()
-    await applicationGenerator(tree, { name: 'portal', mockServer: false })
+    await applicationGenerator(tree, { name: 'portal' })
     expect(readProjectConfiguration(tree, 'portal').root).toBe(
       'apps_internals/portal'
     )

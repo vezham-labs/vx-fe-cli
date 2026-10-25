@@ -134,7 +134,6 @@ describe('published Nx plugin', () => {
     await applicationGenerator(tree, {
       name: 'packed-app',
       category: 'app',
-      mockServer: false,
       strict: true,
       cdnHost: 'self'
     })
@@ -145,6 +144,7 @@ describe('published Nx plugin', () => {
         .repository.url
     ).toBe('https://example.test/consumer.git')
     expect(tree.exists('apps/packed-app/src/app/main.tsx')).toBe(true)
+    expect(tree.exists('apps/packed-app-mock/project.json')).toBe(false)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.ts')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.spec.ts')).toBe(
       true

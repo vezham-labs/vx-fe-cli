@@ -23,13 +23,8 @@ interface NormalizedSchema extends GeneratorSchema {
   cdnPath: string
   e2eProjectName: string
   e2eProjectRoot: string
-  mockProjectName: string
-  mockProjectRoot: string
 }
-const normalizeOptions = (
-  _tree: Tree,
-  options: GeneratorSchema
-): NormalizedSchema => {
+const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
   const name = names(options.name).fileName
   const category = options.category || 'apps'
   let categoryPrefix = 'apps'
@@ -46,8 +41,6 @@ const normalizeOptions = (
   const projectRoot = `${projectDirectory}`
   const e2eProjectName = `${projectName}-e2e`
   const e2eProjectRoot = `${projectDirectory}-e2e`
-  const mockProjectName = `${projectName}-mock`
-  const mockProjectRoot = `${projectDirectory}-mock`
   const parsedTags = []
   parsedTags.push(`category:${category}`)
   const projectLabel = toPascalCase(projectName)
@@ -60,7 +53,6 @@ const normalizeOptions = (
   return {
     ...options,
     category,
-    mockServer: options.mockServer ?? true,
     strict: options.strict ?? true,
     cdnHost: options.cdnHost ?? 'cdn',
     projectName,
@@ -71,9 +63,7 @@ const normalizeOptions = (
     projectLabel,
     cdnPath,
     e2eProjectName,
-    e2eProjectRoot,
-    mockProjectName,
-    mockProjectRoot
+    e2eProjectRoot
   }
 }
 const addFiles = (tree: Tree, options: NormalizedSchema) => {
@@ -129,63 +119,13 @@ const addE2eProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
     implicitDependencies: [options.projectName]
   })
 }
-const addMockFiles = (tree: Tree, options: NormalizedSchema) => {
-  if (!options.mockServer) {
-    return
-  }
-  const templateOptions = {
-    ...options,
-    ...names(options.name),
-    offsetFromRoot: offsetFromRoot(options.mockProjectRoot),
-    template: ''
-  }
-  generateFiles(
-    tree,
-    path.join(import.meta.dirname, 'files-mock-server'),
-    options.mockProjectRoot,
-    templateOptions
-  )
-  addMockProjectConfiguration(tree, options)
-}
-const addMockProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
-  const targets: Record<string, TargetConfiguration> = {}
-  targets.serve = {
-    executor: 'nx:run-commands',
-    options: {
-      cwd: '{projectRoot}',
-      command: 'pnpm serve'
-    }
-  }
-  targets.build = {
-    executor: 'nx:run-commands',
-    options: {
-      cwd: '{projectRoot}',
-      command: 'pnpm build'
-    }
-  }
-  targets.generate = {
-    executor: 'nx:run-commands',
-    options: {
-      cwd: '{projectRoot}',
-      command: 'pnpm generate'
-    }
-  }
-  addProjectConfiguration(tree, options.mockProjectName, {
-    root: options.mockProjectRoot,
-    projectType: 'application',
-    sourceRoot: `${options.mockProjectRoot}/src`,
-    targets,
-    tags: [...options.parsedTags, 'mock']
-  })
-}
 export const applicationGenerator = async (
   tree: Tree,
   options: GeneratorSchema
 ) => {
   assertTemplateFiles(path.join(import.meta.dirname, 'files'), 'application')
-  const normalizedOptions = normalizeOptions(tree, options)
+  const normalizedOptions = normalizeOptions(options)
   addFiles(tree, normalizedOptions)
   addE2eFiles(tree, normalizedOptions)
-  addMockFiles(tree, normalizedOptions)
   await formatFiles(tree)
 }

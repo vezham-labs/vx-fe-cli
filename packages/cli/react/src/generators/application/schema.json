@@ -76,11 +76,6 @@
         ]
       }
     },
-    "mockServer": {
-      "type": "boolean",
-      "description": "Generate a JSON Server mock backend for API simulation.",
-      "default": true
-    },
     "cdnHost": {
       "type": "string",
       "description": "CDN config (cdn - static.vezham.com, self - self-hosting,..)",
