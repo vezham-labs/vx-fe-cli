@@ -21,17 +21,12 @@ The first supported library generators are `library` (`lib`) and
 `library-react` (`react-lib`). They create package projects based on the
 templates in `.vezham/library` and `.vezham/library-react`.
 
-Application generation is split into `app`, `app-cdn`, `app-doc`, and
-`app-start`. They share category and directory options. The `app` template is
-available; the other three generators report missing templates until those are
-provided.
+Application generation is split into app, app-cdn, app-doc, and app-start.
+They share category and directory options and each has its own template.
 
 The `mock` generator creates a standalone mock API project from
 `.vezham/app-mock`. It uses the same application categories and directory
 grouping as apps, and names the generated project `<name>-mock`.
-
-The CDN and documentation generators are registered with shared category and
-directory options; they report missing templates until those are supplied.
 
 Both library generators default to `packages/<name>`. `--directory` overrides
 the full workspace-relative output path; for example,
@@ -41,9 +36,9 @@ package name is `@vezham/<name>`.
 Packages default to non-publishable and include `"private": true`; pass
 `--publishable` to omit that field for a package intended for npm publishing.
 
-The other registered generators are retained from the older CLI implementation.
-Generators without committed template files report that before changing the
-workspace; they are not part of this first supported cut.
+Unfinished generators from the older CLI implementation remain in source
+and tests, but are not registered with Nx or listed in CLI help until their
+templates are ready.
 
 ## Consumer usage
 

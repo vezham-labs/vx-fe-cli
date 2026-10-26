@@ -22,14 +22,6 @@ if (!generator || ['--help', '-h'].includes(generator)) {
     'mock',
     'library',
     'library-react',
-    'common',
-    'component',
-    'component-store',
-    'core',
-    'hook',
-    'layout',
-    'template',
-    'utilities',
     'init'
   ]
   const entries = Object.entries(generators).sort(([left], [right]) => {

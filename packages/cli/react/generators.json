@@ -43,49 +43,6 @@
       "schema": "./dist/generators/library-react/schema.json",
       "description": "Create a React library package",
       "aliases": ["react-lib"]
-    },
-    "common": {
-      "factory": "./dist/generators/common/generator#commonGenerator",
-      "schema": "./dist/generators/common/schema.json",
-      "description": "Create a common utilities library"
-    },
-    "component": {
-      "factory": "./dist/generators/component/generator#componentGenerator",
-      "schema": "./dist/generators/component/schema.json",
-      "description": "Create a reusable React component library",
-      "aliases": ["comp"]
-    },
-    "component-store": {
-      "factory": "./dist/generators/component-store/generator#componentStoreGenerator",
-      "schema": "./dist/generators/component-store/schema.json",
-      "description": "Create a component library with state management",
-      "aliases": ["comp-store"]
-    },
-    "core": {
-      "factory": "./dist/generators/core/generator#coreGenerator",
-      "schema": "./dist/generators/core/schema.json",
-      "description": "Create a core business logic library"
-    },
-    "hook": {
-      "factory": "./dist/generators/hook/generator#hookGenerator",
-      "schema": "./dist/generators/hook/schema.json",
-      "description": "Create a custom React hooks library"
-    },
-    "layout": {
-      "factory": "./dist/generators/layout/generator#layoutGenerator",
-      "schema": "./dist/generators/layout/schema.json",
-      "description": "Create a layout components library"
-    },
-    "template": {
-      "factory": "./dist/generators/template/generator#templateGenerator",
-      "schema": "./dist/generators/template/schema.json",
-      "description": "Create a template library for scaffolding"
-    },
-    "utilities": {
-      "factory": "./dist/generators/utilities/generator#utilitiesGenerator",
-      "schema": "./dist/generators/utilities/schema.json",
-      "description": "Create a utilities and helper functions library",
-      "aliases": ["utils"]
     }
   }
 }
