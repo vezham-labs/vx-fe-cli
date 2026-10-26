@@ -9,7 +9,7 @@ import * as path from 'path'
 
 import { normalizeApplicationLocation } from '../../utils/application-category'
 import type { ApplicationType } from '../../utils/application-type'
-import { toPascalCase } from '../../utils/casing'
+import { toTitleCase } from '../../utils/casing'
 import { assertTemplateFiles } from '../../utils/templates'
 import type { GeneratorSchema } from './schema'
 
@@ -19,7 +19,7 @@ interface NormalizedSchema extends GeneratorSchema {
   projectDirectory: string
   categoryPrefix: string
   parsedTags: string[]
-  projectLabel: string
+  projectDisplayName: string
   cdnPath: string
   e2eProjectName: string
   e2eProjectRoot: string
@@ -39,7 +39,7 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
   const projectRoot = `${projectDirectory}`
   const e2eProjectName = `${projectName}-e2e`
   const e2eProjectRoot = `${projectDirectory}-e2e`
-  const projectLabel = toPascalCase(projectName)
+  const projectDisplayName = toTitleCase(projectName)
   // wjdlz/NOTE: for CDN
   const cdnPath =
     (options.cdnHost ?? 'cdn') === 'cdn'
@@ -56,7 +56,7 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
     projectDirectory,
     categoryPrefix,
     parsedTags,
-    projectLabel,
+    projectDisplayName,
     cdnPath,
     e2eProjectName,
     e2eProjectRoot

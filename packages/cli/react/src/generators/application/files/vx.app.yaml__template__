@@ -2,10 +2,10 @@
 framework: tanstack
 core:
   id: vezham-<%= projectName %>
-  name: Vezham <%= projectLabel %>
-  shortName: <%= projectLabel %>
+  name: Vezham <%= projectDisplayName %>
+  shortName: <%= projectDisplayName %>
   version: 0.0.0
-  description: Single app to manage your Vezham <%= projectLabel %>
+  description: Single app to manage your Vezham <%= projectDisplayName %>
   publisher:
     name: Vezham Technologies Private Limited
     url: https://vezham.com
@@ -50,9 +50,9 @@ pwa:
       type: image/png
       sizes: 512x512
 metadata:
-  title: Home | Vezham <%= projectLabel %>
+  title: Home | Vezham <%= projectDisplayName %>
   keywords:
-    - Vezham <%= projectLabel %>
+    - Vezham <%= projectDisplayName %>
   theme:
     lightColor: white
     darkColor: black

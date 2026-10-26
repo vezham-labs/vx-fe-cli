@@ -13,11 +13,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=1, shrink-to-fit=no" />
     <meta name="author" content="Vezham Technologies Private Limited" />
-    <meta name="keywords" content="Vezham <%= projectLabel %>" />
-    <title>Home | Vezham <%= projectLabel %></title>
+    <meta name="keywords" content="Vezham <%= projectDisplayName %>" />
+    <title>Home | Vezham <%= projectDisplayName %></title>
     <meta
       name="description"
-      content="Single app to manage your Vezham <%= projectLabel %>" />
+      content="Single app to manage your Vezham <%= projectDisplayName %>" />
 
     <!-- wjdlz/NOTE: PWA::THEME -->
     <meta
@@ -90,7 +90,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
 
     <!-- wjdlz/NOTE: APPLE -->
-    <meta name="apple-mobile-web-app-title" content="Vezham <%= projectLabel %>" />
+    <meta name="apple-mobile-web-app-title" content="Vezham <%= projectDisplayName %>" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <link
       rel="apple-touch-icon"
@@ -241,26 +241,26 @@
       href="<%= cdnPath %>/splashscreens/dark/splash-ipad-1024x1366@2x.png?vx=0.0.0" />
 
     <!-- wjdlz/NOTE: MICROSOFT -->
-    <meta name="application-name" content="Vezham <%= projectLabel %>" />
+    <meta name="application-name" content="Vezham <%= projectDisplayName %>" />
     <meta name="msapplication-config" content="/browserconfig.xml" />
     <meta name="msapplication-starturl" content="/" />
 
     <!-- wjdlz/NOTE: META -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Vezham <%= projectLabel %>" />
+    <meta property="og:title" content="Vezham <%= projectDisplayName %>" />
     <meta
       property="og:description"
-      content="Single app to manage your Vezham <%= projectLabel %>" />
+      content="Single app to manage your Vezham <%= projectDisplayName %>" />
     <meta property="og:image" content="/og/image.png" />
     <meta property="og:url" content="https://<%= projectName %>.vezham.app" />
 
     <!-- wjdlz/NOTE: TWITTER -->
     <meta name="twitter:creator" content="@vezham" />
     <meta name="twitter:site" content="@vezham" />
-    <meta name="twitter:title" content="Vezham <%= projectLabel %>" />
+    <meta name="twitter:title" content="Vezham <%= projectDisplayName %>" />
     <meta
       name="twitter:description"
-      content="Single app to manage your Vezham <%= projectLabel %>" />
+      content="Single app to manage your Vezham <%= projectDisplayName %>" />
     <meta name="twitter:image" content="/og/image.png" />
     <meta name="twitter:url" content="https://<%= projectName %>.vezham.app" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -270,7 +270,7 @@
   <body>
     <noscript>
       <strong>
-        We're sorry but Vezham <%= projectLabel %> doesn't work properly without
+        We're sorry but Vezham <%= projectDisplayName %> doesn't work properly without
         JavaScript enabled. Please enable it to continue.
       </strong>
     </noscript>

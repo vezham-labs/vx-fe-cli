@@ -24,6 +24,9 @@ runtime dependency.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.
+- Use spaced display names for app metadata and visible text: `playground-app`
+  becomes `Playground App` in names, descriptions, titles, and docs content.
+  Derive IDs, URLs, and file names from the normalized project slug.
 - Author app and deploy configuration in YAML. Keep JSON Schema definitions
   and generated provider artifacts in their existing JSON format. Use one
   YAML source per config; no legacy JSON input fallback is required.

@@ -6,7 +6,7 @@ iconColor: 'green'
 iconAlt: Vezham Logo icon
 ---
 
-嘿，這裡是 <%= projectLabel %>。Vezham Docs 也可以在 TanStack Start 上支援多語系文件。
+嘿，這裡是 <%= projectDisplayName %>。Vezham Docs 也可以在 TanStack Start 上支援多語系文件。
 
 ## 標題
 
@@ -28,7 +28,7 @@ console.log('你好世界')
 | 欄位                 | 說明                    |
 | -------------------- | ----------------------- |
 | `hello`              | 你好世界                |
-| **重要內容**         | <%= projectLabel %>         |
+| **重要內容**         | <%= projectDisplayName %>         |
 | _意外地_             | Vezham Docs             |
 | 一段比較長的文字內容 | hello world hello world |
 
