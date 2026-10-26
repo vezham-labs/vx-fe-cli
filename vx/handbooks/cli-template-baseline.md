@@ -206,7 +206,12 @@ App configs do not need to repeat those entries. Keep installed runtime packages
 in Vitest's `server.deps.inline` list so Vite resolves preserved `import.meta.env`
 expressions and applies test mocks instead of executing native Node modules.
 
-Workspace CSS remains under `packages/vx/styles`. Public UI packages expose
+Workspace CSS remains under `packages/vx/styles`. Generated apps import this
+workspace stylesheet from `src/app/global.css`; documentation apps also import
+its `docs` entry. Calculate relative imports from the generated project location
+so nested directories resolve the same workspace styles.
+
+Public UI packages expose
 `dist/index.css` through their root `style` export and top-level `style` field.
 Import the package name from CSS; JavaScript imports retain their runtime exports.
 These stylesheets register the packages' compiled JavaScript with Tailwind.
