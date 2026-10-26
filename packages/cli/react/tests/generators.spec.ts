@@ -85,18 +85,18 @@ describe('legacy generator baseline', () => {
       strict: true
     })
     expect(readProjectConfiguration(tree, 'team-portal').root).toBe(
-      'apps_internals/team/portal'
+      'apps-internals/team/portal'
     )
     expect(
       readProjectConfiguration(tree, 'team-portal-e2e').implicitDependencies
     ).toEqual(['team-portal'])
-    expect(readJson(tree, 'apps_internals/team/portal/package.json').name).toBe(
+    expect(readJson(tree, 'apps-internals/team/portal/package.json').name).toBe(
       'team-portal'
     )
     expect(
-      tree.read('apps_internals/team/portal/vx.app.yaml', 'utf8')
+      tree.read('apps-internals/team/portal/vx.app.yaml', 'utf8')
     ).toContain('id: vezham-team-portal')
-    expect(tree.exists('apps_internals/team/portal-mock/project.json')).toBe(
+    expect(tree.exists('apps-internals/team/portal-mock/project.json')).toBe(
       false
     )
     expect(
@@ -108,12 +108,12 @@ describe('legacy generator baseline', () => {
     const tree = createWorkspace()
     await applicationGenerator(tree, { name: 'portal' })
     expect(readProjectConfiguration(tree, 'portal').root).toBe(
-      'apps_internals/portal'
+      'apps-internals/portal'
     )
-    expect(tree.read('apps_internals/portal/vx.app.yaml', 'utf8')).toContain(
+    expect(tree.read('apps-internals/portal/vx.app.yaml', 'utf8')).toContain(
       'id: vezham-portal'
     )
-    expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
+    expect(tree.exists('apps-internals/portal-mock/project.json')).toBe(false)
   })
 
   it('generates a categorized mock project independently of the app', async () => {
@@ -124,17 +124,17 @@ describe('legacy generator baseline', () => {
       category: 'cdn'
     })
     expect(readProjectConfiguration(tree, 'team-portal-mock').root).toBe(
-      'apps_cdns/team/portal-mock'
+      'apps-cdns/team/portal-mock'
     )
     expect(readProjectConfiguration(tree, 'team-portal-mock').tags).toEqual([
       'category:cdn',
       'mock'
     ])
-    expect(readJson(tree, 'apps_cdns/team/portal-mock/package.json').name).toBe(
+    expect(readJson(tree, 'apps-cdns/team/portal-mock/package.json').name).toBe(
       'team-portal-mock'
     )
     expect(
-      tree.read('apps_cdns/team/portal-mock/src/lib/config.ts', 'utf8')
+      tree.read('apps-cdns/team/portal-mock/src/lib/config.ts', 'utf8')
     ).toContain("'team-portal-mock'")
     expect(
       generatedFiles(tree).some(file => file.includes('__template__'))

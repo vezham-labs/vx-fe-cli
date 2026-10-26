@@ -20,7 +20,7 @@ export const normalizeApplicationLocation = (
   const categoryPrefix =
     category === 'app'
       ? 'apps'
-      : `apps_${category === 'vezham' ? category : `${category}s`}`
+      : `apps-${category === 'vezham' ? category : `${category}s`}`
   const normalizedDirectory = directory ? names(directory).fileName : undefined
   const normalizedName = names(name).fileName
   const projectDirectory = [categoryPrefix, normalizedDirectory, normalizedName]

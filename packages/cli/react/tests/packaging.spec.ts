@@ -168,9 +168,7 @@ describe('published Nx plugin', () => {
     )
     expect(help).toContain('Vx CLI - React Generators')
     expect(help).toContain('pnpx @vx-cli/react <generator> [options]')
-    expect(help).toMatch(
-      /application\s+app\s+Create a custom React application/
-    )
+    expect(help).toMatch(/application\s+app\s+Create a React application/)
     expect(help).toContain('app-cdn')
     expect(help).toContain('app-doc')
     expect(help).toContain('app-start')

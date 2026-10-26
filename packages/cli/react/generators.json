@@ -9,7 +9,7 @@
     "application": {
       "factory": "./dist/generators/application/generator#applicationGenerator",
       "schema": "./dist/generators/application/schema.json",
-      "description": "Create a custom React application",
+      "description": "Create a React application",
       "aliases": ["app"]
     },
     "app-cdn": {
@@ -30,7 +30,7 @@
     "mock": {
       "factory": "./dist/generators/mock/generator#mockGenerator",
       "schema": "./dist/generators/mock/schema.json",
-      "description": "Create a mock API project"
+      "description": "Create a mock API server"
     },
     "library": {
       "factory": "./dist/generators/library/generator#libraryGenerator",
