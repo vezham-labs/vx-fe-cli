@@ -1,6 +1,6 @@
 import { names } from '@nx/devkit'
 
-type ApplicationCategory =
+export type ApplicationCategory =
   | 'cdn'
   | 'pod'
   | 'suit'
