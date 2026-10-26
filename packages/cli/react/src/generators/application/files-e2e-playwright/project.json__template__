@@ -1,0 +1,14 @@
+{
+  "name": "<%= e2eProjectName %>",
+  "$schema": "<%= offsetFromRoot %>node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "<%= e2eProjectRoot %>/src",
+  "tags": [
+    "category:<%= category %>",
+    "e2e"
+  ],
+  "implicitDependencies": [
+    "<%= projectName %>"
+  ],
+  "targets": {}
+}

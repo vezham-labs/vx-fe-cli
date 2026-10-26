@@ -1,7 +1,5 @@
 import {
-  type TargetConfiguration,
   type Tree,
-  addProjectConfiguration,
   formatFiles,
   generateFiles,
   names,
@@ -92,18 +90,6 @@ const addE2eFiles = (tree: Tree, options: NormalizedSchema) => {
     options.e2eProjectRoot,
     templateOptions
   )
-  addE2eProjectConfiguration(tree, options)
-}
-const addE2eProjectConfiguration = (tree: Tree, options: NormalizedSchema) => {
-  const targets: Record<string, TargetConfiguration> = {}
-  addProjectConfiguration(tree, options.e2eProjectName, {
-    root: options.e2eProjectRoot,
-    projectType: 'application',
-    sourceRoot: `${options.e2eProjectRoot}/src`,
-    targets,
-    tags: [...options.parsedTags, 'e2e'],
-    implicitDependencies: [options.projectName]
-  })
 }
 export const generateApplication = async (
   tree: Tree,
