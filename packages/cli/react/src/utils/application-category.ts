@@ -1,19 +1,16 @@
 import { names } from '@nx/devkit'
 
-export const applicationCategories = [
-  'cdn',
-  'pod',
-  'suit',
-  'platform',
-  'widget',
-  'internal',
-  'app',
-  'vezham',
-  'doc',
-  'demo'
-] as const
-
-export type ApplicationCategory = (typeof applicationCategories)[number]
+type ApplicationCategory =
+  | 'cdn'
+  | 'pod'
+  | 'suit'
+  | 'platform'
+  | 'widget'
+  | 'internal'
+  | 'app'
+  | 'vezham'
+  | 'doc'
+  | 'demo'
 
 export const normalizeApplicationLocation = (
   name: string,

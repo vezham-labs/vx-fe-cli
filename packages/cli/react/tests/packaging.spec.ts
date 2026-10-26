@@ -141,10 +141,16 @@ describe('published Nx plugin', () => {
     await mockGenerator(tree, { name: 'packed-app', category: 'app' })
     await libraryGenerator(tree, { name: 'packed-lib' })
     await reactLibraryGenerator(tree, { name: 'packed-react-lib' })
-    expect(
-      JSON.parse(tree.read('packages/packed-react-lib/package.json', 'utf8')!)
-        .repository.url
-    ).toBe('https://example.test/consumer.git')
+    const reactLibraryPackageJson = tree.read(
+      'packages/packed-react-lib/package.json',
+      'utf8'
+    )
+    if (!reactLibraryPackageJson) {
+      throw new Error('Expected the generated React library package.json.')
+    }
+    expect(JSON.parse(reactLibraryPackageJson).repository.url).toBe(
+      'https://example.test/consumer.git'
+    )
     expect(tree.exists('apps/packed-app/src/app/shell.tsx')).toBe(true)
     expect(tree.exists('apps/packed-app-mock/project.json')).toBe(true)
     expect(tree.exists('packages/packed-lib/src/lib/packed-lib.ts')).toBe(true)
