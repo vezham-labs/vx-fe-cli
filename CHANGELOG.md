@@ -1,3 +1,13 @@
+## 26.0.0-beta.6 (2026-10-26)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** format app display names ([de3c602](https://github.com/vezham-labs/vx-fe-cli/commit/de3c602))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.5 (2026-10-26)
 
 ### 🩹 Fixes
