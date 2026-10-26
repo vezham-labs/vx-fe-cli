@@ -1,8 +1,8 @@
 {
-  "name": "__projectName__",
+  "name": "<%= projectName %>",
   "version": "0.0.0",
   "private": true,
-  "description": "Mock API server for __applicationName__",
+  "description": "Mock API server for <%= applicationName %>",
   "type": "module",
   "main": "dist/src/index.js",
   "scripts": {

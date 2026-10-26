@@ -1,10 +1,10 @@
 {
-  "name": "@vezham/__fileName__",
+  "name": "@vezham/<%= fileName %>",
   "version": "0.0.0",
 <% if (repositoryUrl) { %>  "repository": {
     "type": "git",
     "url": <%- JSON.stringify(repositoryUrl) %>,
-    "directory": "__projectRoot__"
+    "directory": "<%= projectRoot %>"
   },
 <% } %>
   "type": "module",

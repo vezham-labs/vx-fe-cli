@@ -1,19 +1,39 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
+import path from 'node:path'
 
+const require = createRequire(import.meta.url)
 const [generator, ...options] = process.argv.slice(2)
 
 if (!generator || ['--help', '-h'].includes(generator)) {
-  const { generators } = JSON.parse(
-    readFileSync(
-      fileURLToPath(new URL('../generators.json', import.meta.url)),
-      'utf8'
+  let manifest: unknown
+  try {
+    manifest = JSON.parse(
+      readFileSync(path.join(import.meta.dirname, '../generators.json'), 'utf8')
     )
-  ) as {
-    generators: Record<string, { aliases?: string[]; description: string }>
+  } catch (cause) {
+    throw new Error('Could not parse the React generator collection.', {
+      cause
+    })
   }
+  if (
+    typeof manifest !== 'object' ||
+    manifest === null ||
+    !('generators' in manifest) ||
+    typeof manifest.generators !== 'object' ||
+    manifest.generators === null ||
+    Array.isArray(manifest.generators)
+  ) {
+    throw new Error(
+      'The React generator collection must define a generators object.'
+    )
+  }
+  const generators = manifest.generators as Record<
+    string,
+    { aliases?: string[]; description: string }
+  >
   const preferredOrder = [
     'application',
     'app-cdn',
@@ -61,7 +81,7 @@ Examples:
   const result = spawnSync(
     process.execPath,
     [
-      fileURLToPath(import.meta.resolve('nx/bin/nx.js')),
+      require.resolve('nx/bin/nx.js'),
       'generate',
       `@vx-cli/react:${generator}`,
       ...options

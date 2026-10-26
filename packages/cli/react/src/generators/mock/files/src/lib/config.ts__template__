@@ -27,7 +27,7 @@ const defineConfig = (): Server => {
       ? 'localhost'
       : validateHost(process.env.HOST_NAME, 'localhost'),
     port: parsePort(process.env.PORT, 3030), // vx-bot/NOTE: PRE_PORT
-    app_id: process.env.V_APP_ID || '__projectName__',
+    app_id: process.env.V_APP_ID || '<%= projectName %>',
     debug: process.env.V_IS_DEBUG === 'true',
     cors_origin: process.env.V_CORS_ORIGIN || '*',
     data_routes: process.env.V_DATA_ROUTES || '../../data/routes.json',

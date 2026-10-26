@@ -1,8 +1,8 @@
 {
-  "name": "__projectName__",
-  "$schema": "__nxSchemaPath__",
+  "name": "<%= projectName %>",
+  "$schema": "<%= nxSchemaPath %>",
   "projectType": "application",
-  "sourceRoot": "__projectRoot__/src",
+  "sourceRoot": "<%= projectRoot %>/src",
   "targets": {
     "serve": {
       "executor": "nx:run-commands",
@@ -26,5 +26,5 @@
       }
     }
   },
-  "tags": ["category:__category__", "mock"]
+  "tags": ["category:<%= category %>", "mock"]
 }

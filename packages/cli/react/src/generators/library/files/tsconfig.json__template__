@@ -9,5 +9,5 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "extends": "__offsetFromRoot__tsconfig.base.json"
+  "extends": "<%= offsetFromRoot %>tsconfig.base.json"
 }

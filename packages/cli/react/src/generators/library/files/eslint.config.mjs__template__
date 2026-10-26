@@ -1,4 +1,4 @@
-import baseConfig from '__offsetFromRoot__eslint.config.mjs'
+import baseConfig from '<%= offsetFromRoot %>eslint.config.mjs'
 
 export default [
   ...baseConfig,

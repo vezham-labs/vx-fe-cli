@@ -1,5 +1,5 @@
 {
-  "extends": "__offsetFromRoot__tsconfig.base.json",
+  "extends": "<%= offsetFromRoot %>tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
     "types": [
@@ -42,7 +42,7 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "__configTsconfigPath__"
+      "path": "<%= configTsconfigPath %>"
     }
   ]
 }

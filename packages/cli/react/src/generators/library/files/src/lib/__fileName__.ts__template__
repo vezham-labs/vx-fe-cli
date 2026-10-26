@@ -1,3 +1,3 @@
-export const __propertyName__ = (): string => {
-  return '__fileName__'
+export const <%= propertyName %> = (): string => {
+  return '<%= fileName %>'
 }
