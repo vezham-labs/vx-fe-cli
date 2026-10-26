@@ -26,27 +26,41 @@ const types = [
 module.exports = async () => {
   const graph = await createProjectGraphAsync()
 
-  // wjdlz/NOTE: Normalize scoped Nx project names
-  // eg: feat(@vx/start): ... -> feat(start): ...
-  const scopes = [
+  const projectsByScope = new Map()
+  for (const name of Object.keys(graph.nodes).sort()) {
+    const scope = name.replace(/^@[^/]+\//, '')
+    const projects = projectsByScope.get(scope) ?? []
+    projects.push(name)
+    projectsByScope.set(scope, projects)
+  }
+
+  // vx-bot/NOTE: Nx release requires full project names when short scopes collide.
+  const scopes = new Set([
     'workspace',
     'repo',
     'vx',
     'agents',
     'apps',
     'e2e',
-    ...Array.from(
-      new Set(
-        Object.keys(graph.nodes).map(name => name.replace(/^@[^/]+\//, ''))
-      )
-    ).sort()
-  ]
+    ...Array.from(projectsByScope).flatMap(([scope, projects]) =>
+      projects.length === 1 ? [scope] : projects
+    )
+  ])
 
   const validateScopes = parsed => {
     if (!parsed.scope) return [true]
 
     const commitScopes = parsed.scope.split(scopeDelimiter)
-    const invalidScopes = commitScopes.filter(scope => !scopes.includes(scope))
+    for (const scope of commitScopes) {
+      const projects = projectsByScope.get(scope)
+      if (projects?.length > 1) {
+        return [
+          false,
+          `scope "${scope}" is ambiguous; use a full Nx project name: ${projects.join(', ')}`
+        ]
+      }
+    }
+    const invalidScopes = commitScopes.filter(scope => !scopes.has(scope))
 
     if (invalidScopes.length > 0) {
       return [
@@ -93,7 +107,8 @@ module.exports = async () => {
         'always',
         { cases: ['lower-case'], delimiters: [scopeDelimiter] }
       ],
-      'scope-delimiter-style': [2, 'always', [scopeDelimiter]],
+      // vx-bot/NOTE: validateScopes enforces commas while allowing @ and / in full project names.
+      'scope-delimiter-style': [0],
       'scope-empty': [2, 'never'],
       'header-max-length': [2, 'always', 120],
       'subject-case': [2, 'never', []],

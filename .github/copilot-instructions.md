@@ -17,6 +17,10 @@
   separate lists or path-to-scope mappings in these instructions.
 - Choose the type and scope from the current configuration and affected Nx
   projects. Do not invent fallback values when configuration is unavailable.
+- For a project-specific commit, use a normalized short scope only when it
+  identifies one Nx project across the workspace. When normalized names collide,
+  use the full Nx project name allowed by the configuration, including its
+  package scope.
 - Apply the configured length limit to the complete header, including its
   prefix. Shorten the subject rather than omit required fields.
 - Validate with the repository's Commitlint configuration when tools are
