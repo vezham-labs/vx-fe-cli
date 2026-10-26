@@ -1,3 +1,14 @@
+## 26.0.0-beta.4 (2026-10-26)
+
+### 🩹 Fixes
+
+- **react:** use hyphens in app category paths ([9c03783](https://github.com/vezham-labs/vx-fe-cli/commit/9c03783))
+- **workspace:** reject ambiguous commit scopes ([6325289](https://github.com/vezham-labs/vx-fe-cli/commit/6325289))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.3 (2026-10-26)
 
 ### 🚀 Features
