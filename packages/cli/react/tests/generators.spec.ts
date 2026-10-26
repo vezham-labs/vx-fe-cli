@@ -14,7 +14,6 @@ import {
   componentGenerator,
   componentStoreGenerator,
   coreGenerator,
-  docGenerator,
   hookGenerator,
   initGenerator,
   layoutGenerator,
@@ -116,20 +115,6 @@ describe('legacy generator baseline', () => {
     )
     expect(tree.exists('apps_internals/portal-mock/project.json')).toBe(false)
   })
-
-  it.each([['doc', docGenerator]] as const)(
-    'keeps the %s generator pending until its template is supplied',
-    async (type, generator) => {
-      const tree = createWorkspace()
-      const before = generatedFiles(tree)
-      await expect(
-        generator(tree, { name: 'portal', category: 'internal' })
-      ).rejects.toThrow(
-        `The ${type} application generator has no committed templates yet`
-      )
-      expect(generatedFiles(tree)).toEqual(before)
-    }
-  )
 
   it('generates a categorized mock project independently of the app', async () => {
     const tree = createWorkspace()

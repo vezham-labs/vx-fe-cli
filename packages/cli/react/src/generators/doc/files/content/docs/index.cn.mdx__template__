@@ -1,0 +1,68 @@
+---
+title: 你好世界
+description: 你最喜歡的文件框架。
+icon: vezham-logo
+iconColor: 'green'
+iconAlt: Vezham Logo icon
+---
+
+嘿，這裡是 <%= projectLabel %>。Vezham Docs 也可以在 TanStack Start 上支援多語系文件。
+
+## 標題
+
+你好世界！
+
+<Cards>
+  <Card title="了解 TanStack Start" href="https://tanstack.com/start" />
+  <Card title="了解 Vezham Docs" href="/docs/overview" />
+</Cards>
+
+### 程式碼區塊
+
+```ts
+console.log('你好世界')
+```
+
+#### 表格
+
+| 欄位                 | 說明                    |
+| -------------------- | ----------------------- |
+| `hello`              | 你好世界                |
+| **重要內容**         | <%= projectLabel %>         |
+| _意外地_             | Vezham Docs             |
+| 一段比較長的文字內容 | hello world hello world |
+
+---
+
+import { story } from '@components/callout/index.story'
+
+Hey there! Vezham Docs is the docs framework that also works on Tanstack Start!
+
+## Heading
+
+<story.WithControl />
+
+Hello World!
+
+<Cards>
+  <Card
+    title="Learn more about Tanstack Start"
+    href="https://tanstack.com/start"
+  />
+  <Card title="Learn more about Vezham Docs" href="/docs/overview" />
+</Cards>
+
+### CodeBlock
+
+```ts
+console.log('Hello World')
+```
+
+#### Table
+
+| Head                            | Description                         |
+| ------------------------------- | ----------------------------------- |
+| `hello`                         | Hello World                         |
+| very **important**              | Hey                                 |
+| _Surprisingly_                  | Vezham Docs                         |
+| very long text that looks weird | hello world hello world hello world |

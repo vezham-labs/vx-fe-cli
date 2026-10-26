@@ -1,0 +1,13 @@
+---
+title: Test
+description: This is another page
+icon: test-tube
+---
+
+Hello World again!
+
+## Installation
+
+```npm
+npm i @vezham/docs-core @vezham/docs-react
+```

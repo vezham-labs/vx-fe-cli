@@ -1,0 +1,71 @@
+---
+title: Hello World
+description: Your favourite docs framework.
+icon: vezham-logo
+iconColor: 'green'
+iconAlt: Vezham Logo icon
+---
+
+import { story } from '@components/callout/index.story'
+
+Hey there! Vezham Docs is the docs framework that also works on Tanstack Start!
+
+## Heading
+
+<story.WithControl />
+
+Hello World!
+
+<Cards>
+  <Card
+    title="Learn more about Tanstack Start"
+    href="https://tanstack.com/start"
+  />
+  <Card title="Learn more about Vezham Docs" href="/docs/overview" />
+</Cards>
+
+### CodeBlock
+
+```ts
+console.log('Hello World')
+```
+
+#### Table
+
+| Head                            | Description                         |
+| ------------------------------- | ----------------------------------- |
+| `hello`                         | Hello World                         |
+| very **important**              | Hey                                 |
+| _Surprisingly_                  | Vezham Docs                         |
+| very long text that looks weird | hello world hello world hello world |
+
+---
+
+Hey there! Vezham Docs is the docs framework that also works on Tanstack Start!
+
+## Heading
+
+Hello World!
+
+<Cards>
+  <Card
+    title="Learn more about Tanstack Start"
+    href="https://tanstack.com/start"
+  />
+  <Card title="Learn more about Vezham Docs" href="/docs/overview" />
+</Cards>
+
+### CodeBlock
+
+```ts
+console.log('Hello World')
+```
+
+#### Table
+
+| Head                            | Description                         |
+| ------------------------------- | ----------------------------------- |
+| `hello`                         | Hello World                         |
+| very **important**              | Hey                                 |
+| _Surprisingly_                  | Vezham Docs                         |
+| very long text that looks weird | hello world hello world hello world |

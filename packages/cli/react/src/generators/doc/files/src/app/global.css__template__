@@ -1,0 +1,4 @@
+@import '@vezham/styles-v3';
+@import '@vezham/start/styles/docs';
+
+/* You can add global styles to this file, and also import other style files */

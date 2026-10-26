@@ -1,0 +1,13 @@
+---
+title: 測試
+description: 這是另一個頁面
+icon: test-tube
+---
+
+再次你好世界！
+
+## 安裝
+
+```npm
+npm i @vezham/docs-core @vezham/docs-react
+```

@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=<%= offsetFromRoot %>vx/schemas/vx.deploy.json
+preset: start-spa
+providers:
+  - firebase
+redirectDefaultLanguage: true
+firebase:
+  headers:
+    docs: true

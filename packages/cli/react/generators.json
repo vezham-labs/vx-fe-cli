@@ -20,7 +20,7 @@
     "app-doc": {
       "factory": "./dist/generators/doc/generator#docGenerator",
       "schema": "./dist/generators/doc/schema.json",
-      "description": "Create a documentation application (template pending)"
+      "description": "Create a documentation application"
     },
     "app-start": {
       "factory": "./dist/generators/start/generator#startGenerator",
