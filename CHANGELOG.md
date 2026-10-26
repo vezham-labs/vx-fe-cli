@@ -1,3 +1,13 @@
+## 26.0.0-beta.5 (2026-10-26)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** use workspace styles ([fa62fde](https://github.com/vezham-labs/vx-fe-cli/commit/fa62fde))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.4 (2026-10-26)
 
 ### 🩹 Fixes
