@@ -1,3 +1,14 @@
+## 26.0.0-beta.9 (2026-10-27)
+
+### 🚀 Features
+
+- **@vx/react:** align application categories ([9ef7800](https://github.com/vezham-labs/vx-fe-cli/commit/9ef7800))
+- **@vx/react:** normalize template role suffixes ([3eb37e5](https://github.com/vezham-labs/vx-fe-cli/commit/3eb37e5))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.8 (2026-10-27)
 
 ### 🚀 Features
