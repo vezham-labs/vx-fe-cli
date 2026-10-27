@@ -184,6 +184,13 @@ React exports retain the name `navigationItems`.
 
 ## Package library templates
 
+Generated TypeScript and React libraries derive repository metadata from the
+consumer workspace's `package.json`, falling back to its Git `origin`. Normalize
+HTTP(S) and SSH repository URLs to the npm `git+` form with a `.git` suffix;
+for example, `https://github.com/owner/repo` becomes
+`git+https://github.com/owner/repo.git`. Keep repository values dynamic and serialize
+them with `JSON.stringify` in the package templates.
+
 Package templates use `defineConfig` from `@vezham/config/vite-lib`, or
 `@vezham/config/vite-lib/react` for React packages. These presets discover source
 entry points from package exports and CLI entries, preserve ES module paths, keep

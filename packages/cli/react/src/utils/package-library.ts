@@ -16,6 +16,19 @@ interface GeneratorOptions {
   publishable?: boolean
 }
 
+const normalizeRepositoryUrl = (value: string) => {
+  const url = value
+    .trim()
+    .replace(/^git\+/, '')
+    .replace(/^git@([^:]+):/, 'ssh://git@$1/')
+  if (!/^(https?|ssh):\/\//.test(url)) return value
+
+  const repository = new URL(url)
+  const pathname = repository.pathname.replace(/\/+$/, '')
+  repository.pathname = pathname.endsWith('.git') ? pathname : `${pathname}.git`
+  return `git+${repository.toString()}`
+}
+
 const getRepositoryUrl = (tree: Tree) => {
   const workspacePackage = tree.exists('package.json')
     ? readJson<{ repository?: string | { url?: string } }>(tree, 'package.json')
@@ -23,14 +36,15 @@ const getRepositoryUrl = (tree: Tree) => {
   const repository = workspacePackage.repository
   const configuredUrl =
     typeof repository === 'string' ? repository : repository?.url
-  if (configuredUrl) return configuredUrl
+  if (configuredUrl) return normalizeRepositoryUrl(configuredUrl)
 
   try {
-    return execFileSync('git', ['remote', 'get-url', 'origin'], {
-      cwd: process.cwd(),
+    const origin = execFileSync('git', ['remote', 'get-url', 'origin'], {
+      cwd: tree.root,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore']
     }).trim()
+    return normalizeRepositoryUrl(origin)
   } catch {
     return undefined
   }

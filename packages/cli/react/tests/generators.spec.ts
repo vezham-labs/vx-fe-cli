@@ -32,7 +32,7 @@ const createWorkspace = () => {
   tree.write(
     'package.json',
     JSON.stringify({
-      repository: { type: 'git', url: 'https://example.test/consumer.git' }
+      repository: { type: 'git', url: 'https://example.test/consumer' }
     })
   )
   tree.write('tsconfig.base.json', JSON.stringify({ compilerOptions: {} }))
@@ -133,9 +133,12 @@ describe('legacy generator baseline', () => {
     expect(readJson(tree, 'apps-cdns/team/portal-mock/package.json').name).toBe(
       'team-portal-mock'
     )
+    expect(tree.read('apps-cdns/team/portal-mock/.env', 'utf8')).toContain(
+      'V_APP_ID=team-portal-mock'
+    )
     expect(
       tree.read('apps-cdns/team/portal-mock/src/lib/config.ts', 'utf8')
-    ).toContain("'team-portal-mock'")
+    ).toContain('process.env.V_APP_ID')
     expect(
       generatedFiles(tree).some(file => file.includes('__template__'))
     ).toBe(false)
@@ -153,7 +156,7 @@ describe('legacy generator baseline', () => {
     expect(readJson(tree, 'packages/helpers/package.json').private).toBe(true)
     expect(readJson(tree, 'packages/helpers/package.json').repository).toEqual({
       type: 'git',
-      url: 'https://example.test/consumer.git',
+      url: 'git+https://example.test/consumer.git',
       directory: 'packages/helpers'
     })
     expect(tree.exists('packages/helpers/src/lib/helpers.ts')).toBe(true)

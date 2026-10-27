@@ -150,7 +150,7 @@ describe('published Nx plugin', () => {
       throw new Error('Expected the generated React library package.json.')
     }
     expect(JSON.parse(reactLibraryPackageJson).repository.url).toBe(
-      'https://example.test/consumer.git'
+      'git+https://example.test/consumer.git'
     )
     expect(tree.exists('apps/packed-app/src/app/shell.tsx')).toBe(true)
     expect(tree.exists('apps/packed-app-mock/project.json')).toBe(true)
