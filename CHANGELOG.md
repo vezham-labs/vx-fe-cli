@@ -1,3 +1,19 @@
+## 26.0.0-beta.7 (2026-10-27)
+
+### 🚀 Features
+
+- **@vx-cli/react:** seed app versions from CLI ([bdb8876](https://github.com/vezham-labs/vx-fe-cli/commit/bdb8876))
+- **@vx-cli/react:** seed app versions from release tags ([fb6d19e](https://github.com/vezham-labs/vx-fe-cli/commit/fb6d19e))
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** normalize repository URLs ([a3ec73d](https://github.com/vezham-labs/vx-fe-cli/commit/a3ec73d))
+- **@vx/react:** update library templates ([2f6c90b](https://github.com/vezham-labs/vx-fe-cli/commit/2f6c90b))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.6 (2026-10-26)
 
 ### 🩹 Fixes
