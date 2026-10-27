@@ -24,6 +24,7 @@ import {
   it,
   vi
 } from 'vitest'
+import { parse as parseYaml } from 'yaml'
 
 const packageRoot = path.resolve(import.meta.dirname, '..')
 const temporaryRoot = mkdtempSync(path.join(tmpdir(), 'vx-cli-react-package-'))
@@ -181,6 +182,60 @@ describe('published Nx plugin', () => {
       'pnpx @vx-cli/react react-lib my-components --publishable'
     )
   }, 30000)
+
+  it('seeds every app type from the installed CLI manifest after a version change', async () => {
+    const require = createRequire(path.join(temporaryRoot, 'package.json'))
+    const { createTreeWithEmptyWorkspace } = require('@nx/devkit/testing')
+    const manifestPath = path.join(installedRoot, 'package.json')
+    const originalManifest = readFileSync(manifestPath, 'utf8')
+    const manifest = JSON.parse(originalManifest)
+    const generators = require(manifest.name)
+    const version = '99.0.0-test.42'
+
+    try {
+      writeFileSync(manifestPath, JSON.stringify({ ...manifest, version }))
+      for (const generator of [
+        generators.applicationGenerator,
+        generators.startGenerator,
+        generators.cdnGenerator,
+        generators.docGenerator
+      ]) {
+        const tree = createTreeWithEmptyWorkspace()
+        tree.write(
+          'package.json',
+          JSON.stringify({ name: 'consumer', version: '0.0.1', private: true })
+        )
+        tree.write(
+          'tsconfig.base.json',
+          JSON.stringify({ compilerOptions: {} })
+        )
+        await generator(tree, { name: 'versioned-app', category: 'app' })
+        const appRoot = 'apps/versioned-app'
+        expect(
+          JSON.parse(tree.read(`${appRoot}/package.json`, 'utf8') ?? '{}')
+            .version
+        ).toBe(version)
+        expect(
+          JSON.parse(tree.read(`${appRoot}-e2e/package.json`, 'utf8') ?? '{}')
+            .version
+        ).toBe(version)
+        expect(
+          parseYaml(tree.read(`${appRoot}/vx.app.yaml`, 'utf8') ?? '').core
+            .version
+        ).toBe(version)
+        expect(tree.read(`${appRoot}/.env`, 'utf8')).toContain(
+          `V_APP_VER=${version}`
+        )
+        if (generator === generators.cdnGenerator) {
+          const html = tree.read(`${appRoot}/index.html`, 'utf8')
+          expect(html).toContain(`?vx=${version}`)
+          expect(html).not.toContain('?vx=0.0.0')
+        }
+      }
+    } finally {
+      writeFileSync(manifestPath, originalManifest)
+    }
+  })
 
   it('exposes usable declarations to a NodeNext TypeScript consumer', () => {
     const require = createRequire(path.join(packageRoot, 'package.json'))

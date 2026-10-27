@@ -24,8 +24,13 @@ runtime dependency.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.
+- Seed generated apps and their E2E manifests with the installed `@vx-cli/react`
+  version at generation time. Keep app `package.json`, `vx.app.yaml` core version,
+  `.env` `V_APP_VER`, and CDN HTML asset version tags aligned. Generated projects
+  manage their own versions after creation.
 - Use spaced display names for app metadata and visible text: `playground-app`
   becomes `Playground App` in names, descriptions, titles, and docs content.
+  Keep `CDN` uppercase as a display-name word, such as `Playground CDN`.
   Derive IDs, URLs, and file names from the normalized project slug.
 - Author app and deploy configuration in YAML. Keep JSON Schema definitions
   and generated provider artifacts in their existing JSON format. Use one

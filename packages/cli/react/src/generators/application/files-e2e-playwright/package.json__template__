@@ -1,5 +1,5 @@
 {
   "name": "<%= e2eProjectName %>",
-  "version": "0.0.0",
+  "version": "<%= projectVersion %>",
   "private": true
 }

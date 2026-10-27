@@ -3,8 +3,10 @@ import {
   formatFiles,
   generateFiles,
   names,
-  offsetFromRoot
+  offsetFromRoot,
+  readJsonFile
 } from '@nx/devkit'
+import { createRequire } from 'node:module'
 import * as path from 'path'
 
 import { normalizeApplicationLocation } from '../../utils/application-category'
@@ -13,6 +15,8 @@ import { toTitleCase } from '../../utils/casing'
 import { assertTemplateFiles } from '../../utils/templates'
 import type { GeneratorSchema } from './schema'
 
+const require = createRequire(import.meta.url)
+
 interface NormalizedSchema extends GeneratorSchema {
   projectName: string
   projectRoot: string
@@ -20,6 +24,7 @@ interface NormalizedSchema extends GeneratorSchema {
   categoryPrefix: string
   parsedTags: string[]
   projectDisplayName: string
+  projectVersion: string
   cdnPath: string
   e2eProjectName: string
   e2eProjectRoot: string
@@ -40,6 +45,9 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
   const e2eProjectName = `${projectName}-e2e`
   const e2eProjectRoot = `${projectDirectory}-e2e`
   const projectDisplayName = toTitleCase(projectName)
+  const projectVersion = readJsonFile<{ version: string }>(
+    require.resolve('@vx-cli/react/package.json')
+  ).version
   // wjdlz/NOTE: for CDN
   const cdnPath =
     (options.cdnHost ?? 'cdn') === 'cdn'
@@ -57,6 +65,7 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
     categoryPrefix,
     parsedTags,
     projectDisplayName,
+    projectVersion,
     cdnPath,
     e2eProjectName,
     e2eProjectRoot

@@ -4,7 +4,7 @@ core:
   id: vezham-<%= projectName %>
   name: Vezham <%= projectDisplayName %>
   shortName: <%= projectDisplayName %>
-  version: 0.0.0
+  version: <%= projectVersion %>
   description: Single app to manage your Vezham <%= projectDisplayName %>
   publisher:
     name: Vezham Technologies Private Limited
