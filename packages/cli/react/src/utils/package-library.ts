@@ -10,6 +10,8 @@ import {
 import { execFileSync } from 'node:child_process'
 import * as path from 'node:path'
 
+import { resolveInitialVersion } from './version'
+
 interface GeneratorOptions {
   name: string
   directory?: string
@@ -77,6 +79,7 @@ export const generatePackageLibrary = async (
     ...normalizedName,
     fileName: normalizedName.fileName,
     projectName: normalizedName.fileName,
+    projectVersion: await resolveInitialVersion(tree, normalizedName.fileName),
     projectRoot,
     offsetFromRoot: offsetFromRoot(projectRoot),
     nxSchemaPath,

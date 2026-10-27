@@ -183,7 +183,7 @@ describe('published Nx plugin', () => {
     )
   }, 30000)
 
-  it('seeds every app type from the installed CLI manifest after a version change', async () => {
+  it('seeds every project type from the installed CLI manifest after a version change', async () => {
     const require = createRequire(path.join(temporaryRoot, 'package.json'))
     const { createTreeWithEmptyWorkspace } = require('@nx/devkit/testing')
     const manifestPath = path.join(installedRoot, 'package.json')
@@ -230,6 +230,41 @@ describe('published Nx plugin', () => {
           const html = tree.read(`${appRoot}/index.html`, 'utf8')
           expect(html).toContain(`?vx=${version}`)
           expect(html).not.toContain('?vx=0.0.0')
+        }
+      }
+      for (const { generator, projectRoot } of [
+        {
+          generator: generators.libraryGenerator,
+          projectRoot: 'packages/versioned-project'
+        },
+        {
+          generator: generators.reactLibraryGenerator,
+          projectRoot: 'packages/versioned-project'
+        },
+        {
+          generator: generators.mockGenerator,
+          projectRoot: 'apps/versioned-project-mock'
+        }
+      ]) {
+        for (const publishable of [false, true]) {
+          const tree = createTreeWithEmptyWorkspace()
+          tree.write(
+            'package.json',
+            JSON.stringify({
+              name: 'consumer',
+              version: '0.0.1',
+              private: true
+            })
+          )
+          await generator(tree, {
+            name: 'versioned-project',
+            category: 'app',
+            publishable
+          })
+          expect(
+            JSON.parse(tree.read(`${projectRoot}/package.json`, 'utf8') ?? '{}')
+              .version
+          ).toBe(version)
         }
       }
     } finally {

@@ -24,10 +24,12 @@ runtime dependency.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.
-- Seed generated apps and their E2E manifests from the consumer repository's
+- Seed all generated project manifests (apps, E2E, mocks, and both library types)
+  from the consumer repository's
   latest matching SemVer release tag, using the workspace `release.releaseTag`
   pattern, prerelease preference, and branch settings. Read tags from the consumer
-  workspace root. Fall back to the installed `@vx-cli/react` version when Git or
+  workspace root through the shared `resolveInitialVersion` utility. Fall back
+  to the installed `@vx-cli/react` version when Git or
   a matching tag is unavailable. This reads the existing release version without
   calculating a bump or fetching tags. Keep app `package.json`, `vx.app.yaml`
   core version, `.env` `V_APP_VER`, and CDN HTML asset version tags aligned.
@@ -183,6 +185,11 @@ defines visible destinations; `items` is not accepted as a legacy alias. Generat
 React exports retain the name `navigationItems`.
 
 ## Package library templates
+
+Generated TypeScript and React libraries use the same initial version policy as
+apps and mocks: the consumer's matching Git release tag, then the installed CLI
+version. Pass the resolved value as `projectVersion` to templates; project
+manifests must not hardcode an initial version.
 
 Generated TypeScript and React libraries derive repository metadata from the
 consumer workspace's `package.json`, falling back to its Git `origin`. Normalize

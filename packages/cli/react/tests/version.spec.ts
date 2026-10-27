@@ -11,6 +11,9 @@ import {
   applicationGenerator,
   cdnGenerator,
   docGenerator,
+  libraryGenerator,
+  mockGenerator,
+  reactLibraryGenerator,
   startGenerator
 } from '../src/index'
 import { resolveInitialVersion } from '../src/utils/version'
@@ -65,7 +68,7 @@ afterEach(() => {
   rmSync(directory, { recursive: true, force: true })
 })
 
-describe('initial generated app version', () => {
+describe('initial generated project version', () => {
   it('reads the latest matching prerelease from the consumer repository', async () => {
     git('tag', '1.0.0-beta.2')
     git('tag', '1.0.0-beta.10')
@@ -158,6 +161,62 @@ describe('initial generated app version', () => {
     rmSync(path.join(directory, '.git'), { recursive: true, force: true })
     expect(await resolveInitialVersion(tree, 'portal')).toBe(cliVersion)
   })
+
+  const packageGenerators = [
+    {
+      generator: libraryGenerator,
+      projectName: 'portal',
+      projectRoot: 'packages/portal'
+    },
+    {
+      generator: reactLibraryGenerator,
+      projectName: 'portal',
+      projectRoot: 'packages/portal'
+    },
+    {
+      generator: mockGenerator,
+      projectName: 'portal-mock',
+      projectRoot: 'apps/portal-mock'
+    }
+  ]
+
+  it.each(packageGenerators)(
+    'seeds $generator.name manifests from the consumer Git tag',
+    async ({ generator, projectRoot }) => {
+      git('tag', '4.2.0-beta.7')
+      tree.write(
+        'package.json',
+        JSON.stringify({ name: 'consumer', version: '0.0.1' })
+      )
+      await generator(tree, { name: 'portal', category: 'app' })
+      expect(readJson(tree, `${projectRoot}/package.json`).version).toBe(
+        '4.2.0-beta.7'
+      )
+    }
+  )
+
+  it.each(packageGenerators)(
+    'uses the generated Nx project name for $generator.name independent releases',
+    async ({ generator, projectName, projectRoot }) => {
+      updateNxJson(tree, {
+        release: {
+          projectsRelationship: 'independent',
+          releaseTag: { strictPreid: false }
+        }
+      })
+      git('tag', `${projectName}@4.2.0-beta.7`)
+      git('tag', 'unrelated@99.0.0')
+      tree.write('package.json', JSON.stringify({ name: 'consumer' }))
+      await generator(tree, {
+        name: 'portal',
+        category: 'app',
+        publishable: true
+      })
+      expect(readJson(tree, `${projectRoot}/package.json`).version).toBe(
+        '4.2.0-beta.7'
+      )
+    }
+  )
 
   it.each([applicationGenerator, startGenerator, cdnGenerator, docGenerator])(
     'keeps generated app and E2E version fields aligned with the Git tag',

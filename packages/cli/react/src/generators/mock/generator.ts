@@ -10,6 +10,7 @@ import * as path from 'node:path'
 
 import { normalizeApplicationLocation } from '../../utils/application-category'
 import { assertTemplateFiles } from '../../utils/templates'
+import { resolveInitialVersion } from '../../utils/version'
 import type { GeneratorSchema } from './schema'
 
 export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
@@ -32,6 +33,7 @@ export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
     applicationName: names(options.name).fileName,
     category: location.category,
     projectName,
+    projectVersion: await resolveInitialVersion(tree, projectName),
     projectRoot,
     nxSchemaPath,
     offsetFromRoot: offsetFromRoot(projectRoot),
