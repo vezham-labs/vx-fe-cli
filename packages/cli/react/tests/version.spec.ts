@@ -230,21 +230,28 @@ describe('initial generated project version', () => {
       )
       tree.write('tsconfig.base.json', JSON.stringify({ compilerOptions: {} }))
       await generator(tree, { name: 'portal', category: 'app' })
-      expect(readJson(tree, 'apps/portal/package.json').version).toBe(
+      const projectName =
+        generator === cdnGenerator
+          ? 'portal-cdn'
+          : generator === docGenerator
+            ? 'portal-docs'
+            : 'portal'
+      const projectRoot = `apps/${projectName}`
+      expect(readJson(tree, `${projectRoot}/package.json`).version).toBe(
         '4.2.0-beta.7'
       )
-      expect(readJson(tree, 'apps/portal-e2e/package.json').version).toBe(
+      expect(readJson(tree, `${projectRoot}-e2e/package.json`).version).toBe(
         '4.2.0-beta.7'
       )
       expect(
-        parseYaml(tree.read('apps/portal/vx.app.yaml', 'utf8') ?? '').core
+        parseYaml(tree.read(`${projectRoot}/vx.app.yaml`, 'utf8') ?? '').core
           .version
       ).toBe('4.2.0-beta.7')
-      expect(tree.read('apps/portal/.env', 'utf8')).toContain(
+      expect(tree.read(`${projectRoot}/.env`, 'utf8')).toContain(
         'V_APP_VER=4.2.0-beta.7'
       )
       if (generator === cdnGenerator) {
-        expect(tree.read('apps/portal/index.html', 'utf8')).toContain(
+        expect(tree.read(`${projectRoot}/index.html`, 'utf8')).toContain(
           '?vx=4.2.0-beta.7'
         )
       }

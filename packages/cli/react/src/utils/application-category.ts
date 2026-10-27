@@ -40,7 +40,10 @@ export const assertApplicationCategory = (
 export const normalizeApplicationLocation = (
   name: string,
   category: ApplicationCategory = 'internal',
-  directory?: string
+  directory?: string,
+  naming: { type: ApplicationType | 'mock'; skipSuffix?: boolean } = {
+    type: 'app'
+  }
 ) => {
   const categoryPrefix =
     category === 'app'
@@ -48,10 +51,22 @@ export const normalizeApplicationLocation = (
       : `apps-${category === 'vezham' ? category : `${category}s`}`
   const normalizedDirectory = directory ? names(directory).fileName : undefined
   const normalizedName = names(name).fileName
-  const projectDirectory = [categoryPrefix, normalizedDirectory, normalizedName]
+  const suffixes =
+    naming.type === 'doc'
+      ? ['docs', 'doc']
+      : naming.type === 'cdn' || naming.type === 'mock'
+        ? [naming.type]
+        : []
+  const hasSuffix = suffixes.some(
+    suffix => normalizedName === suffix || normalizedName.endsWith(`-${suffix}`)
+  )
+  const projectName =
+    naming.skipSuffix || hasSuffix || suffixes.length === 0
+      ? normalizedName
+      : `${normalizedName}-${suffixes[0]}`
+  const projectDirectory = [categoryPrefix, normalizedDirectory, projectName]
     .filter(Boolean)
     .join('/')
-  const projectName = normalizedName
 
   return {
     category,

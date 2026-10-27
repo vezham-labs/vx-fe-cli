@@ -31,14 +31,21 @@ Choose the generator type first, then category, project name, and an optional
 directory group. `app-doc` and `app-cdn` can use a shared category such as `app`
 or their dedicated `doc` and `cdn` categories. App folder basenames, Nx names,
 and package names match; `--directory` adds grouping without prefixing the name.
-Role suffixes such as `-docs`, `-cdn`, and `-widget` are entered in the name.
+`app-doc`, `app-cdn`, and `mock` add `-docs`, `-cdn`, and `-mock` only when
+missing from the normalized name. An existing `-doc` ending is also preserved.
+All five generators accept `--skipSuffix` to keep a standalone project's supplied
+name, for example `app-doc home --category=doc --skipSuffix` creates
+`apps-docs/home`. `app` and `app-start` keep their supplied names by default;
+enter optional role suffixes such as `-widget` yourself.
+
 Existing project names and output paths are rejected before writing files.
 See [Application Types and Categories](../../../vx/handbooks/application-categories.md)
 for the category matrix and main-group versus dedicated-group examples.
 
 The `mock` generator creates a standalone mock API project from
 `.vezham/app-mock`. It uses the application category folders and names the
-generated project `<name>-mock`.
+generated project `<name>-mock`, preserving an existing `-mock` ending.
+`--skipSuffix` keeps the supplied project name.
 
 Both library generators default to `packages/<name>`. `--directory` overrides
 the full workspace-relative output path; for example,

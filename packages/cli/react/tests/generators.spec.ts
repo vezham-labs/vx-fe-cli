@@ -159,7 +159,11 @@ describe('legacy generator baseline', () => {
 
   it('generates documentation applications and E2E projects in the docs category', async () => {
     const tree = createWorkspace()
-    await docGenerator(tree, { name: 'guide', category: 'doc' })
+    await docGenerator(tree, {
+      name: 'guide',
+      category: 'doc',
+      skipSuffix: true
+    })
     expect(readProjectConfiguration(tree, 'guide').root).toBe('apps-docs/guide')
     expect(readProjectConfiguration(tree, 'guide').tags).toContain(
       'category:doc'
@@ -172,14 +176,14 @@ describe('legacy generator baseline', () => {
   it('generates CDN applications and E2E projects in the CDN category', async () => {
     const tree = createWorkspace()
     await cdnGenerator(tree, { name: 'assets', category: 'cdn' })
-    expect(readProjectConfiguration(tree, 'assets').root).toBe(
-      'apps-cdns/assets'
+    expect(readProjectConfiguration(tree, 'assets-cdn').root).toBe(
+      'apps-cdns/assets-cdn'
     )
-    expect(readProjectConfiguration(tree, 'assets').tags).toContain(
+    expect(readProjectConfiguration(tree, 'assets-cdn').tags).toContain(
       'category:cdn'
     )
-    expect(readProjectConfiguration(tree, 'assets-e2e').root).toBe(
-      'apps-cdns/assets-e2e'
+    expect(readProjectConfiguration(tree, 'assets-cdn-e2e').root).toBe(
+      'apps-cdns/assets-cdn-e2e'
     )
   })
 
@@ -209,6 +213,132 @@ describe('legacy generator baseline', () => {
     expect(
       generatedFiles(tree).some(file => file.includes('__template__'))
     ).toBe(false)
+  })
+
+  it.each([
+    { type: 'app', generator: applicationGenerator, name: 'play-app' },
+    { type: 'app-start', generator: startGenerator, name: 'play-start' },
+    { type: 'app-doc', generator: docGenerator, name: 'play-docs' },
+    { type: 'app-doc', generator: docGenerator, name: 'play-doc' },
+    { type: 'app-cdn', generator: cdnGenerator, name: 'play-cdn' },
+    { type: 'mock', generator: mockGenerator, name: 'play-mock' }
+  ])(
+    'preserves an existing role suffix for $type: $name',
+    async ({ type, generator, name }) => {
+      const tree = createWorkspace()
+      await generator(tree, { name, category: 'app', directory: 'team' })
+      const root = `apps/team/${name}`
+      expect(readProjectConfiguration(tree, name).root).toBe(root)
+      expect(readJson(tree, `${root}/package.json`).name).toBe(name)
+      if (type === 'mock') {
+        expect(tree.read(`${root}/.env`, 'utf8')).toContain(
+          'HOST_NAME=play.mock.vezham.local'
+        )
+        expect(tree.read(`${root}/.env`, 'utf8')).toContain(`V_APP_ID=${name}`)
+      } else {
+        expect(readProjectConfiguration(tree, `${name}-e2e`).root).toBe(
+          `${root}-e2e`
+        )
+        expect(readJson(tree, `${root}-e2e/package.json`).name).toBe(
+          `${name}-e2e`
+        )
+      }
+    }
+  )
+
+  it.each([
+    {
+      type: 'app-doc',
+      generator: docGenerator,
+      name: 'docs-center',
+      expected: 'docs-center-docs'
+    },
+    {
+      type: 'app-cdn',
+      generator: cdnGenerator,
+      name: 'cdn-center',
+      expected: 'cdn-center-cdn'
+    },
+    {
+      type: 'mock',
+      generator: mockGenerator,
+      name: 'mock-center',
+      expected: 'mock-center-mock'
+    }
+  ])(
+    'adds the missing $type suffix only at the end',
+    async ({ type, generator, name, expected }) => {
+      const tree = createWorkspace()
+      await generator(tree, { name, category: 'app', directory: 'team' })
+      const root = `apps/team/${expected}`
+      expect(readProjectConfiguration(tree, expected).root).toBe(root)
+      expect(readJson(tree, `${root}/package.json`).name).toBe(expected)
+      if (type !== 'mock') {
+        expect(tree.read(`${root}/vx.app.yaml`, 'utf8')).toContain(
+          `id: vezham-${expected}`
+        )
+        expect(tree.read(`${root}/.env`, 'utf8')).toContain(
+          `V_APP_ID=vezham-${expected}`
+        )
+        expect(
+          readProjectConfiguration(tree, `${expected}-e2e`).implicitDependencies
+        ).toEqual([expected])
+      }
+    }
+  )
+
+  it.each([
+    { type: 'app', generator: applicationGenerator },
+    { type: 'app-start', generator: startGenerator },
+    { type: 'app-doc', generator: docGenerator },
+    { type: 'app-cdn', generator: cdnGenerator },
+    { type: 'mock', generator: mockGenerator }
+  ])(
+    'lets $type keep any standalone name with skipSuffix',
+    async ({ type, generator }) => {
+      const tree = createWorkspace()
+      await generator(tree, {
+        name: 'Landing Site',
+        category: 'app',
+        skipSuffix: true
+      })
+      const root = 'apps/landing-site'
+      expect(readProjectConfiguration(tree, 'landing-site').root).toBe(root)
+      expect(readJson(tree, `${root}/package.json`).name).toBe('landing-site')
+      if (type !== 'mock') {
+        expect(readProjectConfiguration(tree, 'landing-site-e2e').root).toBe(
+          `${root}-e2e`
+        )
+        expect(readJson(tree, `${root}-e2e/package.json`).name).toBe(
+          'landing-site-e2e'
+        )
+      }
+    }
+  )
+
+  it.each(['home', 'knowledge-base', 'company-docs'])(
+    'creates a standalone documentation site named %s in its own group',
+    async name => {
+      const tree = createWorkspace()
+      await docGenerator(tree, { name, category: 'doc', skipSuffix: true })
+      const root = `apps-docs/${name}`
+      expect(readProjectConfiguration(tree, name).root).toBe(root)
+      expect(readJson(tree, `${root}/package.json`).name).toBe(name)
+      expect(readProjectConfiguration(tree, `${name}-e2e`).root).toBe(
+        `${root}-e2e`
+      )
+    }
+  )
+
+  it('normalizes names before checking for a role suffix', async () => {
+    const tree = createWorkspace()
+    await cdnGenerator(tree, { name: 'Play CDN', category: 'cdn' })
+    expect(readProjectConfiguration(tree, 'play-cdn').root).toBe(
+      'apps-cdns/play-cdn'
+    )
+    expect(tree.read('apps-cdns/play-cdn/vx.app.yaml', 'utf8')).toContain(
+      'name: Vezham Play CDN'
+    )
   })
 
   it('creates a complete product group with matching folders, project names, and manifests', async () => {
@@ -295,7 +425,7 @@ describe('legacy generator baseline', () => {
     await mockGenerator(tree, { name: 'school-os', category: 'app' })
     const before = tree.listChanges()
     await expect(
-      mockGenerator(tree, { name: 'school-os', category: 'internal' })
+      mockGenerator(tree, { name: 'school-os-mock', category: 'internal' })
     ).rejects.toThrow(
       'Project "school-os-mock" already exists at "apps/school-os-mock".'
     )

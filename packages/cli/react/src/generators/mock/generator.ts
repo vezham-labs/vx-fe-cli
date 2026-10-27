@@ -3,7 +3,6 @@ import {
   formatFiles,
   generateFiles,
   names,
-  normalizePath,
   offsetFromRoot
 } from '@nx/devkit'
 import * as path from 'node:path'
@@ -24,10 +23,14 @@ export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
   const location = normalizeApplicationLocation(
     options.name,
     options.category,
-    options.directory
+    options.directory,
+    { type: 'mock', skipSuffix: options.skipSuffix }
   )
-  const projectName = `${location.projectName}-mock`
-  const projectRoot = normalizePath(`${location.projectDirectory}-mock`)
+  const projectName = location.projectName
+  const projectRoot = location.projectDirectory
+  const applicationName = projectName.endsWith('-mock')
+    ? projectName.slice(0, -'-mock'.length)
+    : projectName
   assertProjectLocationsAvailable(tree, [
     { name: projectName, root: projectRoot }
   ])
@@ -38,7 +41,7 @@ export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
 
   generateFiles(tree, path.join(import.meta.dirname, 'files'), projectRoot, {
     ...names(options.name),
-    applicationName: names(options.name).fileName,
+    applicationName,
     category: location.category,
     projectName,
     projectVersion: await resolveInitialVersion(tree, projectName),

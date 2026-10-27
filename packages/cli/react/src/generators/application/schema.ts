@@ -6,6 +6,7 @@ export interface ApplicationGeneratorSchema<
 > {
   name: string
   directory?: string
+  skipSuffix?: boolean
   category?: ApplicationCategoryFor<TType>
   cdnHost?: 'cdn' | 'self'
   strict?: boolean

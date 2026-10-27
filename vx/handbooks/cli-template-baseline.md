@@ -23,7 +23,10 @@ runtime dependency.
   copy an entire playground directory and then remove demos.
 - Follow [Application Types and Categories](./application-categories.md) for
   the type-first flow, category filters and order, matching folder and project
-  names, and main-group versus dedicated-group placement.
+  names, and main-group versus dedicated-group placement. Add template role
+  suffixes once after name normalization; `--skipSuffix` preserves the supplied
+  project name for standalone sites. Keep project identity and E2E names aligned
+  with that final name.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.

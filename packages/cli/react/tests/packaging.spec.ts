@@ -111,6 +111,10 @@ describe('published Nx plugin', () => {
         const schema = readJson(path.join(installedRoot, registration.schema))
         const category = schema.properties?.category
         if (category) {
+          expect(schema.properties.skipSuffix).toMatchObject({
+            type: 'boolean',
+            default: false
+          })
           const { getPromptsForSchema } = createRequire(
             path.join(temporaryRoot, 'package.json')
           )('nx/src/utils/params')
@@ -168,7 +172,7 @@ describe('published Nx plugin', () => {
       strict: true,
       cdnHost: 'self'
     })
-    await mockGenerator(tree, { name: 'packed-app', category: 'app' })
+    await mockGenerator(tree, { name: 'packed-app-mock', category: 'app' })
     await docGenerator(tree, {
       name: 'packed-app-docs',
       category: 'app',
@@ -187,6 +191,14 @@ describe('published Nx plugin', () => {
     ).rejects.toThrow(
       'Project "packed-app-docs" already exists at "apps/team/packed-app-docs".'
     )
+    await docGenerator(tree, {
+      name: 'help-center',
+      category: 'doc',
+      skipSuffix: true
+    })
+    expect(
+      JSON.parse(tree.read('apps-docs/help-center/package.json', 'utf8')).name
+    ).toBe('help-center')
     await libraryGenerator(tree, { name: 'packed-lib' })
     await reactLibraryGenerator(tree, { name: 'packed-react-lib' })
     const reactLibraryPackageJson = tree.read(
@@ -257,7 +269,13 @@ describe('published Nx plugin', () => {
           JSON.stringify({ compilerOptions: {} })
         )
         await generator(tree, { name: 'versioned-app', category: 'app' })
-        const appRoot = 'apps/versioned-app'
+        const suffix =
+          generator === generators.cdnGenerator
+            ? '-cdn'
+            : generator === generators.docGenerator
+              ? '-docs'
+              : ''
+        const appRoot = `apps/versioned-app${suffix}`
         expect(
           JSON.parse(tree.read(`${appRoot}/package.json`, 'utf8') ?? '{}')
             .version

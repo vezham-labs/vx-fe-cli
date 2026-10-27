@@ -32,7 +32,8 @@ interface NormalizedSchema extends ApplicationGeneratorSchema<ApplicationType> {
 }
 const normalizeOptions = async (
   tree: Tree,
-  options: ApplicationGeneratorSchema<ApplicationType>
+  options: ApplicationGeneratorSchema<ApplicationType>,
+  applicationType: ApplicationType
 ): Promise<NormalizedSchema> => {
   const {
     category,
@@ -43,7 +44,8 @@ const normalizeOptions = async (
   } = normalizeApplicationLocation(
     options.name,
     options.category,
-    options.directory
+    options.directory,
+    { type: applicationType, skipSuffix: options.skipSuffix }
   )
   const projectRoot = `${projectDirectory}`
   const e2eProjectName = `${projectName}-e2e`
@@ -110,7 +112,11 @@ export const generateApplication = async (
 ) => {
   assertApplicationCategory(options.category, applicationType)
   assertTemplateFiles(templateDirectory, `${applicationType} application`)
-  const normalizedOptions = await normalizeOptions(tree, options)
+  const normalizedOptions = await normalizeOptions(
+    tree,
+    options,
+    applicationType
+  )
   assertProjectLocationsAvailable(tree, [
     {
       name: normalizedOptions.projectName,

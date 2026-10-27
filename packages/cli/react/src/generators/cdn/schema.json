@@ -64,7 +64,7 @@
     },
     "name": {
       "type": "string",
-      "description": "The name of the application.",
+      "description": "The project name; -cdn is added only when absent unless skipSuffix is enabled.",
       "$default": {
         "$source": "argv",
         "index": 0
@@ -86,6 +86,11 @@
       "type": "boolean",
       "description": "Creates an application with strict mode enabled.",
       "default": true
+    },
+    "skipSuffix": {
+      "type": "boolean",
+      "description": "Keep the normalized project name without adding a template role suffix. Existing suffixes are preserved.",
+      "default": false
     }
   },
   "required": ["category", "name"]

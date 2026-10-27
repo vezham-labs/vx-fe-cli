@@ -59,7 +59,7 @@
     },
     "name": {
       "type": "string",
-      "description": "Base application name; the generated project gets a -mock suffix.",
+      "description": "The project name; -mock is added only when absent unless skipSuffix is enabled.",
       "$default": {
         "$source": "argv",
         "index": 0
@@ -70,6 +70,11 @@
       "type": "string",
       "description": "Optional project group within the selected category.",
       "x-prompt": "Optional group within the category folder (leave blank for none):"
+    },
+    "skipSuffix": {
+      "type": "boolean",
+      "description": "Keep the normalized project name without adding a template role suffix. Existing suffixes are preserved.",
+      "default": false
     }
   },
   "required": ["category", "name"]

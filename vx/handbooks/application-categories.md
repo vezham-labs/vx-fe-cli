@@ -75,9 +75,40 @@ project files are written.
 ## Names, folders, and repositories
 
 Use the same final name for the folder basename, Nx project name, and app package
-manifest. Names are normalized to file-name form. Enter role suffixes explicitly,
-such as `school-os-docs`, `school-os-cdn`, and `school-os-widget`; the generator
-does not append them based on type or category.
+manifest. Names are normalized to file-name form before checking their trailing
+role suffix. Template type controls automatic suffixes; category still selects
+the parent folder and tag.
+
+| Generator   | Default suffix | Example input → final name     |
+| ----------- | -------------- | ------------------------------ |
+| `app`       | None           | `school-os` → `school-os`      |
+| `app-start` | None           | `school-os` → `school-os`      |
+| `app-doc`   | `-docs`        | `school-os` → `school-os-docs` |
+| `app-cdn`   | `-cdn`         | `school-os` → `school-os-cdn`  |
+| `mock`      | `-mock`        | `school-os` → `school-os-mock` |
+
+Add a missing suffix once. Existing trailing suffixes are preserved, so
+`play-mock` stays `play-mock`, `play-cdn` stays `play-cdn`, and `play-docs` stays
+`play-docs`. Documentation also accepts the singular `-doc` ending without
+adding another suffix. A matching word elsewhere in the name does not count:
+`mock-center` becomes `mock-center-mock`. Normalization happens first, so
+`Play CDN` becomes `play-cdn` without a second suffix.
+
+All five generators accept `--skipSuffix` (default `false`). It keeps the
+normalized supplied name without adding or removing a role suffix. Use it for a
+standalone base/main site of any name, including documentation or CDN sites:
+
+```sh
+pnpm nx generate @vx-cli/react:app-doc home --category=doc --skipSuffix
+pnpm nx generate @vx-cli/react:app-doc knowledge-base --category=doc --skipSuffix
+pnpm nx generate @vx-cli/react:app-cdn assets --category=cdn --skipSuffix
+```
+
+These create `apps-docs/home`, `apps-docs/knowledge-base`, and `apps-cdns/assets`,
+with matching project and package names. Their E2E siblings use `-e2e`, such as
+`apps-docs/home-e2e`. The standalone site keeps its chosen template and category;
+`home` is only an example, not a reserved name. For ordinary app templates,
+enter optional category/role suffixes such as `-widget` yourself.
 
 Category sets the parent folder and `category:<value>` tag. An optional directory
 adds grouping folders without changing the project name. For example,
@@ -86,8 +117,10 @@ adds grouping folders without changing the project name. For example,
 `school-os-docs`.
 
 An app's E2E project is generated beside it using `<name>-e2e` for its folder,
-Nx project, and package name. The standalone mock generator adds `-mock` to the
-supplied base name. Its folder, project, and manifest also match.
+Nx project, and package name. The standalone mock generator follows the same
+suffix policy above. Its folder, project, and manifest also match. Both `play`
+and `play-mock` produce the same mock project `play-mock` and the same default
+host `play.mock.vezham.local`; existing project checks prevent creating it twice.
 
 Project names must be unique across the workspace, including E2E and mock names.
 The generators check every planned project's name and output path before writing
