@@ -84,7 +84,8 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
-    }
+    },
+    "@vx-cli/react"
   ],
   "targetDefaults": {
     "lint": {
