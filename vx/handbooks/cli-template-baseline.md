@@ -21,6 +21,9 @@ runtime dependency.
 
 - The CLI will copy only the files required by the selected app type. Do not
   copy an entire playground directory and then remove demos.
+- Follow [Application Types and Categories](./application-categories.md) for
+  the type-first flow, category filters and order, matching folder and project
+  names, and main-group versus dedicated-group placement.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.

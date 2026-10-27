@@ -10,6 +10,7 @@ import {
 import { execFileSync } from 'node:child_process'
 import * as path from 'node:path'
 
+import { assertProjectLocationsAvailable } from './project-location'
 import { resolveInitialVersion } from './version'
 
 interface GeneratorOptions {
@@ -69,6 +70,10 @@ export const generatePackageLibrary = async (
   ) {
     throw new Error('The output directory must stay within the workspace.')
   }
+
+  assertProjectLocationsAvailable(tree, [
+    { name: normalizedName.fileName, root: projectRoot }
+  ])
 
   const nxSchemaPath = path.posix.relative(
     projectRoot,

@@ -7,14 +7,18 @@ import {
 } from '@nx/devkit'
 import * as path from 'path'
 
-import { normalizeApplicationLocation } from '../../utils/application-category'
+import {
+  assertApplicationCategory,
+  normalizeApplicationLocation
+} from '../../utils/application-category'
 import type { ApplicationType } from '../../utils/application-type'
 import { toTitleCase } from '../../utils/casing'
+import { assertProjectLocationsAvailable } from '../../utils/project-location'
 import { assertTemplateFiles } from '../../utils/templates'
 import { resolveInitialVersion } from '../../utils/version'
-import type { GeneratorSchema } from './schema'
+import type { ApplicationGeneratorSchema, GeneratorSchema } from './schema'
 
-interface NormalizedSchema extends GeneratorSchema {
+interface NormalizedSchema extends ApplicationGeneratorSchema<ApplicationType> {
   projectName: string
   projectRoot: string
   projectDirectory: string
@@ -28,7 +32,7 @@ interface NormalizedSchema extends GeneratorSchema {
 }
 const normalizeOptions = async (
   tree: Tree,
-  options: GeneratorSchema
+  options: ApplicationGeneratorSchema<ApplicationType>
 ): Promise<NormalizedSchema> => {
   const {
     category,
@@ -100,12 +104,23 @@ const addE2eFiles = (tree: Tree, options: NormalizedSchema) => {
 }
 export const generateApplication = async (
   tree: Tree,
-  options: GeneratorSchema,
+  options: ApplicationGeneratorSchema<ApplicationType>,
   applicationType: ApplicationType,
   templateDirectory: string
 ) => {
+  assertApplicationCategory(options.category, applicationType)
   assertTemplateFiles(templateDirectory, `${applicationType} application`)
   const normalizedOptions = await normalizeOptions(tree, options)
+  assertProjectLocationsAvailable(tree, [
+    {
+      name: normalizedOptions.projectName,
+      root: normalizedOptions.projectRoot
+    },
+    {
+      name: normalizedOptions.e2eProjectName,
+      root: normalizedOptions.e2eProjectRoot
+    }
+  ])
   addFiles(tree, normalizedOptions, templateDirectory, applicationType)
   addE2eFiles(tree, normalizedOptions)
   await formatFiles(tree)

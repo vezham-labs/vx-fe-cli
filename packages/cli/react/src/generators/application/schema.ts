@@ -1,9 +1,12 @@
-import type { ApplicationCategory } from '../../utils/application-category'
+import type { ApplicationCategoryFor } from '../../utils/application-category'
+import type { ApplicationType } from '../../utils/application-type'
 
-export interface ApplicationGeneratorSchema {
+export interface ApplicationGeneratorSchema<
+  TType extends ApplicationType = 'app'
+> {
   name: string
   directory?: string
-  category?: ApplicationCategory
+  category?: ApplicationCategoryFor<TType>
   cdnHost?: 'cdn' | 'self'
   strict?: boolean
 }

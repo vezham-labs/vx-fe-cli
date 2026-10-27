@@ -6,7 +6,7 @@ import type { ApplicationGeneratorSchema } from '../application/schema'
 
 export const startGenerator = (
   tree: Tree,
-  options: ApplicationGeneratorSchema
+  options: ApplicationGeneratorSchema<'start'>
 ) =>
   generateApplication(
     tree,

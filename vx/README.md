@@ -34,6 +34,7 @@ See [Code Review](./handbooks/coding-standards/review.md) for review and fix com
 ## Handbooks
 
 - [Vx Config](./handbooks/vx-config.md)
+- [Application Categories](./handbooks/application-categories.md)
 - [Deployment](./handbooks/deploy.md)
 - [Coding Standards](./handbooks/coding-standards/index.md)
 - [Release Versioning](./handbooks/release.md)

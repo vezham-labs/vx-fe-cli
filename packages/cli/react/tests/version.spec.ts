@@ -1,6 +1,6 @@
 import { type Tree, readJson, readJsonFile, updateNxJson } from '@nx/devkit'
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { FsTree } from 'nx/src/generators/tree'
@@ -53,6 +53,8 @@ const commit = () =>
 
 beforeEach(() => {
   directory = mkdtempSync(path.join(tmpdir(), 'vx-cli-version-'))
+  writeFileSync(path.join(directory, 'nx.json'), '{}')
+  writeFileSync(path.join(directory, '.gitignore'), '.nx/\nnode_modules/\n')
   tree = new FsTree(directory, false)
   tree.write('nx.json', '{}')
   updateNxJson(tree, {

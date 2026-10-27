@@ -4,7 +4,10 @@ import * as path from 'node:path'
 import { generateApplication } from '../application/generator'
 import type { ApplicationGeneratorSchema } from '../application/schema'
 
-export const docGenerator = (tree: Tree, options: ApplicationGeneratorSchema) =>
+export const docGenerator = (
+  tree: Tree,
+  options: ApplicationGeneratorSchema<'doc'>
+) =>
   generateApplication(
     tree,
     options,

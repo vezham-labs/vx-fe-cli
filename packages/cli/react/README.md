@@ -23,10 +23,22 @@ templates in `.vezham/library` and `.vezham/library-react`.
 
 Application generation is split into app, app-cdn, app-doc, and app-start.
 They share category and directory options and each has its own template.
+The `cdn` category is available only to `app-cdn`, and the `doc` category is
+available only to `app-doc`. The other categories are shared across app,
+app-start, app-cdn, app-doc, and mock generators.
+
+Choose the generator type first, then category, project name, and an optional
+directory group. `app-doc` and `app-cdn` can use a shared category such as `app`
+or their dedicated `doc` and `cdn` categories. App folder basenames, Nx names,
+and package names match; `--directory` adds grouping without prefixing the name.
+Role suffixes such as `-docs`, `-cdn`, and `-widget` are entered in the name.
+Existing project names and output paths are rejected before writing files.
+See [Application Types and Categories](../../../vx/handbooks/application-categories.md)
+for the category matrix and main-group versus dedicated-group examples.
 
 The `mock` generator creates a standalone mock API project from
-`.vezham/app-mock`. It uses the same application categories and directory
-grouping as apps, and names the generated project `<name>-mock`.
+`.vezham/app-mock`. It uses the application category folders and names the
+generated project `<name>-mock`.
 
 Both library generators default to `packages/<name>`. `--directory` overrides
 the full workspace-relative output path; for example,

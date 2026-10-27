@@ -4,6 +4,59 @@
   "title": "Create a mock API project",
   "type": "object",
   "properties": {
+    "category": {
+      "type": "string",
+      "description": "Application category that determines the project grouping.",
+      "default": "internal",
+      "enum": [
+        "app",
+        "showcase",
+        "suite",
+        "platform",
+        "widget",
+        "pod",
+        "internal",
+        "vezham"
+      ],
+      "x-prompt": {
+        "message": "Which category should this project belong to?",
+        "type": "list",
+        "items": [
+          {
+            "value": "app",
+            "label": "Apps - Standard applications"
+          },
+          {
+            "value": "showcase",
+            "label": "Showcases - Curated demos and examples"
+          },
+          {
+            "value": "suite",
+            "label": "Suites - Product suite applications"
+          },
+          {
+            "value": "platform",
+            "label": "Platforms - CX platform applications"
+          },
+          {
+            "value": "widget",
+            "label": "Widgets - App extensions, integrations, and chat widgets"
+          },
+          {
+            "value": "pod",
+            "label": "Pods - Shared SaaS infrastructure applications"
+          },
+          {
+            "value": "internal",
+            "label": "Internal - Internal tools and utilities"
+          },
+          {
+            "value": "vezham",
+            "label": "Vezham Apps - Public applications from vezham.com"
+          }
+        ]
+      }
+    },
     "name": {
       "type": "string",
       "description": "Base application name; the generated project gets a -mock suffix.",
@@ -13,27 +66,11 @@
       },
       "x-prompt": "Which application is this mock API for?"
     },
-    "category": {
-      "type": "string",
-      "description": "Application category that determines the project grouping.",
-      "default": "internal",
-      "enum": [
-        "cdn",
-        "pod",
-        "suit",
-        "platform",
-        "widget",
-        "internal",
-        "app",
-        "vezham",
-        "doc",
-        "demo"
-      ]
-    },
     "directory": {
       "type": "string",
-      "description": "Optional project group within the selected category."
+      "description": "Optional project group within the selected category.",
+      "x-prompt": "Optional group within the category folder (leave blank for none):"
     }
   },
-  "required": ["name", "category"]
+  "required": ["category", "name"]
 }

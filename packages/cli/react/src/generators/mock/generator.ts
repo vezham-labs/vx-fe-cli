@@ -8,12 +8,17 @@ import {
 } from '@nx/devkit'
 import * as path from 'node:path'
 
-import { normalizeApplicationLocation } from '../../utils/application-category'
+import {
+  assertApplicationCategory,
+  normalizeApplicationLocation
+} from '../../utils/application-category'
+import { assertProjectLocationsAvailable } from '../../utils/project-location'
 import { assertTemplateFiles } from '../../utils/templates'
 import { resolveInitialVersion } from '../../utils/version'
 import type { GeneratorSchema } from './schema'
 
 export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
+  assertApplicationCategory(options.category, 'mock')
   assertTemplateFiles(path.join(import.meta.dirname, 'files'), 'mock')
 
   const location = normalizeApplicationLocation(
@@ -23,6 +28,9 @@ export const mockGenerator = async (tree: Tree, options: GeneratorSchema) => {
   )
   const projectName = `${location.projectName}-mock`
   const projectRoot = normalizePath(`${location.projectDirectory}-mock`)
+  assertProjectLocationsAvailable(tree, [
+    { name: projectName, root: projectRoot }
+  ])
   const nxSchemaPath = path.posix.relative(
     projectRoot,
     'node_modules/nx/schemas/project-schema.json'

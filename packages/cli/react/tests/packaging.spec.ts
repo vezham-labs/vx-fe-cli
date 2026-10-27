@@ -108,6 +108,33 @@ describe('published Nx plugin', () => {
         expect(existsSync(path.join(installedRoot, registration.schema))).toBe(
           true
         )
+        const schema = readJson(path.join(installedRoot, registration.schema))
+        const category = schema.properties?.category
+        if (category) {
+          const { getPromptsForSchema } = createRequire(
+            path.join(temporaryRoot, 'package.json')
+          )('nx/src/utils/params')
+          const prompts = getPromptsForSchema({}, schema)
+          expect(
+            prompts.map((prompt: { name: string }) => prompt.name)
+          ).toEqual(['category', 'name', 'directory'])
+          expect(category.enum).toEqual(
+            category['x-prompt'].items.map(
+              (item: { value: string }) => item.value
+            )
+          )
+          for (const restrictedCategory of ['cdn', 'doc']) {
+            const supported = factory.startsWith(
+              `./dist/generators/${restrictedCategory}/`
+            )
+            expect(category.enum.includes(restrictedCategory)).toBe(supported)
+            expect(
+              category['x-prompt'].items.some(
+                (item: { value: string }) => item.value === restrictedCategory
+              )
+            ).toBe(supported)
+          }
+        }
       }
     }
   })
@@ -118,6 +145,8 @@ describe('published Nx plugin', () => {
     const { updateNxJson } = require('@nx/devkit')
     const {
       applicationGenerator,
+      cdnGenerator,
+      docGenerator,
       libraryGenerator,
       mockGenerator,
       reactLibraryGenerator
@@ -140,6 +169,24 @@ describe('published Nx plugin', () => {
       cdnHost: 'self'
     })
     await mockGenerator(tree, { name: 'packed-app', category: 'app' })
+    await docGenerator(tree, {
+      name: 'packed-app-docs',
+      category: 'app',
+      directory: 'team'
+    })
+    await cdnGenerator(tree, { name: 'packed-app-cdn', category: 'app' })
+    expect(
+      JSON.parse(tree.read('apps/team/packed-app-docs/package.json', 'utf8'))
+        .name
+    ).toBe('packed-app-docs')
+    expect(
+      JSON.parse(tree.read('apps/packed-app-cdn/package.json', 'utf8')).name
+    ).toBe('packed-app-cdn')
+    await expect(
+      docGenerator(tree, { name: 'packed-app-docs', category: 'doc' })
+    ).rejects.toThrow(
+      'Project "packed-app-docs" already exists at "apps/team/packed-app-docs".'
+    )
     await libraryGenerator(tree, { name: 'packed-lib' })
     await reactLibraryGenerator(tree, { name: 'packed-react-lib' })
     const reactLibraryPackageJson = tree.read(
@@ -277,10 +324,38 @@ describe('published Nx plugin', () => {
     const consumer = path.join(temporaryRoot, 'consumer.mts')
     writeFileSync(
       consumer,
-      `import { applicationGenerator, libraryGenerator, reactLibraryGenerator } from '@vx-cli/react'
+      `import { applicationGenerator, cdnGenerator, docGenerator, libraryGenerator, mockGenerator, reactLibraryGenerator, startGenerator } from '@vx-cli/react'
 const appOptions: Parameters<typeof applicationGenerator>[1] = { name: 'typed-app' }
 const libOptions: Parameters<typeof libraryGenerator>[1] = { name: 'typed-lib' }
 const reactLibOptions: Parameters<typeof reactLibraryGenerator>[1] = { name: 'typed-react-lib' }
+const cdnOptions: Parameters<typeof cdnGenerator>[1] = { name: 'typed-cdn', category: 'cdn' }
+const docOptions: Parameters<typeof docGenerator>[1] = { name: 'typed-doc', category: 'doc' }
+// @ts-expect-error Only app-cdn accepts the CDN category.
+const invalidAppOptions: Parameters<typeof applicationGenerator>[1] = { name: 'invalid', category: 'cdn' }
+// @ts-expect-error Only app-cdn accepts the CDN category.
+const invalidStartOptions: Parameters<typeof startGenerator>[1] = { name: 'invalid', category: 'cdn' }
+// @ts-expect-error Only app-cdn accepts the CDN category.
+const invalidDocOptions: Parameters<typeof docGenerator>[1] = { name: 'invalid', category: 'cdn' }
+// @ts-expect-error Only app-cdn accepts the CDN category.
+const invalidMockOptions: Parameters<typeof mockGenerator>[1] = { name: 'invalid', category: 'cdn' }
+// @ts-expect-error Only app-doc accepts the docs category.
+const invalidAppDocCategory: Parameters<typeof applicationGenerator>[1] = { name: 'invalid', category: 'doc' }
+// @ts-expect-error Only app-doc accepts the docs category.
+const invalidStartDocCategory: Parameters<typeof startGenerator>[1] = { name: 'invalid', category: 'doc' }
+// @ts-expect-error Only app-doc accepts the docs category.
+const invalidCdnDocCategory: Parameters<typeof cdnGenerator>[1] = { name: 'invalid', category: 'doc' }
+// @ts-expect-error Only app-doc accepts the docs category.
+const invalidMockDocCategory: Parameters<typeof mockGenerator>[1] = { name: 'invalid', category: 'doc' }
+void docOptions
+void invalidAppDocCategory
+void invalidStartDocCategory
+void invalidCdnDocCategory
+void invalidMockDocCategory
+void cdnOptions
+void invalidAppOptions
+void invalidStartOptions
+void invalidDocOptions
+void invalidMockOptions
 void appOptions
 void libOptions
 void reactLibOptions
