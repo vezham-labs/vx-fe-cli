@@ -68,10 +68,6 @@ export const generatePackageLibrary = async (
     throw new Error('The output directory must stay within the workspace.')
   }
 
-  const configTsconfigPath = path.posix.relative(
-    projectRoot,
-    'packages/vx/config/tsconfig.lib.json'
-  )
   const nxSchemaPath = path.posix.relative(
     projectRoot,
     'node_modules/nx/schemas/project-schema.json'
@@ -83,7 +79,6 @@ export const generatePackageLibrary = async (
     projectName: normalizedName.fileName,
     projectRoot,
     offsetFromRoot: offsetFromRoot(projectRoot),
-    configTsconfigPath,
     nxSchemaPath,
     repositoryUrl: getRepositoryUrl(tree),
     publishable: options.publishable ?? false,

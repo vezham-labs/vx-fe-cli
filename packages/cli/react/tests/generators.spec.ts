@@ -159,6 +159,15 @@ describe('legacy generator baseline', () => {
       url: 'git+https://example.test/consumer.git',
       directory: 'packages/helpers'
     })
+    expect(tree.read('packages/helpers/vite.config.ts', 'utf8')).toContain(
+      "from '@vezham/config/vite-lib'"
+    )
+    expect(tree.read('packages/helpers/vitest.config.ts', 'utf8')).toContain(
+      "from '@vezham/config/vitest'"
+    )
+    expect(
+      readJson(tree, 'packages/helpers/tsconfig.lib.json').references
+    ).toEqual([])
     expect(tree.exists('packages/helpers/src/lib/helpers.ts')).toBe(true)
     expect(tree.exists('packages/helpers/src/lib/helpers.spec.ts')).toBe(true)
     expect(
@@ -191,6 +200,15 @@ describe('legacy generator baseline', () => {
       '@vezham/button'
     )
     expect(readJson(tree, 'packages/button/package.json').private).toBe(true)
+    expect(tree.read('packages/button/vite.config.ts', 'utf8')).toContain(
+      "from '@vezham/config/vite-lib/react'"
+    )
+    expect(tree.read('packages/button/vitest.config.ts', 'utf8')).toContain(
+      "from '@vezham/config/vitest/react'"
+    )
+    expect(
+      readJson(tree, 'packages/button/tsconfig.lib.json').references
+    ).toEqual([])
     expect(tree.exists('packages/button/src/lib/button.tsx')).toBe(true)
     expect(tree.exists('packages/button/src/lib/button.spec.tsx')).toBe(true)
   })

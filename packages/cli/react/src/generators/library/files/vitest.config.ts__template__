@@ -1,4 +1,4 @@
-import { defineConfig } from '@vx/config/vitest'
+import { defineConfig } from '@vezham/config/vitest'
 
 export default defineConfig({
   root: import.meta.dirname

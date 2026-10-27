@@ -202,7 +202,9 @@ the shared Vitest preset. Shared library defaults stay internal to the presets.
 
 Declare the `@vezham/config` tooling package in workspace-root
 `devDependencies`, rather than in publishable package manifests. Package builds
-and tests use the workspace installation.
+and tests use the workspace installation. Vite and Vitest templates import its
+published subpaths directly. Library TypeScript configs do not reference the
+removed `packages/vx/config` project; their initial `references` array is empty.
 
 ## Public package migration
 

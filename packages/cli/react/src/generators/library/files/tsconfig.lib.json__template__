@@ -8,10 +8,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "<%= configTsconfigPath %>"
-    }
-  ],
+  "references": [],
   "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"]
 }
