@@ -1,3 +1,13 @@
+## 26.0.0-beta.8 (2026-10-27)
+
+### 🚀 Features
+
+- **@vx/react:** seed versions for all projects ([7a985d0](https://github.com/vezham-labs/vx-fe-cli/commit/7a985d0))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.7 (2026-10-27)
 
 ### 🚀 Features
