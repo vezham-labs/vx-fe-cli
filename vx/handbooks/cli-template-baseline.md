@@ -24,10 +24,14 @@ runtime dependency.
 - Keep reusable runtime and generation behavior in `@vezham/start` and
   `@vezham/config`. Keep app identity, route intent, and hosting choices in each
   app's `vx.app.yaml` and `vx.deploy.yaml`.
-- Seed generated apps and their E2E manifests with the installed `@vx-cli/react`
-  version at generation time. Keep app `package.json`, `vx.app.yaml` core version,
-  `.env` `V_APP_VER`, and CDN HTML asset version tags aligned. Generated projects
-  manage their own versions after creation.
+- Seed generated apps and their E2E manifests from the consumer repository's
+  latest matching SemVer release tag, using the workspace `release.releaseTag`
+  pattern, prerelease preference, and branch settings. Read tags from the consumer
+  workspace root. Fall back to the installed `@vx-cli/react` version when Git or
+  a matching tag is unavailable. This reads the existing release version without
+  calculating a bump or fetching tags. Keep app `package.json`, `vx.app.yaml`
+  core version, `.env` `V_APP_VER`, and CDN HTML asset version tags aligned.
+  Generated projects manage their own versions after creation.
 - Use spaced display names for app metadata and visible text: `playground-app`
   becomes `Playground App` in names, descriptions, titles, and docs content.
   Keep `CDN` uppercase as a display-name word, such as `Playground CDN`.

@@ -3,19 +3,16 @@ import {
   formatFiles,
   generateFiles,
   names,
-  offsetFromRoot,
-  readJsonFile
+  offsetFromRoot
 } from '@nx/devkit'
-import { createRequire } from 'node:module'
 import * as path from 'path'
 
 import { normalizeApplicationLocation } from '../../utils/application-category'
 import type { ApplicationType } from '../../utils/application-type'
 import { toTitleCase } from '../../utils/casing'
 import { assertTemplateFiles } from '../../utils/templates'
+import { resolveInitialVersion } from '../../utils/version'
 import type { GeneratorSchema } from './schema'
-
-const require = createRequire(import.meta.url)
 
 interface NormalizedSchema extends GeneratorSchema {
   projectName: string
@@ -29,7 +26,10 @@ interface NormalizedSchema extends GeneratorSchema {
   e2eProjectName: string
   e2eProjectRoot: string
 }
-const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
+const normalizeOptions = async (
+  tree: Tree,
+  options: GeneratorSchema
+): Promise<NormalizedSchema> => {
   const {
     category,
     categoryPrefix,
@@ -45,9 +45,7 @@ const normalizeOptions = (options: GeneratorSchema): NormalizedSchema => {
   const e2eProjectName = `${projectName}-e2e`
   const e2eProjectRoot = `${projectDirectory}-e2e`
   const projectDisplayName = toTitleCase(projectName)
-  const projectVersion = readJsonFile<{ version: string }>(
-    require.resolve('@vx-cli/react/package.json')
-  ).version
+  const projectVersion = await resolveInitialVersion(tree, projectName)
   // wjdlz/NOTE: for CDN
   const cdnPath =
     (options.cdnHost ?? 'cdn') === 'cdn'
@@ -107,7 +105,7 @@ export const generateApplication = async (
   templateDirectory: string
 ) => {
   assertTemplateFiles(templateDirectory, `${applicationType} application`)
-  const normalizedOptions = normalizeOptions(options)
+  const normalizedOptions = await normalizeOptions(tree, options)
   addFiles(tree, normalizedOptions, templateDirectory, applicationType)
   addE2eFiles(tree, normalizedOptions)
   await formatFiles(tree)
