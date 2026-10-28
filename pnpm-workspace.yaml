@@ -21,6 +21,8 @@ catalog:
   '@vezham/utils': 26.0.0-beta.2
   '@vezham/devtools': 26.0.0-beta.2
   '@vezham/config': 26.0.0-beta.2
+  # vx-bot/NOTE: Reserve the hooks catalog version for future direct workspace consumers.
+  # fallow-ignore-next-line unused-catalog-entry
   '@vezham/hooks': 26.0.0-beta.2
 
 # vx-bot/NOTE: Resolve docs packages' upstream peer names to the workspace's Vezham forks.
