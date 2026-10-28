@@ -81,6 +81,10 @@ minimumReleaseAgeExclude:
   - 'fallow@3.37.0'
   - 'fallow-type-aware@3.37.0'
   - '@fallow-cli/*'
+  # vx-bot/NOTE: Allow the requested Nx 24.0.2 migration and matching plugins/native binaries.
+  # vx-bot/TODO: Remove these temporary Nx exceptions after 2026-11-02 21:00 UTC.
+  - '@nx/*'
+  - 'nx@24.0.2'
 
 allowBuilds:
   heroui-pro: true
