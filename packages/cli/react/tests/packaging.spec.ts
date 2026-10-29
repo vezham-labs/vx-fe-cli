@@ -42,9 +42,11 @@ beforeAll(() => {
   expect(tarballs).toHaveLength(1)
   mkdirSync(installedRoot, { recursive: true })
   const require = createRequire(path.join(packageRoot, 'package.json'))
-  const dependencies = readJson(
-    path.join(packageRoot, 'package.json')
-  ).dependencies
+  const manifest = readJson(path.join(packageRoot, 'package.json'))
+  const dependencies = {
+    ...manifest.dependencies,
+    ...manifest.peerDependencies
+  }
   for (const name of Object.keys(dependencies)) {
     const target = path.join(temporaryRoot, 'node_modules', name)
     mkdirSync(path.dirname(target), { recursive: true })
@@ -54,11 +56,6 @@ beforeAll(() => {
       'dir'
     )
   }
-  symlinkSync(
-    path.dirname(require.resolve('nx/package.json')),
-    path.join(temporaryRoot, 'node_modules/nx'),
-    'dir'
-  )
   execFileSync('tar', [
     '-xzf',
     path.join(temporaryRoot, tarballs[0]),
@@ -90,7 +87,8 @@ describe('published Nx plugin', () => {
         'utf8'
       )
     )
-    expect(manifest.dependencies['@nx/devkit']).toBe(
+    expect(manifest.dependencies?.['@nx/devkit']).toBeUndefined()
+    expect(manifest.peerDependencies['@nx/devkit']).toBe(
       workspace.catalog['@nx/devkit']
     )
     expect(manifest.peerDependencies.nx).toBe(workspace.catalog.nx)

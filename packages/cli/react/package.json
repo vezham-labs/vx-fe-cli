@@ -37,10 +37,8 @@
     "generators.json",
     "executors.json"
   ],
-  "dependencies": {
-    "@nx/devkit": "catalog:"
-  },
   "peerDependencies": {
+    "@nx/devkit": "catalog:",
     "nx": "catalog:"
   },
   "engines": {

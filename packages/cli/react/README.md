@@ -61,6 +61,10 @@ templates are ready.
 
 ## Consumer usage
 
+Consumer workspaces provide `nx` and `@nx/devkit` as root development
+dependencies, satisfying the CLI package's published peer versions. Both tools
+also remain in this repository's root `devDependencies` for development.
+
 After publishing, install at the workspace root:
 
 ```sh
@@ -80,8 +84,8 @@ pnpm exec vx-react app portal --category=internal --dry-run
 ```
 
 Supports Nx 24.0.2 and compatible Nx 24 versions on Node 24 or later.
-The root `pnpm-workspace.yaml` default catalog owns the shared `@nx/devkit` pin
-and the Nx peer range. Root and CLI manifests reference `catalog:`; the root Nx
+The root `pnpm-workspace.yaml` default catalog owns the `@nx/devkit` pin
+and Nx range used by the CLI's peer dependencies. Root and CLI manifests reference `catalog:`; the root Nx
 installation stays pinned to `24.0.2`. pnpm writes real versions into the packed
 npm manifest.
 A generator-only package does not require an entry in the `nx.json` plugins
