@@ -9,7 +9,8 @@ export default [
         'error',
         {
           // vx-bot/NOTE: Nx is the plugin host supplied by the consumer workspace.
-          ignoredDependencies: ['nx'],
+          // vx-bot/NOTE: The CLI resolves its own package.json for its version.
+          ignoredDependencies: ['nx', '@vx-cli/react'],
           ignoredFiles: [
             '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
             '{projectRoot}/vite.config.{js,ts,mjs,mts}',
