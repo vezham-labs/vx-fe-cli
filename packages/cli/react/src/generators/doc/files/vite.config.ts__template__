@@ -1,3 +1,4 @@
+import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import react from '@vitejs/plugin-react'
@@ -16,7 +17,6 @@ export default defineConfig({
   plugins: [
     docsMdx(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tailwindcss(),
     story({
       tsconfigPath: path.join(import.meta.dirname, 'tsconfig.app.json')
     }),
@@ -31,6 +31,8 @@ export default defineConfig({
       },
       pages: getPrerenderPages(import.meta.dirname)
     }),
-    react()
+    tailwindcss(),
+    react(),
+    nxReadySignal()
   ]
 })
