@@ -175,8 +175,8 @@ or runtime release channel.
 
 Use `<type>(<scope>): <subject>` for every commit header. Scope rules:
 
-- Use the normalized Nx project name for a project-specific change when it is
-  unique, such as `start` for `@vezham/start`.
+- Use the normalized Nx project name for a project-specific change, such as
+  `start` for `@vezham/start`.
 - When normalized names collide, use the full Nx project name. For example,
   `fix(@vx-cli/react): use hyphens in app category paths` identifies the CLI,
   and `fix(@vx/react): update workspace components` identifies the local package.

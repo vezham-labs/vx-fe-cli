@@ -28,6 +28,15 @@
 ### 🩹 Fixes
 
 - **@vx-cli/react:** signal Vite readiness ([93ef700](https://github.com/vezham-labs/vx-fe-cli/commit/93ef700))
+### 🏡 Chore
+
+- **repo:** upgrade Nx 24 and add migration prompts ([93924f35](https://github.com/vezham-labs/vx-fe-kit/commit/93924f35))
+- **workspace:** add Ox tooling ([1bca5634](https://github.com/vezham-labs/vx-fe-kit/commit/1bca5634))
+- **workspace:** align CLI release setup ([b0d9b485](https://github.com/vezham-labs/vx-fe-kit/commit/b0d9b485))
+
+### deps
+
+- **workspace:** bump CLI and Vezham packages ([bd2d1ace](https://github.com/vezham-labs/vx-fe-kit/commit/bd2d1ace))
 
 ### ❤️ Thank You
 
