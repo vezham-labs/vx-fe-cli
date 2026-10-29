@@ -1,3 +1,13 @@
+## 26.0.0-beta.10 (2026-10-29)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** signal Vite readiness ([93ef700](https://github.com/vezham-labs/vx-fe-cli/commit/93ef700))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.0-beta.9 (2026-10-27)
 
 ### 🚀 Features
