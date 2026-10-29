@@ -84,6 +84,12 @@
         "watchDepsTargetName": "watch-deps"
       }
     },
+    {
+      "plugin": "@nx/oxlint",
+      "options": {
+        "targetName": "oxlint"
+      }
+    },
     "@vx-cli/react"
   ],
   "targetDefaults": {
@@ -261,12 +267,12 @@
     "@nx/react": {
       "application": {
         "babel": true,
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint",
         "bundler": "vite"
       },
       "component": {
-        "style": "tailwind"
+        "style": "css"
       },
       "library": {
         "style": "css",
@@ -276,7 +282,7 @@
     },
     "@nx/next": {
       "application": {
-        "style": "tailwind",
+        "style": "css",
         "linter": "eslint"
       }
     }
