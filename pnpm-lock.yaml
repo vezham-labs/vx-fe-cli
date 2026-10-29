@@ -168,26 +168,26 @@ catalogs:
       specifier: 3.12.4
       version: 3.12.4
     '@vezham/config':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/devtools':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/env':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/react':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/start':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/template':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     '@vezham/utils':
-      specifier: 26.0.0-beta.2
-      version: 26.0.0-beta.2
+      specifier: 26.0.0-beta.3
+      version: 26.0.0-beta.3
     framer-motion:
       specifier: ^12.40.0
       version: 12.43.0
@@ -274,7 +274,7 @@ importers:
         version: 0.8.6
       '@vezham/devtools':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
+        version: 26.0.0-beta.3(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
       '@vezham/docs-core':
         specifier: npm:@vx-oss/docs-core@1.0.17
         version: '@vx-oss/docs-core@1.0.17(@mdx-js/mdx@3.1.1(supports-color@10.2.2))(@tanstack/react-router@1.170.41(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/estree-jsx@1.0.5)(@types/hast@3.0.5)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.61.0(@types/react@19.2.17)(react@19.2.7))(next@16.4.2(@babel/core@7.29.7(supports-color@10.2.2))(@opentelemetry/api@1.10.0)(@playwright/test@1.64.1)(@types/node@25.9.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(supports-color@10.2.2)(zod@4.6.7)'
@@ -292,10 +292,10 @@ importers:
         version: '@vx-oss/docs-story@1.0.17(4eca0da51de2a795d9ada64a87b027d5)'
       '@vezham/env':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2
+        version: 26.0.0-beta.3
       '@vezham/react':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 26.0.0-beta.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@vezham/react-pro-v3':
         specifier: npm:@heroui-pro/react@1.0.0-beta.10
         version: '@heroui-pro/react@1.0.0-beta.10'
@@ -304,16 +304,16 @@ importers:
         version: '@heroui/react@3.2.6(@internationalized/date@3.12.4)(@react-aria/ssr@3.10.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@react-aria/utils@3.34.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@react-spectrum/provider@3.11.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-aria-components@1.21.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-aria@3.52.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(tailwind-merge@3.7.0)(tailwindcss@4.3.0)'
       '@vezham/start':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
+        version: 26.0.0-beta.3(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
       '@vezham/styles-v3':
         specifier: npm:@heroui/styles@3.2.6
         version: '@heroui/styles@3.2.6(tailwind-merge@3.7.0)(tailwindcss@4.3.0)'
       '@vezham/template':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2
+        version: 26.0.0-beta.3
       '@vezham/utils':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2
+        version: 26.0.0-beta.3
       embla-carousel:
         specifier: ^8.6.0
         version: 8.6.0
@@ -500,7 +500,7 @@ importers:
         version: 17.0.35
       '@vezham/config':
         specifier: 'catalog:'
-        version: 26.0.0-beta.2
+        version: 26.0.0-beta.3
       '@vezham/icons-react':
         specifier: 1.0.7
         version: 1.0.7(react@19.2.7)
@@ -523,8 +523,8 @@ importers:
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
       '@vx-cli/react':
-        specifier: 26.0.0-beta.9
-        version: 26.0.0-beta.9(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
+        specifier: 26.0.0-beta.10
+        version: 26.0.0-beta.10(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
       axios:
         specifier: ^1.20.0
         version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
@@ -6165,38 +6165,38 @@ packages:
     resolution: {integrity: sha512-LTV6/Kcr8pS//iDjDitfYi1bp0AlKBUuvNoHAbI8tMnj0PLOUtRWJxId5FwuE+z3oNBeDLeOWPoXVtqKjl277Q==}
     engines: {node: '>=18'}
 
-  '@vezham/config@26.0.0-beta.2':
-    resolution: {integrity: sha512-63eSp/ZweV+kDkWMpnIPA2zxX4PGtsGvQ7D1sn8Sl4lfZKNjgiP81a0qK3Avh/dVYMCaweZPZ9BwQe8Lh77Iuw==}
+  '@vezham/config@26.0.0-beta.3':
+    resolution: {integrity: sha512-MyGWXWGyH+7Z7ax8DTvGbCF3mqv4NR/TB5NVwRxZ8+zsB2SskojCOHV4/0XN3wgn2PBUL3ukniyLVagAxDo/xg==}
     hasBin: true
 
-  '@vezham/devtools@26.0.0-beta.2':
-    resolution: {integrity: sha512-N5k+RUmv/H3Rl2nC2x4VrGxFqhNwX8E+vdb4EG1AO3o3A/VvA78fQJb49dq0bORYrR1H+wwhrAtIfrKNB+Xr9A==}
+  '@vezham/devtools@26.0.0-beta.3':
+    resolution: {integrity: sha512-JbKipObgFbVltK2fz0s0Kqw+jLKzjw0RjSLzmc/aPk7k81YXmk6SE5zZtK6MqyALLCo1YXssJOBTOezu3YLYwg==}
 
-  '@vezham/env@26.0.0-beta.2':
-    resolution: {integrity: sha512-QoV80G2Z0MYj3ZWritMbQhyOSW206QF0ROjEjbHeIkGeGhQ70IwRWlPPtpJxX0n1438wHWKsopAopjVWhKKouA==}
+  '@vezham/env@26.0.0-beta.3':
+    resolution: {integrity: sha512-sJgBgXsTIOLhZ6/8f9ieDa3ynzcIN5CaE0S+0df2NhB3wE+NDXtznQKtDEt3x8OC8BA4syEFR8OnjvO/IfssBg==}
 
-  '@vezham/hooks@26.0.0-beta.2':
-    resolution: {integrity: sha512-ve5uVJmUStW+vTyckndNgtSgrxpjgYcB64jx2sOCZg+9GGsE6QJ5tB1v3xQ/wxsdQvkVxTgOhXmX5bjS62rxOQ==}
+  '@vezham/hooks@26.0.0-beta.3':
+    resolution: {integrity: sha512-bVn05MLalH3Kb+4pWVrqrkopvksMxJNFrSZXXaM2E5al5pfdY8/WRf3DB1P/A1CWYp0UQBMi84uvPwhIGvF+dA==}
 
   '@vezham/icons-react@1.0.7':
     resolution: {integrity: sha512-f9ckgxi4NIP/OBG3RCw4mCAK9rl8EKDdiocVqYYXQ/2IjsKytJ3DQkzHqcBa1RLprF93rIRvvCc+1YYT5QaknQ==}
     peerDependencies:
       react: '>=16.8.0'
 
-  '@vezham/react@26.0.0-beta.2':
-    resolution: {integrity: sha512-x3f/oZUsD4YYeyRUkk1FcmH/vXcvHCvv363sLQGL7pBQ4srX2DTAGNulLs/E1CgX4yhIo/Rgm8+RurE5GpYq0g==}
+  '@vezham/react@26.0.0-beta.3':
+    resolution: {integrity: sha512-YnzAyDv3f259aNUq6DijnC21wSZzrRfma4RxioqwBeN32oD4Qj4C8luj0jN/+10tFRws8dp0BHRYkbBonKNs/g==}
 
-  '@vezham/start@26.0.0-beta.2':
-    resolution: {integrity: sha512-Uttk6CunJ06kvDYzotEPOHuvd9N6PpR8/fZvJPnsscjHMsUBs45g2dRCdXHAhoHU7hid7V5AiPMZzfqgA01yxg==}
+  '@vezham/start@26.0.0-beta.3':
+    resolution: {integrity: sha512-PuTUXMnhQAHnzlMa7KLrtZNKUWbAMA1HDQOtVUbzONOXC/v28T5Vt6B7dfnOV4PQ+R6aa5K+SgHofNXhxZKDBA==}
 
-  '@vezham/template@26.0.0-beta.2':
-    resolution: {integrity: sha512-x8WE8SZHN/084X+hnjkXwJJOQvXspt/WD5rlZoixQA6qLmsRd9yZQAhH72h0F90bvdEtKRbPZiyY46Wf4E0u4g==}
+  '@vezham/template@26.0.0-beta.3':
+    resolution: {integrity: sha512-dNby7DF7nRvLRqvU8CIKDFvDBwwVLV+Vtqd4Wlxa22+EKptAtCMDZmt/Kh2tcMr/AYz/llnGcwiH72+/fn/LFA==}
 
   '@vezham/use-logger@0.3.3':
     resolution: {integrity: sha512-b0f7GVXDxfUU1FPHb4XWEIT6NNU00TLueuQcAKq46JjiZfFw0NdHX3h/ZO20AR0iKsCkhRyjtqw6+QkGBj2lMg==}
 
-  '@vezham/utils@26.0.0-beta.2':
-    resolution: {integrity: sha512-YchpGALmCjPNiKp6kxbLbeQu8XA54ukSXjCo0f8sO9LAVOzLWo7VSjsYrNCyCyVdZUEdw7DPojoZ68IU4c/PVg==}
+  '@vezham/utils@26.0.0-beta.3':
+    resolution: {integrity: sha512-X+ArR9sBZexdQdbao5Fq6jPU6xhu3ad+eFBGxmnNXWh6OX4vZN15LWlu2yuaZ9gNuxOjNy44ORv/3gnrOkjoOA==}
 
   '@vitejs/plugin-react-swc@4.3.3':
     resolution: {integrity: sha512-bti8ZAcvz4Lh6/e4Uk2k3aa1TiUXbbMsahuqOHvd3MveFTkKDZOA6wQVkpj7J/+tepX/wGfe+lsGh/t24HTXMQ==}
@@ -6296,8 +6296,8 @@ packages:
   '@vue/shared@3.5.44':
     resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
 
-  '@vx-cli/react@26.0.0-beta.9':
-    resolution: {integrity: sha512-XmtyiiNBi69ReM9nzmX7kUeIyGT63NSt/zOLtW4lz+vS6doK4IngPe6S1LM4bS7hjidjuurfrdvW62g+mQx1Kw==}
+  '@vx-cli/react@26.0.0-beta.10':
+    resolution: {integrity: sha512-7MYaumY8CQHpNOQYB438jY6lfify15BYw82653rgUdZ1ulypLyEHqqhYKKKuhM7zV10uNevOj9otSuXqb/Kv+w==}
     engines: {node: '>=24'}
     hasBin: true
     peerDependencies:
@@ -7695,8 +7695,8 @@ packages:
   camelize@1.0.1:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
 
-  caniuse-lite@1.0.30001818:
-    resolution: {integrity: sha512-XJbgo4adscw7R4MZU4/qVFkoMyPaNUAWmdNY4o/k9x7fFwmv4frIlndI9lWuaxviW9ObiZel9LuncnQPn6hQ5A==}
+  caniuse-lite@1.0.30001819:
+    resolution: {integrity: sha512-LFUqIIAwpzsIuevnKnsR9qnStBcgzPShTX61lBwN9uFkkf8o8zLiebEjbW8AYtZiF+1YKDWfdt/pWDtMuG8Xwg==}
 
   caseless@0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
@@ -10620,8 +10620,8 @@ packages:
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  node-releases@2.0.59:
-    resolution: {integrity: sha512-5qr2okC4ItAI0hG5SaV0HoYMpnM/Y6+Oqr7AmPYy/2uEoGvS+GbSKLeRxSS1uAdu59yz0ouzcuXievSgg///WA==}
+  node-releases@2.0.60:
+    resolution: {integrity: sha512-OmO8+GM1JUZqXET720VrJCwkjUCXmCMQm0Z3UDDRbfNLHS4NEAvY60j5jiFv0tkKw2PNNlqOLhahVmwJIOLDIQ==}
     engines: {node: '>=18'}
 
   normalize-path@3.0.0:
@@ -11160,11 +11160,11 @@ packages:
   prosemirror-tables@1.8.5:
     resolution: {integrity: sha512-V/0cDCsHKHe/tfWkeCmthNUcEp1IVO3p6vwN8XtwE9PZQLAZJigbw3QoraAdfJPir4NKJtNvOB8oYGKRl+t0Dw==}
 
-  prosemirror-transform@1.12.2:
-    resolution: {integrity: sha512-PE/aY0HEY4zczvmqrilgkUK/WautF0chvMqkmM/iN5/aPHvwrCWaQZjS6CIZp+K84YrvPFqrL+YArrfJX8xX7g==}
+  prosemirror-transform@1.12.3:
+    resolution: {integrity: sha512-EsN+GKYjw8KZ1UpQWkbsGIyzG51nYloEFwqiZ2h/yNL+ni8rRV6Ch0W25GcunalidW1eLHEvGvsWvWn4sINNAA==}
 
-  prosemirror-view@1.42.6:
-    resolution: {integrity: sha512-3g25f6hKV2bBxo3puH3EcYWmmVNSH0iWmNsMVT7sugDSpA025jgpOLarcDWr39SdzPjYMaiYtRdNtXialPSjEQ==}
+  prosemirror-view@1.42.7:
+    resolution: {integrity: sha512-aTIAUN4zdD+VS7gsv9Po9Sty81B6yl6D3HggCosry9DLYTmVo4omjcqICDIOPnPJmskRUsqLInxBjaH7I+BQ4Q==}
 
   protocol-buffers-schema@3.6.1:
     resolution: {integrity: sha512-VG2K63Igkiv9p76tk1lilczEK1cT+kCjKtkdhw1dQZV3k3IXJbd3o6Ho8b9zJZaHSnT2hKe4I+ObmX9w6m5SmQ==}
@@ -18391,8 +18391,8 @@ snapshots:
       prosemirror-schema-list: 1.5.1
       prosemirror-state: 1.4.4
       prosemirror-tables: 1.8.5
-      prosemirror-transform: 1.12.2
-      prosemirror-view: 1.42.6
+      prosemirror-transform: 1.12.3
+      prosemirror-view: 1.42.7
 
   '@tiptap/react@3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
@@ -19000,11 +19000,11 @@ snapshots:
       lodash: 4.18.1
       minimatch: 7.4.9
 
-  '@vezham/config@26.0.0-beta.2':
+  '@vezham/config@26.0.0-beta.3':
     dependencies:
       yaml: 2.9.1
 
-  '@vezham/devtools@26.0.0-beta.2(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)':
+  '@vezham/devtools@26.0.0-beta.3(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)':
     dependencies:
       '@tanstack/react-hotkeys-devtools': 0.7.0(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
     transitivePeerDependencies:
@@ -19018,28 +19018,28 @@ snapshots:
       - solid-js
       - vue
 
-  '@vezham/env@26.0.0-beta.2': {}
+  '@vezham/env@26.0.0-beta.3': {}
 
-  '@vezham/hooks@26.0.0-beta.2': {}
+  '@vezham/hooks@26.0.0-beta.3': {}
 
   '@vezham/icons-react@1.0.7(react@19.2.7)':
     dependencies:
       react: 19.2.7
 
-  '@vezham/react@26.0.0-beta.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@vezham/react@26.0.0-beta.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@tanstack/react-hotkeys': 0.10.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@vezham/hooks': 26.0.0-beta.2
+      '@vezham/hooks': 26.0.0-beta.3
       react-aria-components: 1.21.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@vezham/start@26.0.0-beta.2(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)':
+  '@vezham/start@26.0.0-beta.3(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)':
     dependencies:
-      '@vezham/devtools': 26.0.0-beta.2(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
-      '@vezham/env': 26.0.0-beta.2
-      '@vezham/template': 26.0.0-beta.2
+      '@vezham/devtools': 26.0.0-beta.3(@tanstack/hotkeys@0.8.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(csstype@3.2.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(solid-js@1.9.17)
+      '@vezham/env': 26.0.0-beta.3
+      '@vezham/template': 26.0.0-beta.3
       yaml: 2.9.1
     transitivePeerDependencies:
       - '@tanstack/hotkeys'
@@ -19052,11 +19052,11 @@ snapshots:
       - solid-js
       - vue
 
-  '@vezham/template@26.0.0-beta.2': {}
+  '@vezham/template@26.0.0-beta.3': {}
 
   '@vezham/use-logger@0.3.3': {}
 
-  '@vezham/utils@26.0.0-beta.2': {}
+  '@vezham/utils@26.0.0-beta.3': {}
 
   '@vitejs/plugin-react-swc@4.3.3(@swc/helpers@0.5.23)(vite@8.1.6(@types/node@25.9.3)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
@@ -19167,7 +19167,7 @@ snapshots:
 
   '@vue/shared@3.5.44': {}
 
-  '@vx-cli/react@26.0.0-beta.9(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))':
+  '@vx-cli/react@26.0.0-beta.10(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))':
     dependencies:
       '@nx/devkit': 23.2.1(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
       nx: 24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))
@@ -21101,9 +21101,9 @@ snapshots:
   browserslist@4.29.4:
     dependencies:
       baseline-browser-mapping: 2.11.30
-      caniuse-lite: 1.0.30001818
+      caniuse-lite: 1.0.30001819
       electron-to-chromium: 1.5.463
-      node-releases: 2.0.59
+      node-releases: 2.0.60
       update-browserslist-db: 1.3.4(browserslist@4.29.4)
 
   bser@2.1.2:
@@ -21203,7 +21203,7 @@ snapshots:
 
   camelize@1.0.1: {}
 
-  caniuse-lite@1.0.30001818: {}
+  caniuse-lite@1.0.30001819: {}
 
   caseless@0.12.0: {}
 
@@ -24605,7 +24605,7 @@ snapshots:
       '@next/env': 16.4.2
       '@swc/helpers': 0.5.23
       baseline-browser-mapping: 2.11.30
-      caniuse-lite: 1.0.30001818
+      caniuse-lite: 1.0.30001819
       postcss: 8.5.23
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
@@ -24651,7 +24651,7 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-releases@2.0.59: {}
+  node-releases@2.0.60: {}
 
   normalize-path@3.0.0: {}
 
@@ -25284,38 +25284,38 @@ snapshots:
 
   prosemirror-changeset@2.4.4:
     dependencies:
-      prosemirror-transform: 1.12.2
+      prosemirror-transform: 1.12.3
 
   prosemirror-commands@1.7.2:
     dependencies:
       prosemirror-model: 1.25.12
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
+      prosemirror-transform: 1.12.3
 
   prosemirror-dropcursor@1.8.4:
     dependencies:
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
-      prosemirror-view: 1.42.6
+      prosemirror-transform: 1.12.3
+      prosemirror-view: 1.42.7
 
   prosemirror-gapcursor@1.4.1:
     dependencies:
       prosemirror-keymap: 1.2.3
       prosemirror-model: 1.25.12
       prosemirror-state: 1.4.4
-      prosemirror-view: 1.42.6
+      prosemirror-view: 1.42.7
 
   prosemirror-history@1.5.1:
     dependencies:
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
-      prosemirror-view: 1.42.6
+      prosemirror-transform: 1.12.3
+      prosemirror-view: 1.42.7
       rope-sequence: 1.3.4
 
   prosemirror-inputrules@1.5.1:
     dependencies:
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
+      prosemirror-transform: 1.12.3
 
   prosemirror-keymap@1.2.3:
     dependencies:
@@ -25330,31 +25330,31 @@ snapshots:
     dependencies:
       prosemirror-model: 1.25.12
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
+      prosemirror-transform: 1.12.3
 
   prosemirror-state@1.4.4:
     dependencies:
       prosemirror-model: 1.25.12
-      prosemirror-transform: 1.12.2
-      prosemirror-view: 1.42.6
+      prosemirror-transform: 1.12.3
+      prosemirror-view: 1.42.7
 
   prosemirror-tables@1.8.5:
     dependencies:
       prosemirror-keymap: 1.2.3
       prosemirror-model: 1.25.12
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
-      prosemirror-view: 1.42.6
+      prosemirror-transform: 1.12.3
+      prosemirror-view: 1.42.7
 
-  prosemirror-transform@1.12.2:
+  prosemirror-transform@1.12.3:
     dependencies:
       prosemirror-model: 1.25.12
 
-  prosemirror-view@1.42.6:
+  prosemirror-view@1.42.7:
     dependencies:
       prosemirror-model: 1.25.12
       prosemirror-state: 1.4.4
-      prosemirror-transform: 1.12.2
+      prosemirror-transform: 1.12.3
 
   protocol-buffers-schema@3.6.1: {}
 
