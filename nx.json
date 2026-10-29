@@ -89,8 +89,7 @@
       "options": {
         "targetName": "oxlint"
       }
-    },
-    "@vx-cli/react"
+    }
   ],
   "targetDefaults": {
     "lint": {
