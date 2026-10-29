@@ -1,3 +1,17 @@
+## 26.0.1 (2026-10-29)
+
+### 🏡 Chore
+
+- **@vx-cli/react:** align Nx 24 package ([a533149](https://github.com/vezham-labs/vx-fe-cli/commit/a533149))
+- **release:** publish 26.0.0 ([f7da763](https://github.com/vezham-labs/vx-fe-cli/commit/f7da763))
+- **vx:** link the local React CLI ([11f53ce](https://github.com/vezham-labs/vx-fe-cli/commit/11f53ce))
+- **workspace:** align CLI release setup ([b0d9b48](https://github.com/vezham-labs/vx-fe-cli/commit/b0d9b48))
+
+### ❤️ Thank You
+
+- v0xvigneshwaran
+- vx-vigneshwaran
+
 # 26.0.0 (2026-10-29)
 
 ### 🩹 Fixes
