@@ -208,3 +208,4 @@ firebase-debug.*.log*
 # Claude
 .claude/worktrees
 .claude/settings.local.json
+.vitest
