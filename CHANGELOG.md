@@ -1,3 +1,28 @@
+# 26.0.0 (2026-10-29)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** ignore self dependency ([ccd68f8](https://github.com/vezham-labs/vx-fe-cli/commit/ccd68f8))
+
+### 🏡 Chore
+
+- **release:** publish 26.0.0-beta.3 ([74cd3cc](https://github.com/vezham-labs/vx-fe-cli/commit/74cd3cc))
+- **repo:** update packages to beta ([3e30c9d](https://github.com/vezham-labs/vx-fe-cli/commit/3e30c9d))
+- **repo:** upgrade Nx 24 and add migration prompts ([93924f3](https://github.com/vezham-labs/vx-fe-cli/commit/93924f3))
+- **workspace:** reserve hooks catalog version ([c9c3d93](https://github.com/vezham-labs/vx-fe-cli/commit/c9c3d93))
+- **workspace:** add Ox tooling ([1bca563](https://github.com/vezham-labs/vx-fe-cli/commit/1bca563))
+
+### deps
+
+- **workspace:** update Fallow to 3.37.0 ([9fd6dce](https://github.com/vezham-labs/vx-fe-cli/commit/9fd6dce))
+- **workspace:** bump CLI and Vezham packages ([bd2d1ac](https://github.com/vezham-labs/vx-fe-cli/commit/bd2d1ac))
+- **workspace:** refresh dependency lockfile ([a910b33](https://github.com/vezham-labs/vx-fe-cli/commit/a910b33))
+
+### ❤️ Thank You
+
+- v0xvigneshwaran
+- vx-vigneshwaran
+
 ## 26.0.0-beta.10 (2026-10-29)
 
 ### 🩹 Fixes
