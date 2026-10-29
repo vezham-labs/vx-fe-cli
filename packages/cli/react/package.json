@@ -31,16 +31,17 @@
   },
   "files": [
     "dist",
+    "!dist/typecheck",
     "!**/*.tsbuildinfo",
     "LICENSE",
     "generators.json",
     "executors.json"
   ],
   "dependencies": {
-    "@nx/devkit": "23.2.1"
+    "@nx/devkit": "catalog:"
   },
   "peerDependencies": {
-    "nx": "^23.2.1"
+    "nx": "catalog:"
   },
   "engines": {
     "node": ">=24"

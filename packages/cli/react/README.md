@@ -79,7 +79,11 @@ The `vx-react` binary forwards generator commands to the installed Nx CLI:
 pnpm exec vx-react app portal --category=internal --dry-run
 ```
 
-Supports Nx 23.2.1 and compatible Nx 23 versions on Node 24 or later.
+Supports Nx 24.0.2 and compatible Nx 24 versions on Node 24 or later.
+The root `pnpm-workspace.yaml` default catalog owns the shared `@nx/devkit` pin
+and the Nx peer range. Root and CLI manifests reference `catalog:`; the root Nx
+installation stays pinned to `24.0.2`. pnpm writes real versions into the packed
+npm manifest.
 A generator-only package does not require an entry in the `nx.json` plugins
 array. `init` preserves existing defaults and plugin registrations. Its
 `overrideDefaults` option now configures this plugin's own defaults; it does not
@@ -110,6 +114,12 @@ pnpm nx test @vx-cli/react
 pnpm nx lint @vx-cli/react
 pnpm nx typecheck @vx-cli/react
 ```
+
+Vite writes published output, including bundled declarations, into `dist`.
+Typechecking writes library declarations and compiler state into
+`dist/typecheck`, which is excluded from the npm package. This keeps all library
+output under `dist` while preventing typechecking from overwriting the published
+artifacts. Test compiler output remains in `out-tsc/vitest`.
 
 Tests cover app/library rendering, init idempotence, missing-template behavior,
 and generation from an extracted npm tarball with its dependencies linked in.

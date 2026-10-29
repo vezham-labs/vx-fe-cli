@@ -84,6 +84,16 @@ describe('published Nx plugin', () => {
     expect(entry.startsWith(realpathSync(installedRoot) + path.sep)).toBe(true)
     expect(await import(pathToFileURL(entry).href)).toBeDefined()
     const manifest = require(`${packageName}/package.json`)
+    const workspace = parseYaml(
+      readFileSync(
+        path.resolve(packageRoot, '../../../pnpm-workspace.yaml'),
+        'utf8'
+      )
+    )
+    expect(manifest.dependencies['@nx/devkit']).toBe(
+      workspace.catalog['@nx/devkit']
+    )
+    expect(manifest.peerDependencies.nx).toBe(workspace.catalog.nx)
     expect(existsSync(path.join(installedRoot, manifest.types))).toBe(true)
   })
 
@@ -404,6 +414,7 @@ void reactLibOptions
   }, 30000)
 
   it('ships documentation and license without workspace source or compiler state', () => {
+    expect(existsSync(path.join(installedRoot, 'dist/typecheck'))).toBe(false)
     for (const file of ['README.md', 'LICENSE']) {
       expect(existsSync(path.join(installedRoot, file))).toBe(true)
     }

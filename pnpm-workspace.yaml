@@ -6,6 +6,8 @@ packages:
   - 'apps-*/*'
 
 catalog:
+  '@nx/devkit': 24.0.2
+  nx: ^24.0.2
   '@internationalized/date': 3.12.4
   # vx-bot/NOTE: Reserved for app keyboard shortcuts; keep the Fallow directive below intact.
   # fallow-ignore-next-line unused-catalog-entry
