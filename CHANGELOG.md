@@ -1,3 +1,13 @@
+## 26.0.2 (2026-10-29)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** move Nx deps to peer deps ([7b301c5](https://github.com/vezham-labs/vx-fe-cli/commit/7b301c5))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.1 (2026-10-29)
 
 ### 🏡 Chore
