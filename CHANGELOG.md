@@ -1,3 +1,21 @@
+## 26.0.3 (2026-10-30)
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** update React generator defaults ([e3dc714](https://github.com/vezham-labs/vx-fe-cli/commit/e3dc714))
+
+### 🏡 Chore
+
+- **workspace:** link the local package ([fcede3b](https://github.com/vezham-labs/vx-fe-cli/commit/fcede3b))
+
+### deps
+
+- **workspace:** update @vx-cli/react to 26.0.2 ([a916105](https://github.com/vezham-labs/vx-fe-cli/commit/a916105))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.2 (2026-10-29)
 
 ### 🩹 Fixes
