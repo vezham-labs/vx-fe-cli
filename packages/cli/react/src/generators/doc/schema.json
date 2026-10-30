@@ -7,7 +7,7 @@
     "category": {
       "type": "string",
       "description": "Application category that determines the project grouping.",
-      "default": "internal",
+      "default": "doc",
       "enum": [
         "app",
         "showcase",
