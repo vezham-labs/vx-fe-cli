@@ -1,3 +1,14 @@
+## 26.0.4 (2026-10-31)
+
+### 🏡 Chore
+
+- **repo:** link local React CLI package ([bbaac83](https://github.com/vezham-labs/vx-fe-cli/commit/bbaac83))
+- **workspace:** update deps and prune Nx guides ([1171ceb](https://github.com/vezham-labs/vx-fe-cli/commit/1171ceb))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.3 (2026-10-30)
 
 ### 🩹 Fixes
