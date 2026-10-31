@@ -167,6 +167,9 @@ catalogs:
     '@internationalized/date':
       specifier: 3.12.4
       version: 3.12.4
+    '@nx/devkit':
+      specifier: 24.0.2
+      version: 24.0.2
     '@vezham/config':
       specifier: 26.0.2
       version: 26.0.2
@@ -191,6 +194,9 @@ catalogs:
     framer-motion:
       specifier: ^12.40.0
       version: 12.43.0
+    nx:
+      specifier: ^24.0.2
+      version: 24.0.2
     react-aria-components:
       specifier: 1.21.1
       version: 1.21.1
@@ -388,7 +394,7 @@ importers:
         specifier: 16.4.1
         version: 16.4.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))
       '@nx/devkit':
-        specifier: 24.0.2
+        specifier: 'catalog:'
         version: 24.0.2(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
       '@nx/eslint':
         specifier: 24.0.2
@@ -520,8 +526,8 @@ importers:
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
       '@vx-cli/react':
-        specifier: 26.0.3
-        version: 26.0.3(@nx/devkit@24.0.2(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))))(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
+        specifier: workspace:*
+        version: link:packages/cli/react
       axios:
         specifier: ^1.20.0
         version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
@@ -581,7 +587,7 @@ importers:
         version: 16.4.2(@babel/core@7.29.7(supports-color@10.2.2))(@opentelemetry/api@1.10.0)(@playwright/test@1.64.1)(@types/node@25.9.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       nitro:
         specifier: npm:nitro-nightly@latest
-        version: nitro-nightly@3.0.1-20261023-052727-7e9a0481
+        version: nitro-nightly@3.0.1-20261024-003809-4f008383
       nx:
         specifier: 24.0.2
         version: 24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))
@@ -651,6 +657,15 @@ importers:
       yargs:
         specifier: 17.7.3
         version: 17.7.3
+
+  packages/cli/react:
+    dependencies:
+      '@nx/devkit':
+        specifier: 'catalog:'
+        version: 24.0.2(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
+      nx:
+        specifier: 'catalog:'
+        version: 24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))
 
   packages/vx/react: {}
 
@@ -6195,14 +6210,6 @@ packages:
   '@vue/shared@3.5.44':
     resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
 
-  '@vx-cli/react@26.0.3':
-    resolution: {integrity: sha512-uSgeR5s8eseYGOw/y3xUGqVrM/xkhK3lDv1N4vDCKVS0xdKw8DEqUAB1TcDFUDC95ow5I1VprbnYCh9bbReXog==}
-    engines: {node: '>=24'}
-    hasBin: true
-    peerDependencies:
-      '@nx/devkit': 24.0.2
-      nx: ^24.0.2
-
   '@vx-oss/docs-api@1.0.17':
     resolution: {integrity: sha512-46h4tdQJn2anB8eCFm33gUcI7OBNcrPvf5n2DgyPpfbeqRUjvhsyd3VAjOPs9v/iAorfBjQ2Jl32FMdW+65+wg==}
     peerDependencies:
@@ -10496,8 +10503,8 @@ packages:
       sass:
         optional: true
 
-  nitro-nightly@3.0.1-20261023-052727-7e9a0481:
-    resolution: {integrity: sha512-9XElAldyN7V8Vnet6aM3jWY1YFM0xrOoRp585h0dI9vG3w7ntrvzRvbywiclzjW5gZ5W40KR9GaKp1wOTxPYYw==}
+  nitro-nightly@3.0.1-20261024-003809-4f008383:
+    resolution: {integrity: sha512-AL+bTvVv3s28+yYvRu7yl4RuIruv5hKci5SHc2p4n/yYy6DWnReQDG3M61VWEe0NWhxjmqXVnRf2vcLUI//srQ==}
     engines: {node: '>=22.22.0'}
     hasBin: true
 
@@ -18995,11 +19002,6 @@ snapshots:
 
   '@vue/shared@3.5.44': {}
 
-  '@vx-cli/react@26.0.3(@nx/devkit@24.0.2(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))))(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))':
-    dependencies:
-      '@nx/devkit': 24.0.2(nx@24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
-      nx: 24.0.2(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))
-
   '@vx-oss/docs-api@1.0.17(@types/mdx@2.0.14)(@types/react@19.2.17)(@vx-oss/docs-core@1.0.17(@mdx-js/mdx@3.1.1(supports-color@10.2.2))(@tanstack/react-router@1.170.41(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/estree-jsx@1.0.5)(@types/hast@3.0.5)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.61.0(@types/react@19.2.17)(react@19.2.7))(next@16.4.2(@babel/core@7.29.7(supports-color@10.2.2))(@opentelemetry/api@1.10.0)(@playwright/test@1.64.1)(@types/node@25.9.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(supports-color@10.2.2)(zod@4.6.7))(json-schema-typed@8.0.2)(next@16.4.2(@babel/core@7.29.7(supports-color@10.2.2))(@opentelemetry/api@1.10.0)(@playwright/test@1.64.1)(@types/node@25.9.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(tailwindcss@4.3.0)':
     dependencies:
       '@base-ui/react': 1.9.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -24455,7 +24457,7 @@ snapshots:
       - '@types/node'
       - babel-plugin-macros
 
-  nitro-nightly@3.0.1-20261023-052727-7e9a0481:
+  nitro-nightly@3.0.1-20261024-003809-4f008383:
     dependencies:
       crossws: 0.4.15(srvx@1.0.6)
       env-runner: 0.3.7
