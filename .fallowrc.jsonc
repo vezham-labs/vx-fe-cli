@@ -79,6 +79,7 @@
     "next",
     // vx-bot/NOTE: Required peers of @vezham/react-pro-v3 and @vezham/react-v3.
     "@heroui/react",
+    "@heroui/styles",
     "@internationalized/date",
     "@react-aria/utils",
     "motion",
@@ -87,10 +88,15 @@
     "react-resizable-panels",
     "react-stately",
     "tailwind-merge",
+    "tailwindcss",
+    // vx-bot/NOTE: Peer of the retained Vezham v2 package alias.
+    "framer-motion",
     // vx-bot/NOTE: @vezham/config/vite-lib loads this root-supplied declaration plugin.
     "vite-plugin-dts",
     // vx-bot/NOTE: Published packages are declared at root and supplied to app workspaces.
     "@vezham/config",
+    // vx-bot/NOTE: Imported by shared CSS under packages/vx/styles, ignored by Fallow.
+    "@vezham/devtools",
     "@vezham/env",
     "@vezham/react",
     "@vezham/start",
