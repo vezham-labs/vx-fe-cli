@@ -22,11 +22,11 @@
     "**/routeTree.gen.ts",
     "apps*/**/*-mock/**",
     // vx-bot/NOTE: Legacy implementations are outside this npm-consumer workspace.
-    "packages/vx/react/**"
+    "packages/vx/react/**",
+    // vx-bot/NOTE: Shared styles are consumed by future generated apps.
+    "packages/vx/styles/**"
   ],
   "entry": [
-    // vx-bot/NOTE: Generated apps import these shared stylesheet roots directly.
-    "packages/vx/styles/{index.css,docs/index.css}",
     // vx-bot/NOTE: For Next.js app
     "**/src/app/**/{page,layout,error,global-error,loading,not-found}.tsx",
     "**/src/app/**/route.ts",

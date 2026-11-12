@@ -34,10 +34,10 @@ React Doctor supply-chain API calls remain disabled.
 
 This workspace consumes published `@vezham/*` packages from npm. Fallow analyzes
 workspace-owned code and configuration; it does not require local public-package
-source exports or builds. The shared stylesheet roots under `packages/vx/styles`
-are explicit entry points because generated apps import them directly. Their
-`@vezham/start/styles/docs` import resolves through the installed package's CSS
-export.
+source exports or builds. Fallow ignores `packages/vx/styles/**` because these
+shared styles are consumed by future generated apps and may not be imported by
+the current workspace. The docs stylesheet's `@vezham/start/styles/docs` import
+resolves through the installed package's CSS export.
 
 Keep Next.js in the root development dependencies in both the source workspace
 and workspace-only template. Current Nx build and start commands use the full
