@@ -1,3 +1,14 @@
+## 27.0.0-alpha.1 (2026-11-12)
+
+### 🏡 Chore
+
+- **repo:** upgrade Vezham packages to v27 alpha ([63dea111](https://github.com/vezham-labs/vx-fe-kit/commit/63dea111))
+- **workspace:** update tooling and UI deps ([a156f08d](https://github.com/vezham-labs/vx-fe-kit/commit/a156f08d))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.1 (2026-10-31)
 
 ### 🏡 Chore
