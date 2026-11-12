@@ -1,3 +1,18 @@
+## 27.0.0-alpha.1 (2026-11-12)
+
+### 🚀 Features
+
+- **@vx-cli/react:** style generated docs home ([f881e6f](https://github.com/vezham-labs/vx-fe-cli/commit/f881e6f))
+
+### 🩹 Fixes
+
+- **@vx-cli/react:** unify preview ports ([a26d2d4](https://github.com/vezham-labs/vx-fe-cli/commit/a26d2d4))
+- **react:** default generated apps to port 3000 ([2919f54](https://github.com/vezham-labs/vx-fe-cli/commit/2919f54))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 26.0.4 (2026-10-31)
 
 ### 🏡 Chore
