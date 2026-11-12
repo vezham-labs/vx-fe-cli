@@ -19,31 +19,33 @@ export default ({ locale }: Props) => {
 
   return (
     <HomeLayout {...baseOptions(locale)}>
-      <VLink
-        to="/{-$lang}/docs"
-        params={{
-          lang
-        }}
-        className={buttonVariants({ variant: 'primary' })}>
-        <Link.Icon />
-        Open Docs
-        <Link.Icon />
-      </VLink>
+      <div className="vx-page__content">
+        <VLink
+          to="/{-$lang}/docs"
+          params={{
+            lang
+          }}
+          className={buttonVariants({ variant: 'primary' })}>
+          <Link.Icon />
+          Open Docs
+          <Link.Icon />
+        </VLink>
 
-      <VLink to="/{-$lang}/pro" params={{ lang }} className="link">
-        Open Pro page
-        <Link.Icon />
-      </VLink>
+        <VLink to="/{-$lang}/pro" params={{ lang }} className="link">
+          Open Pro page
+          <Link.Icon />
+        </VLink>
 
-      <Link onPress={() => navigate({ to: '/{-$lang}/pro', params: { lang } })}>
-        <Link.Icon />
-        Navigate with Vezham UI
-        <Link.Icon />
-      </Link>
+        <Link onPress={() => navigate({ to: '/{-$lang}/pro', params: { lang } })}>
+          <Link.Icon />
+          Navigate with Vezham UI
+          <Link.Icon />
+        </Link>
 
-      <Home
-        onPress={() => navigate({ to: '/{-$lang}/pro', params: { lang } })}
-      />
+        <Home
+          onPress={() => navigate({ to: '/{-$lang}/pro', params: { lang } })}
+        />
+      </div>
     </HomeLayout>
   )
 }
