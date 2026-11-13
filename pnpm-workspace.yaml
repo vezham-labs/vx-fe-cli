@@ -6,8 +6,6 @@ packages:
   - 'apps-*/*'
 
 catalog:
-  '@nx/devkit': 24.0.2
-  nx: ^24.0.2
   '@internationalized/date': 3.12.4
   # vx-bot/NOTE: Reserved for app keyboard shortcuts; keep the Fallow directive below intact.
   # fallow-ignore-next-line unused-catalog-entry
@@ -26,6 +24,9 @@ catalog:
   # vx-bot/NOTE: Reserve the hooks catalog version for future direct workspace consumers.
   # fallow-ignore-next-line unused-catalog-entry
   '@vezham/hooks': 27.0.0-alpha.1
+  # wjdlz/NOTE: For CLI
+  '@nx/devkit': 24.0.4
+  'nx': 24.0.4
 
 # vx-bot/NOTE: Resolve docs packages' upstream peer names to the workspace's Vezham forks.
 # vx-bot/TODO: Remove these overrides when the published @vx-oss docs packages use
