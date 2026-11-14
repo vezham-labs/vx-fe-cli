@@ -1,3 +1,24 @@
+## 27.0.0-alpha.2 (2026-11-14)
+
+### 🚀 Features
+
+- **vx:** add page component styles ([87c32d0](https://github.com/vezham-labs/vx-fe-cli/commit/87c32d0))
+
+### 🏡 Chore
+
+- **release:** publish 26.0.1 ([3b73106](https://github.com/vezham-labs/vx-fe-cli/commit/3b73106))
+- **release:** publish 27.0.0-alpha.1 ([3aae37b](https://github.com/vezham-labs/vx-fe-cli/commit/3aae37b))
+- **repo:** upgrade Vezham packages to v27 alpha ([63dea11](https://github.com/vezham-labs/vx-fe-cli/commit/63dea11))
+- **vx:** update Fallow dependency exceptions ([3828a3b](https://github.com/vezham-labs/vx-fe-cli/commit/3828a3b))
+- **workspace:** update tooling and UI deps ([a156f08](https://github.com/vezham-labs/vx-fe-cli/commit/a156f08))
+- **workspace:** ignore future shared styles ([ba15120](https://github.com/vezham-labs/vx-fe-cli/commit/ba15120))
+- **workspace:** use local CLI React package ([3cfb054](https://github.com/vezham-labs/vx-fe-cli/commit/3cfb054))
+
+### ❤️ Thank You
+
+- v0xvigneshwaran
+- vx-vigneshwaran
+
 ## 27.0.0-alpha.1 (2026-11-12)
 
 ### 🚀 Features
