@@ -4,7 +4,7 @@ export const sectionTabVariants = tv({
   base: 'inline-flex h-full items-center border-b-2 text-sm font-medium transition-colors',
   variants: {
     selected: {
-      true: 'border-primary text-primary',
+      true: 'border-accent text-accent',
       false: 'text-muted hover:text-foreground border-transparent'
     }
   },
@@ -40,7 +40,7 @@ export const versionSelectorVariants = tv({
     open: { true: { chevron: 'rotate-180' } },
     selected: {
       true: {
-        item: 'bg-primary/10 text-primary hover:bg-primary/20 font-medium',
+        item: 'bg-accent/10 text-accent hover:bg-accent/20 font-medium',
         version: 'text-muted'
       },
       false: { item: 'text-muted hover:bg-default-hover hover:text-foreground' }
