@@ -1,3 +1,13 @@
+# 27.0.0 (2026-11-15)
+
+### 🚀 Features
+
+- **@vx-cli/react:** update CDN and docs templates ([0e0101c](https://github.com/vezham-labs/vx-fe-cli/commit/0e0101c))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 27.0.0-alpha.2 (2026-11-14)
 
 ### 🚀 Features
