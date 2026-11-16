@@ -25,8 +25,8 @@ catalog:
   # fallow-ignore-next-line unused-catalog-entry
   '@vezham/hooks': 27.0.0
   # wjdlz/NOTE: For CLI
-  '@nx/devkit': 24.0.4
-  'nx': 24.0.4
+  '@nx/devkit': 24.0.5
+  'nx': 24.0.5
 
 # vx-bot/NOTE: Resolve docs packages' upstream peer names to the workspace's Vezham forks.
 # vx-bot/TODO: Remove these overrides when the published @vx-oss docs packages use
