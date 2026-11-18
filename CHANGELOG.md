@@ -1,3 +1,18 @@
+## 27.0.1 (2026-11-18)
+
+### 🏡 Chore
+
+- **release:** publish 27.0.0-alpha.2 ([c7000cb](https://github.com/vezham-labs/vx-fe-cli/commit/c7000cb))
+- **release:** publish 27.0.0 ([4765e39](https://github.com/vezham-labs/vx-fe-cli/commit/4765e39))
+- **repo:** update Nx to 24.0.5 ([9cfc761](https://github.com/vezham-labs/vx-fe-cli/commit/9cfc761))
+- **workspace:** update v27 dependencies ([b49a0a1](https://github.com/vezham-labs/vx-fe-cli/commit/b49a0a1))
+- **workspace:** catalog Nx packages ([d8030a0](https://github.com/vezham-labs/vx-fe-cli/commit/d8030a0))
+
+### ❤️ Thank You
+
+- v0xvigneshwaran
+- vx-vigneshwaran
+
 # 27.0.0 (2026-11-15)
 
 ### 🚀 Features
