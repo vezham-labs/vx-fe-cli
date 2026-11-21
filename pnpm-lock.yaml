@@ -525,6 +525,9 @@ importers:
       '@vitest/ui':
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
+      '@vx-cli/apple':
+        specifier: workspace:*
+        version: link:packages/cli/apple
       '@vx-cli/react':
         specifier: workspace:*
         version: link:packages/cli/react
@@ -657,6 +660,15 @@ importers:
       yargs:
         specifier: 17.7.3
         version: 17.7.3
+
+  packages/cli/apple:
+    dependencies:
+      '@nx/devkit':
+        specifier: 24.0.5
+        version: 24.0.5(nx@24.0.5(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23)))
+      nx:
+        specifier: 24.0.5
+        version: 24.0.5(@swc-node/register@1.11.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3))(@swc/core@1.15.41(@swc/helpers@0.5.23))
 
   packages/cli/react:
     dependencies:

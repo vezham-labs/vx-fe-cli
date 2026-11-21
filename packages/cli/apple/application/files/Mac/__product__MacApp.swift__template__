@@ -1,0 +1,7 @@
+import SwiftUI
+
+@main struct <%= product %>MacApp: App {
+  var body: some Scene {
+    WindowGroup { ContentView() }
+  }
+}

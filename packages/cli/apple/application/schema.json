@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Application category that determines the project grouping.",
+      "default": "app",
+      "enum": [
+        "app",
+        "showcase",
+        "suite",
+        "platform",
+        "widget",
+        "pod",
+        "internal",
+        "vezham"
+      ],
+      "x-prompt": {
+        "message": "Which category should this project belong to?",
+        "type": "list",
+        "items": [
+          {
+            "value": "app",
+            "label": "Apps - Standard applications"
+          },
+          {
+            "value": "showcase",
+            "label": "Showcases - Curated demos and examples"
+          },
+          {
+            "value": "suite",
+            "label": "Suites - Product suite applications"
+          },
+          {
+            "value": "platform",
+            "label": "Platforms - CX platform applications"
+          },
+          {
+            "value": "widget",
+            "label": "Widgets - App extensions, integrations, and chat widgets"
+          },
+          {
+            "value": "pod",
+            "label": "Pods - Shared SaaS infrastructure applications"
+          },
+          {
+            "value": "internal",
+            "label": "Internal - Internal tools and utilities"
+          },
+          {
+            "value": "vezham",
+            "label": "Vezham Apps - Public applications from vezham.com"
+          }
+        ]
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the application.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the application?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "Optional project group within the selected application category.",
+      "x-prompt": "Optional group within the category folder (leave blank for none):"
+    },
+    "bundlePrefix": {
+      "type": "string",
+      "description": "Reverse-DNS bundle identifier prefix",
+      "default": "dev.vx"
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false
+}

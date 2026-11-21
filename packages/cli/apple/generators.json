@@ -1,0 +1,10 @@
+{
+  "generators": {
+    "application": {
+      "factory": "./application/generator.cjs",
+      "schema": "./application/schema.json",
+      "description": "Create a SwiftUI app for iOS and macOS",
+      "aliases": ["app"]
+    }
+  }
+}

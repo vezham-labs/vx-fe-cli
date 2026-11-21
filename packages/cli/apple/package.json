@@ -1,0 +1,21 @@
+{
+  "name": "@vx-cli/apple",
+  "version": "27.0.1",
+  "generators": "./generators.json",
+  "description": "Nx generator for SwiftUI iOS and macOS applications",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vezham-labs/vx-fe-cli.git",
+    "directory": "packages/cli/apple"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "files": [
+    "application",
+    "generators.json",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "@nx/devkit": "24.0.5",
+    "nx": "24.0.5"
+  }
+}
