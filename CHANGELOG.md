@@ -1,3 +1,13 @@
+## 27.1.0 (2026-11-21)
+
+### 🚀 Features
+
+- **apple:** add Apple app generator ([2a8d4f7](https://github.com/vezham-labs/vx-fe-cli/commit/2a8d4f7))
+
+### ❤️ Thank You
+
+- vx-vigneshwaran
+
 ## 27.0.1 (2026-11-18)
 
 ### 🏡 Chore

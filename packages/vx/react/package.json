@@ -1,6 +1,6 @@
 {
   "name": "@vx/react",
-  "version": "27.0.1",
+  "version": "27.1.0",
   "private": true,
   "exports": {
     "./package.json": "./package.json",
